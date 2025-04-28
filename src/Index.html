@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -121,7 +122,8 @@
       transition: background 0.3s;
       display: flex;
       flex-direction: column;
-      justify-content: flex-start;
+      justify-content: center;
+      align-items: center;
       position: relative;
     }
     
@@ -149,6 +151,7 @@
       transition: all 0.3s;
       position: relative;
       z-index: 2;
+      text-align: center;
     }
     
     .card:hover .card-title {
@@ -185,7 +188,7 @@
     
     .modal-header {
       margin-bottom: 20px;
-      text-align: left;
+      text-align: center;
     }
     
     .modal-title {
@@ -443,6 +446,9 @@
           <div class="card-inner">
             <div class="card-glow"></div>
             <h3 class="card-title">${section.title}</h3>
+            <div class="absolute bottom-4 right-4 opacity-0 transform translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300">
+              <span class="text-[#FF4B00] text-sm">Voir les détails →</span>
+            </div>
           </div>
         `;
         

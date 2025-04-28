@@ -4,6 +4,9 @@
  * Application backend for Google Apps Script
  */
 
+// ID du fichier Google Sheets
+const SPREADSHEET_ID = '10QxgzOtwTq3zAcuV8YQxtIJd7dzwAgvADq1QaiFp30E';
+
 // Fonction exécutée à l'ouverture de l'application web
 function doGet() {
   return HtmlService.createHtmlOutputFromFile('Index')
@@ -35,8 +38,9 @@ function getDropdownOptions() {
  */
 function saveData(data) {
   try {
-    // Accès au fichier Google Sheets actif
-    var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+    // Accès au fichier Google Sheets spécifié par l'ID
+    var spreadsheet = SpreadsheetApp.openById(SPREADSHEET_ID);
+    var sheet = spreadsheet.getActiveSheet();
     
     // Trouver la dernière ligne avec des données dans la colonne A
     var lastRow = Math.max(
@@ -81,5 +85,11 @@ function saveData(data) {
 
 // Fonction de test pour vérifier que l'application fonctionne
 function testConnection() {
-  return "Connection successful!";
+  try {
+    var spreadsheet = SpreadsheetApp.openById(SPREADSHEET_ID);
+    return "Connection successful to spreadsheet: " + spreadsheet.getName();
+  } catch (error) {
+    return "Connection error: " + error.toString();
+  }
 }
+

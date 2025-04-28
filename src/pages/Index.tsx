@@ -1,6 +1,7 @@
 
 import { useEffect } from 'react';
 import { FormModal } from "@/components/FormModal";
+import { Heart } from "lucide-react";
 
 const Index = () => {
   useEffect(() => {
@@ -85,6 +86,12 @@ const Index = () => {
     }
   ];
 
+  const handleSaveAll = () => {
+    // Handle save functionality
+    console.log("Saving all data...");
+    // Show success notification
+  };
+
   return (
     <div className="min-h-screen bg-[#1A1A1A] text-white relative overflow-hidden">
       {/* Background Design */}
@@ -105,13 +112,15 @@ const Index = () => {
       
       <div className="relative z-10 max-w-7xl mx-auto p-6">
         <div className="mb-12 pt-8">
-          <h1 className="text-4xl font-bold text-center mb-2 text-white hover:bg-gradient-to-r hover:from-[#FF4B00] hover:via-[#FF8E00] hover:to-[#00E0FF] hover:bg-clip-text hover:text-transparent transition-all duration-200">
+          <h1 className="text-4xl font-bold text-center mb-2 flex items-center justify-center gap-3 text-white hover:bg-gradient-to-r hover:from-[#FF4B00] hover:via-[#FF8E00] hover:to-[#00E0FF] hover:bg-clip-text hover:text-transparent transition-all duration-200">
+            <Heart className="text-[#FF4B00] h-8 w-8" />
             Portfolio Management Dashboard
+            <Heart className="text-[#FF4B00] h-8 w-8" />
           </h1>
           <p className="text-white hover:text-[#00E0FF] transition-colors duration-200 text-center">Gestion des initiatives et des portefeuilles</p>
         </div>
 
-        <div className="grid grid-cols-2 gap-6 max-w-4xl mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
           {sections.map((section, index) => (
             <FormModal 
               key={index}
@@ -119,6 +128,26 @@ const Index = () => {
               fields={section.fields}
             />
           ))}
+        </div>
+
+        {/* Save Button */}
+        <div className="mt-12 max-w-xs mx-auto">
+          <button 
+            onClick={handleSaveAll}
+            className="w-full relative overflow-hidden group flex items-center justify-center gap-2 bg-gradient-to-r from-[#FF4B00] to-[#00E0FF] text-white font-bold py-4 px-8 rounded-xl hover:shadow-lg hover:shadow-[#FF4B00]/20 transition-all duration-300 hover:-translate-y-1 active:translate-y-0"
+          >
+            <Heart className="w-6 h-6 group-hover:scale-125 transition-all duration-300 group-hover:animate-pulse" />
+            <span className="text-xl">Sauvegarder</span>
+            <Heart className="w-6 h-6 group-hover:scale-125 transition-all duration-300 group-hover:animate-pulse" />
+            
+            {/* Heart animations on hover */}
+            <div className="absolute inset-0 pointer-events-none opacity-0 group-hover:opacity-100">
+              <Heart className="absolute animate-ping text-white/20 w-4 h-4" style={{ top: '20%', left: '30%', animationDuration: '2s' }} />
+              <Heart className="absolute animate-ping text-white/20 w-5 h-5" style={{ bottom: '30%', right: '20%', animationDuration: '2.5s' }} />
+              <Heart className="absolute animate-ping text-white/20 w-3 h-3" style={{ top: '40%', right: '30%', animationDuration: '1.8s' }} />
+              <Heart className="absolute animate-ping text-white/20 w-4 h-4" style={{ bottom: '20%', left: '30%', animationDuration: '2.2s' }} />
+            </div>
+          </button>
         </div>
       </div>
     </div>

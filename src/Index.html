@@ -15,8 +15,8 @@
     }
     
     body {
-      background-color: #f8f9fa;
-      color: #333;
+      background-color: #1A1F2C;
+      color: #fff;
       line-height: 1.6;
       padding: 20px;
       max-width: 1200px;
@@ -27,12 +27,17 @@
     .header {
       text-align: center;
       padding: 20px 0;
-      background-color: #d3d3d3;
       margin-bottom: 30px;
+      background: linear-gradient(to right, #2A2F3C, #252A36);
+      border-radius: 8px;
+      border: 1px solid #3A3F4C;
     }
     
     .header h1 {
-      color: #333;
+      background: linear-gradient(to right, #9b87f5, #847ad1);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
       font-size: 24px;
       font-weight: 500;
     }
@@ -40,138 +45,105 @@
     /* === ACCORDION === */
     .accordion {
       margin-bottom: 20px;
-      border: 1px solid #ddd;
-      border-radius: 4px;
+      border: 1px solid #3A3F4C;
+      border-radius: 8px;
       overflow: hidden;
+      background-color: #2A2F3C;
     }
     
     .accordion-header {
-      background-color: #fff;
+      background: linear-gradient(to right, #2A2F3C, #252A36);
       padding: 15px 20px;
       cursor: pointer;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      border-bottom: 1px solid #ddd;
+      border-bottom: 1px solid #3A3F4C;
+      transition: background-color 0.3s;
     }
     
-    /* Couleur par section */
-    .accordion.section-1 .accordion-header { border-left: 4px solid #555; }
-    .accordion.section-2 .accordion-header { border-left: 4px solid #FFD700; }
-    .accordion.section-3 .accordion-header { border-left: 4px solid #00BFFF; }
-    .accordion.section-4 .accordion-header { border-left: 4px solid #FF6347; }
+    .accordion-header:hover {
+      background-color: #252A36;
+    }
     
     .accordion-title {
       font-weight: 600;
       font-size: 16px;
+      color: #fff;
     }
     
     .accordion-icon {
-      width: 20px;
-      height: 20px;
-      position: relative;
-    }
-    
-    .accordion-icon::before,
-    .accordion-icon::after {
-      content: '';
-      position: absolute;
-      background-color: #555;
-      transition: all 0.3s ease;
-    }
-    
-    .accordion-icon::before {
-      width: 2px;
-      height: 20px;
-      top: 0;
-      left: 9px;
-    }
-    
-    .accordion-icon::after {
-      width: 20px;
-      height: 2px;
-      top: 9px;
-      left: 0;
+      color: #9b87f5;
     }
     
     .accordion-content {
       display: none;
       padding: 20px;
-      background-color: #f9f9f9;
-    }
-    
-    .accordion.active .accordion-icon::before {
-      transform: rotate(90deg);
-      opacity: 0;
-    }
-    
-    .accordion.active .accordion-content {
-      display: block;
+      background-color: #1A1F2C;
     }
     
     /* === FORM STYLES === */
     .form-group {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
       margin-bottom: 15px;
-      flex-wrap: wrap;
     }
     
     .form-label {
-      flex: 0 0 30%;
-      font-weight: 500;
-      padding-right: 15px;
+      display: block;
+      margin-bottom: 8px;
+      color: #8E9196;
+      font-size: 14px;
     }
     
     .form-control {
-      flex: 0 0 65%;
-      padding: 10px 12px;
-      border: 1px solid #ddd;
-      border-radius: 4px;
-      font-size: 14px;
       width: 100%;
+      padding: 10px 12px;
+      background-color: #252A36;
+      border: 1px solid #3A3F4C;
+      border-radius: 4px;
+      color: #fff;
+      font-size: 14px;
+      transition: border-color 0.3s;
     }
     
     .form-control:focus {
       outline: none;
-      border-color: #aaa;
+      border-color: #9b87f5;
     }
     
     select.form-control {
-      background-color: white;
-      height: 38px;
+      background-color: #252A36;
+      color: #fff;
     }
     
     /* === BUTTONS === */
     .btn-container {
-      text-align: right;
-      margin-top: 20px;
+      text-align: center;
+      margin-top: 30px;
     }
     
-    .btn {
-      padding: 10px 20px;
+    .btn-publish {
+      background-color: #9b87f5;
+      color: #fff;
+      padding: 16px 32px;
       border: none;
-      border-radius: 4px;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 16px;
       cursor: pointer;
-      font-weight: 500;
-      font-size: 14px;
-      transition: background-color 0.2s;
+      transition: all 0.2s;
+      box-shadow: 0 4px 6px rgba(155, 135, 245, 0.2);
     }
     
-    .btn-primary {
-      background-color: #4CAF50;
-      color: white;
-    }
-    
-    .btn-primary:hover {
-      background-color: #45a049;
+    .btn-publish:hover {
+      background-color: #847ad1;
+      transform: scale(1.05);
+      box-shadow: 0 6px 8px rgba(155, 135, 245, 0.3);
     }
     
     /* === VALIDATION MESSAGE === */
     .validation-message {
       display: none;
-      background-color: #4CAF50;
+      background-color: #9b87f5;
       color: white;
       text-align: center;
       padding: 15px;
@@ -180,23 +152,18 @@
       font-size: 16px;
     }
     
-    /* === UTILS === */
-    .text-center {
-      text-align: center;
-    }
-    
-    .mb-15 {
-      margin-bottom: 15px;
-    }
-    
     /* === RESPONSIVE === */
     @media (max-width: 768px) {
-      .form-label, .form-control {
-        flex: 0 0 100%;
+      body {
+        padding: 10px;
       }
       
-      .form-label {
-        margin-bottom: 8px;
+      .header h1 {
+        font-size: 20px;
+      }
+      
+      .btn-publish {
+        width: 100%;
       }
     }
   </style>
@@ -207,327 +174,157 @@
     <h1>Portfolio Management Dashboard</h1>
   </div>
   
-  <!-- Accordion Section 1 -->
-  <div class="accordion section-1" id="section1">
-    <div class="accordion-header">
-      <span class="accordion-title">Initiative Description</span>
-      <div class="accordion-icon"></div>
-    </div>
-    <div class="accordion-content">
-      <div class="form-group">
-        <label class="form-label">Requestor/Customer</label>
-        <input type="text" class="form-control" id="requestor" name="requestor">
-      </div>
-      
-      <div class="form-group">
-        <label class="form-label">DIN portfolio</label>
-        <select class="form-control" id="dinPortfolio" name="dinPortfolio">
-          <option value="">-- Sélectionner --</option>
-          <!-- Options chargées dynamiquement -->
-        </select>
-      </div>
-      
-      <div class="form-group">
-        <label class="form-label">DIN focal point</label>
-        <input type="text" class="form-control" id="dinFocalPoint" name="dinFocalPoint">
-      </div>
-      
-      <div class="form-group">
-        <label class="form-label">Initiative name</label>
-        <input type="text" class="form-control" id="initiativeName" name="initiativeName">
-      </div>
-      
-      <div class="form-group">
-        <label class="form-label">Initiative deliverables</label>
-        <input type="text" class="form-control" id="initiativeDeliverables" name="initiativeDeliverables">
-      </div>
-      
-      <div class="form-group">
-        <label class="form-label">Year</label>
-        <input type="text" class="form-control" id="year" name="year">
-      </div>
-      
-      <div class="form-group">
-        <label class="form-label">Source of demand</label>
-        <input type="text" class="form-control" id="sourceOfDemand" name="sourceOfDemand">
-      </div>
-      
-      <div class="form-group">
-        <label class="form-label">PPM ID</label>
-        <input type="text" class="form-control" id="ppmId" name="ppmId">
-      </div>
-      
-      <div class="form-group">
-        <label class="form-label">Category</label>
-        <select class="form-control" id="category" name="category">
-          <option value="">-- Sélectionner --</option>
-          <!-- Options chargées dynamiquement -->
-        </select>
-      </div>
-      
-      <div class="form-group">
-        <label class="form-label">Workload per PSL</label>
-        <input type="text" class="form-control" id="workloadPerPsl" name="workloadPerPsl">
-      </div>
-      
-      <div class="form-group">
-        <label class="form-label">Transversal</label>
-        <select class="form-control" id="transversal" name="transversal">
-          <option value="">-- Sélectionner --</option>
-          <!-- Options chargées dynamiquement -->
-        </select>
-      </div>
-      
-      <div class="form-group">
-        <label class="form-label">Status</label>
-        <select class="form-control" id="status" name="status">
-          <option value="">-- Sélectionner --</option>
-          <!-- Options chargées dynamiquement -->
-        </select>
-      </div>
-      
-      <div class="form-group">
-        <label class="form-label">Team member</label>
-        <input type="text" class="form-control" id="teamMember" name="teamMember">
-      </div>
-      
-      <div class="btn-container">
-        <button class="btn btn-primary" onclick="validateSection(1)">Valider</button>
-      </div>
-    </div>
+  <!-- Accordion Sections -->
+  <div id="accordionContainer">
+    <!-- Les sections seront générées dynamiquement par le script -->
   </div>
   
-  <!-- Accordion Section 2 -->
-  <div class="accordion section-2" id="section2">
-    <div class="accordion-header">
-      <span class="accordion-title">Portfolio Management Decision</span>
-      <div class="accordion-icon"></div>
-    </div>
-    <div class="accordion-content">
-      <div class="form-group">
-        <label class="form-label">GO/NO-GO</label>
-        <select class="form-control" id="goNoGo" name="goNoGo">
-          <option value="">-- Sélectionner --</option>
-          <!-- Options chargées dynamiquement -->
-        </select>
-      </div>
-      
-      <div class="form-group">
-        <label class="form-label">Prio DIN</label>
-        <input type="text" class="form-control" id="prioDin" name="prioDin">
-      </div>
-      
-      <div class="form-group">
-        <label class="form-label">DIN Lead</label>
-        <input type="text" class="form-control" id="dinLead" name="dinLead">
-      </div>
-      
-      <div class="btn-container">
-        <button class="btn btn-primary" onclick="validateSection(2)">Valider</button>
-      </div>
-    </div>
-  </div>
-  
-  <!-- Accordion Section 3 -->
-  <div class="accordion section-3" id="section3">
-    <div class="accordion-header">
-      <span class="accordion-title">Financial Assessment</span>
-      <div class="accordion-icon"></div>
-    </div>
-    <div class="accordion-content">
-      <div class="form-group">
-        <label class="form-label">Budget Estimated</label>
-        <input type="text" class="form-control" id="budgetEstimated" name="budgetEstimated">
-      </div>
-      
-      <div class="form-group">
-        <label class="form-label">Budget Validated K€</label>
-        <input type="text" class="form-control" id="budgetValidated" name="budgetValidated">
-      </div>
-      
-      <div class="form-group">
-        <label class="form-label">CPN</label>
-        <input type="text" class="form-control" id="cpn" name="cpn">
-      </div>
-      
-      <div class="form-group">
-        <label class="form-label">Impact RC DIN</label>
-        <input type="text" class="form-control" id="impactRcDin" name="impactRcDin">
-      </div>
-      
-      <div class="btn-container">
-        <button class="btn btn-primary" onclick="validateSection(3)">Valider</button>
-      </div>
-    </div>
-  </div>
-  
-  <!-- Accordion Section 4 -->
-  <div class="accordion section-4" id="section4">
-    <div class="accordion-header">
-      <span class="accordion-title">Risk / Issue / Status</span>
-      <div class="accordion-icon"></div>
-    </div>
-    <div class="accordion-content">
-      <div class="form-group">
-        <label class="form-label">Status</label>
-        <input type="text" class="form-control" id="statusFinal" name="statusFinal">
-      </div>
-      
-      <div class="form-group">
-        <label class="form-label">DINS needed</label>
-        <input type="text" class="form-control" id="dinsNeeded" name="dinsNeeded">
-      </div>
-      
-      <div class="form-group">
-        <label class="form-label">DINS comment</label>
-        <textarea class="form-control" id="dinsComment" name="dinsComment" rows="3"></textarea>
-      </div>
-      
-      <div class="form-group">
-        <label class="form-label">DINS link to the project</label>
-        <input type="text" class="form-control" id="dinsLink" name="dinsLink">
-      </div>
-      
-      <div class="btn-container">
-        <button class="btn btn-primary" onclick="validateSection(4)">Valider</button>
-      </div>
-    </div>
-  </div>
-  
-  <!-- Bouton de validation finale -->
-  <div class="text-center mb-15" style="display:none;" id="finalSubmitContainer">
-    <button class="btn btn-primary" onclick="saveAllData()" style="padding: 15px 30px; font-size: 16px;">
-      Valider la saisie et écrire dans le fichier
+  <!-- Bouton de publication -->
+  <div class="btn-container">
+    <button onclick="handlePublish()" class="btn-publish">
+      Publier
     </button>
   </div>
-  
+
   <!-- Message de validation -->
   <div class="validation-message" id="validationMessage">
     Données sauvegardées avec succès !
   </div>
 
   <script>
-    // === VARIABLES GLOBALES ===
-    let formData = {}; // Stockage des données du formulaire
-    let dropdownOptions = {}; // Options pour les menus déroulants
-    let sectionsValidated = { 1: false, 2: false, 3: false, 4: false }; // État de validation des sections
-    
-    // === INITIALISATION ===
+    // Initialisation au chargement
     document.addEventListener('DOMContentLoaded', function() {
-      initAccordion();
+      initializeAccordions();
       loadDropdownOptions();
     });
     
-    // === FONCTIONS D'INITIALISATION ===
+    // Structure des sections
+    const sections = [
+      {
+        id: 1,
+        title: "Initiative Description",
+        fields: [
+          { type: "text", id: "requestor", label: "Requestor/Customer" },
+          { type: "select", id: "dinPortfolio", label: "DIN portfolio" },
+          { type: "text", id: "dinFocalPoint", label: "DIN focal point" }
+        ]
+      },
+      {
+        id: 2,
+        title: "Portfolio Management Decision",
+        fields: [
+          { type: "select", id: "goNoGo", label: "GO/NO-GO" },
+          { type: "text", id: "prioDin", label: "Prio DIN" },
+          { type: "text", id: "dinLead", label: "DIN Lead" }
+        ]
+      },
+      {
+        id: 3,
+        title: "Financial Assessment",
+        fields: [
+          { type: "text", id: "budgetEstimated", label: "Budget Estimated" },
+          { type: "text", id: "budgetValidated", label: "Budget Validated" },
+          { type: "text", id: "cpn", label: "CPN" }
+        ]
+      },
+      {
+        id: 4,
+        title: "Risk / Issue / Status",
+        fields: [
+          { type: "text", id: "statusFinal", label: "Status" },
+          { type: "text", id: "dinsNeeded", label: "DINS needed" },
+          { type: "textarea", id: "dinsComment", label: "DINS comment" }
+        ]
+      }
+    ];
     
     // Initialisation des accordéons
-    function initAccordion() {
-      const accordions = document.querySelectorAll('.accordion-header');
+    function initializeAccordions() {
+      const container = document.getElementById('accordionContainer');
       
-      accordions.forEach(header => {
-        header.addEventListener('click', function() {
-          const parent = this.parentElement;
-          
-          // Si l'accordéon est déjà ouvert, ne rien faire
-          // L'utilisateur doit utiliser le bouton Valider pour le fermer
-          if (!parent.classList.contains('active')) {
-            // Fermer tous les accordéons ouverts
-            document.querySelectorAll('.accordion').forEach(acc => {
-              acc.classList.remove('active');
-            });
-            
-            // Ouvrir l'accordéon cliqué
-            parent.classList.add('active');
-          }
-        });
+      sections.forEach(section => {
+        const accordion = createAccordionSection(section);
+        container.appendChild(accordion);
       });
+    }
+    
+    // Création d'une section d'accordéon
+    function createAccordionSection(section) {
+      const accordion = document.createElement('div');
+      accordion.className = 'accordion';
+      accordion.innerHTML = `
+        <div class="accordion-header" onclick="toggleAccordion(${section.id})">
+          <span class="accordion-title">${section.title}</span>
+          <span class="accordion-icon">▼</span>
+        </div>
+        <div class="accordion-content" id="content-${section.id}">
+          ${createFields(section.fields)}
+        </div>
+      `;
+      return accordion;
+    }
+    
+    // Création des champs de formulaire
+    function createFields(fields) {
+      return fields.map(field => `
+        <div class="form-group">
+          <label class="form-label" for="${field.id}">${field.label}</label>
+          ${createInput(field)}
+        </div>
+      `).join('');
+    }
+    
+    // Création d'un champ de formulaire
+    function createInput(field) {
+      if (field.type === 'select') {
+        return `<select class="form-control" id="${field.id}"><option value="">-- Sélectionner --</option></select>`;
+      } else if (field.type === 'textarea') {
+        return `<textarea class="form-control" id="${field.id}" rows="3"></textarea>`;
+      }
+      return `<input type="text" class="form-control" id="${field.id}">`;
+    }
+    
+    // Toggle accordéon
+    function toggleAccordion(id) {
+      const content = document.getElementById(`content-${id}`);
+      const header = content.previousElementSibling;
+      const icon = header.querySelector('.accordion-icon');
+      
+      content.style.display = content.style.display === 'block' ? 'none' : 'block';
+      icon.textContent = content.style.display === 'block' ? '▼' : '▲';
     }
     
     // Chargement des options des menus déroulants
     function loadDropdownOptions() {
       google.script.run
         .withSuccessHandler(function(options) {
-          dropdownOptions = options;
-          
-          // Remplir les menus déroulants
-          populateDropdown('dinPortfolio', options.dinPortfolio);
-          populateDropdown('category', options.category);
-          populateDropdown('transversal', options.transversal);
-          populateDropdown('status', options.status);
-          populateDropdown('goNoGo', options.goNoGo);
+          populateDropdowns(options);
         })
         .getDropdownOptions();
     }
     
-    // Remplissage d'un menu déroulant spécifique
-    function populateDropdown(id, options) {
-      const dropdown = document.getElementById(id);
-      if (!dropdown) return;
-      
-      // Conserver l'option par défaut et ajouter les autres options
-      const defaultOption = dropdown.querySelector('option');
-      dropdown.innerHTML = '';
-      dropdown.appendChild(defaultOption);
-      
-      options.forEach(option => {
-        const optElement = document.createElement('option');
-        optElement.value = option;
-        optElement.textContent = option;
-        dropdown.appendChild(optElement);
+    // Remplissage des menus déroulants
+    function populateDropdowns(options) {
+      Object.keys(options).forEach(key => {
+        const select = document.getElementById(key);
+        if (select) {
+          options[key].forEach(option => {
+            const opt = document.createElement('option');
+            opt.value = option;
+            opt.textContent = option;
+            select.appendChild(opt);
+          });
+        }
       });
     }
     
-    // === FONCTIONS DE GESTION DU FORMULAIRE ===
-    
-    // Validation d'une section
-    function validateSection(sectionNumber) {
-      // Récupérer tous les champs de la section
-      const section = document.getElementById('section' + sectionNumber);
-      const inputs = section.querySelectorAll('input, select, textarea');
+    // Gestion de la publication
+    function handlePublish() {
+      const formData = collectFormData();
       
-      // Collecter les données
-      inputs.forEach(input => {
-        formData[input.id] = input.value;
-      });
-      
-      // Marquer la section comme validée
-      sectionsValidated[sectionNumber] = true;
-      
-      // Fermer l'accordéon
-      section.classList.remove('active');
-      
-      // Vérifier si toutes les sections sont validées
-      checkAllSectionsValidated();
-    }
-    
-    // Vérifier si toutes les sections sont validées pour afficher le bouton final
-    function checkAllSectionsValidated() {
-      const allValidated = Object.values(sectionsValidated).every(status => status === true);
-      
-      // Afficher le bouton de validation finale si toutes les sections sont validées
-      document.getElementById('finalSubmitContainer').style.display = allValidated ? 'block' : 'none';
-    }
-    
-    // Enregistrement de toutes les données
-    function saveAllData() {
-      // Appel à la fonction GAS pour sauvegarder les données
       google.script.run
         .withSuccessHandler(function(success) {
-          if (success) {
-            // Afficher un message de succès
-            const message = document.getElementById('validationMessage');
-            message.style.display = 'block';
-            
-            // Cacher le message après 3 secondes
-            setTimeout(function() {
-              message.style.display = 'none';
-            }, 3000);
-            
-            // Réinitialiser le formulaire
-            resetForm();
-          } else {
-            alert('Erreur lors de la sauvegarde des données. Veuillez réessayer.');
-          }
+          showValidationMessage(success);
         })
         .withFailureHandler(function(error) {
           console.error('Erreur:', error);
@@ -536,20 +333,31 @@
         .saveData(formData);
     }
     
-    // Réinitialiser le formulaire après la sauvegarde
-    function resetForm() {
-      // Réinitialiser les champs du formulaire
-      const inputs = document.querySelectorAll('input, select, textarea');
-      inputs.forEach(input => {
-        input.value = '';
+    // Collecte des données du formulaire
+    function collectFormData() {
+      const formData = {};
+      sections.forEach(section => {
+        section.fields.forEach(field => {
+          const element = document.getElementById(field.id);
+          if (element) {
+            formData[field.id] = element.value;
+          }
+        });
       });
-      
-      // Réinitialiser les données et l'état de validation
-      formData = {};
-      sectionsValidated = { 1: false, 2: false, 3: false, 4: false };
-      
-      // Cacher le bouton de validation finale
-      document.getElementById('finalSubmitContainer').style.display = 'none';
+      return formData;
+    }
+    
+    // Affichage du message de validation
+    function showValidationMessage(success) {
+      const message = document.getElementById('validationMessage');
+      if (success) {
+        message.style.display = 'block';
+        setTimeout(() => {
+          message.style.display = 'none';
+        }, 3000);
+      } else {
+        alert('Erreur lors de la sauvegarde des données. Veuillez réessayer.');
+      }
     }
   </script>
 </body>

@@ -25,9 +25,9 @@ export function FormModal({ title, fields }: FormModalProps) {
     <Dialog>
       <DialogTrigger asChild>
         <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-[#1A1A1A] to-[#252525] p-[1px] transition-all hover:scale-[1.02] hover:shadow-xl hover:shadow-[#FF4B00]/30 cursor-pointer group">
-          <div className="relative h-[200px] w-full overflow-hidden rounded-3xl bg-gradient-to-br from-[#1A1A1A] to-[#252525] p-6 transition-all group-hover:bg-black/50">
+          <div className="relative h-[200px] w-full overflow-hidden rounded-3xl bg-gradient-to-br from-[#1A1A1A] to-[#252525] p-6 transition-all group-hover:bg-black/50 flex items-center justify-center">
             <div className="absolute inset-0 bg-gradient-to-br from-[#FF4B00]/20 to-[#FF8E00]/20 opacity-0 transition-opacity group-hover:opacity-100" />
-            <h3 className="relative z-10 text-xl font-bold text-white transition-colors duration-300 group-hover:text-[#FF4B00]">
+            <h3 className="relative z-10 text-xl font-bold text-white text-center transition-colors duration-300 group-hover:text-[#FF4B00]">
               {title}
             </h3>
             <div className="absolute bottom-4 right-4 opacity-0 transform translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300">

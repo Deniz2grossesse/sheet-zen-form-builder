@@ -91,7 +91,7 @@ const DataView = () => {
       <div className="relative z-10 max-w-7xl mx-auto p-6">
         <div className="mb-8 pt-8 flex items-center">
           <Button 
-            className="mr-4 bg-[#252525] hover:bg-[#333] text-white rounded-xl transition-all duration-300"
+            className="mr-4 bg-gradient-to-r from-[#252525] to-[#333] hover:from-[#333] hover:to-[#444] text-white rounded-xl transition-all duration-300"
             onClick={() => navigate('/')}
           >
             <ArrowLeft className="mr-2 h-4 w-4" />

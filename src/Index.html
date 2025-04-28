@@ -48,8 +48,8 @@
       top: 0;
       left: 0;
       background: 
-        linear-gradient(12deg, #FF4B00/10 0%, transparent 50%),
-        linear-gradient(-12deg, #00E0FF/10 0%, transparent 50%);
+        linear-gradient(12deg, rgba(255, 75, 0, 0.1) 0%, transparent 50%),
+        linear-gradient(-12deg, rgba(0, 224, 255, 0.1) 0%, transparent 50%);
       opacity: 0.1;
       pointer-events: none;
     }
@@ -61,6 +61,14 @@
       margin-bottom: 30px;
       position: relative;
       z-index: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    
+    .header-content {
+      margin-bottom: 20px;
+      text-align: center;
     }
     
     .header h1 {
@@ -84,6 +92,32 @@
     
     .header p:hover {
       color: #00E0FF;
+    }
+    
+    /* Bouton Visualiser */
+    .btn-visualiser {
+      background: linear-gradient(to right, #FF4B00, #FF8E00);
+      color: #fff;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.3s;
+      box-shadow: 0 4px 12px rgba(255, 75, 0, 0.2);
+      margin-top: 10px;
+    }
+    
+    .btn-visualiser:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(255, 75, 0, 0.3);
+    }
+    
+    .btn-visualiser:active {
+      transform: translateY(0);
     }
     
     /* === CARDS CONTAINER === */
@@ -159,6 +193,23 @@
       -webkit-background-clip: text;
       background-clip: text;
       color: transparent;
+    }
+    
+    /* Lien de détails */
+    .details-link {
+      position: absolute;
+      bottom: 16px;
+      right: 16px;
+      color: #FF4B00;
+      font-size: 14px;
+      opacity: 0;
+      transform: translateY(8px);
+      transition: all 0.3s ease;
+    }
+    
+    .card:hover .details-link {
+      opacity: 1;
+      transform: translateY(0);
     }
     
     /* === MODAL === */
@@ -329,6 +380,79 @@
       font-weight: 500;
     }
     
+    /* === DATA VIEW STYLES === */
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 20px 0;
+      background: #1A1A1A;
+      border-radius: 12px;
+      overflow: hidden;
+    }
+    
+    .data-table th {
+      background: #252525;
+      color: #FF4B00;
+      padding: 12px;
+      text-align: left;
+    }
+    
+    .data-table tr:nth-child(odd) {
+      background: #1A1A1A;
+    }
+    
+    .data-table tr:nth-child(even) {
+      background: #222;
+    }
+    
+    .data-table td {
+      padding: 12px;
+      border-top: 1px solid #333;
+    }
+    
+    .data-table tr:hover {
+      background: #252525;
+    }
+    
+    .back-button {
+      background: #252525;
+      color: #fff;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.3s;
+      margin-bottom: 20px;
+    }
+    
+    .back-button:hover {
+      background: #333;
+    }
+    
+    .loading {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 200px;
+    }
+    
+    .loading-spinner {
+      width: 40px;
+      height: 40px;
+      border: 4px solid rgba(255, 75, 0, 0.2);
+      border-left-color: #FF4B00;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+    
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+    
     /* === RESPONSIVE === */
     @media (max-width: 768px) {
       .cards-container {
@@ -339,14 +463,52 @@
         width: 90%;
         margin: 20% auto;
       }
+      
+      .data-table {
+        font-size: 14px;
+      }
+      
+      .data-table thead {
+        display: none;
+      }
+      
+      .data-table tr {
+        border-bottom: 3px solid #333;
+        display: block;
+        margin-bottom: 10px;
+      }
+      
+      .data-table td {
+        border: none;
+        border-bottom: 1px solid #3a3a3a;
+        display: block;
+        text-align: right;
+        padding-left: 50%;
+        position: relative;
+      }
+      
+      .data-table td:before {
+        content: attr(data-label);
+        position: absolute;
+        left: 12px;
+        font-weight: 700;
+        text-align: left;
+        color: #FF4B00;
+      }
     }
   </style>
 </head>
 <body>
   <!-- En-tête -->
   <div class="header">
-    <h1>Portfolio Management Dashboard</h1>
-    <p>Gestion des initiatives et des portefeuilles</p>
+    <div class="header-content">
+      <h1>Portfolio Management Dashboard</h1>
+      <p>Gestion des initiatives et des portefeuilles</p>
+    </div>
+    <button onclick="navigateToDataView()" class="btn-visualiser">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="2"></circle><path d="M12 19c-4 0-7.5-3.37-7.5-7.5S8 4 12 4s7.5 3.37 7.5 7.5S16 19 12 19Z"></path></svg>
+      Visualiser
+    </button>
   </div>
   
   <!-- Card Sections -->
@@ -369,6 +531,21 @@
   <!-- Message de validation -->
   <div class="validation-message" id="validationMessage">
     Données sauvegardées avec succès !
+  </div>
+
+  <!-- Page de visualisation des données -->
+  <div id="dataView" style="display: none;">
+    <button onclick="navigateToHome()" class="back-button">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 19-7-7 7-7"></path><path d="M19 12H5"></path></svg>
+      Retour
+    </button>
+    
+    <h1 class="modal-title">Visualisation des données</h1>
+    <p style="text-align: center; margin-bottom: 20px;">Initiatives et portefeuilles enregistrés</p>
+    
+    <div id="dataTableContainer" class="loading">
+      <div class="loading-spinner"></div>
+    </div>
   </div>
 
   <script>
@@ -446,8 +623,8 @@
           <div class="card-inner">
             <div class="card-glow"></div>
             <h3 class="card-title">${section.title}</h3>
-            <div class="absolute bottom-4 right-4 opacity-0 transform translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300">
-              <span class="text-[#FF4B00] text-sm">Voir les détails →</span>
+            <div class="details-link">
+              <span>Voir les détails →</span>
             </div>
           </div>
         `;
@@ -654,6 +831,96 @@
       } else {
         alert('Erreur lors de la sauvegarde des données. Veuillez réessayer.');
       }
+    }
+    
+    // Navigation
+    function navigateToDataView() {
+      document.querySelector('.header').style.display = 'none';
+      document.getElementById('cardsContainer').style.display = 'none';
+      document.querySelector('.btn-save-container').style.display = 'none';
+      document.getElementById('dataView').style.display = 'block';
+      
+      loadData();
+    }
+    
+    function navigateToHome() {
+      document.querySelector('.header').style.display = 'flex';
+      document.getElementById('cardsContainer').style.display = 'grid';
+      document.querySelector('.btn-save-container').style.display = 'block';
+      document.getElementById('dataView').style.display = 'none';
+    }
+    
+    // Chargement des données pour la page de visualisation
+    function loadData() {
+      const container = document.getElementById('dataTableContainer');
+      container.innerHTML = '<div class="loading-spinner"></div>';
+      container.className = 'loading';
+      
+      google.script.run
+        .withSuccessHandler(function(data) {
+          displayData(data);
+        })
+        .withFailureHandler(function(error) {
+          console.error('Erreur:', error);
+          container.innerHTML = `<div style="text-align: center; padding: 20px;">
+            <p>Une erreur s'est produite lors du chargement des données.</p>
+            <button onclick="loadData()" class="btn-visualiser" style="margin: 20px auto;">
+              Réessayer
+            </button>
+          </div>`;
+          container.className = '';
+        })
+        .getAllData();
+    }
+    
+    // Affichage des données dans un tableau
+    function displayData(data) {
+      const container = document.getElementById('dataTableContainer');
+      container.className = '';
+      
+      if (!data || data.length === 0) {
+        container.innerHTML = `<div style="text-align: center; padding: 20px;">
+          <p>Aucune donnée disponible.</p>
+        </div>`;
+        return;
+      }
+      
+      // Construire le tableau
+      let tableHTML = '<table class="data-table">';
+      
+      // En-têtes du tableau
+      tableHTML += '<thead><tr>';
+      // Utiliser les étiquettes des champs comme en-têtes
+      const headers = ['ID', 'Requestor', 'DIN Portfolio', 'Initiative Name', 'Status', 'GO/NO-GO', 'Budget Estimated'];
+      headers.forEach(header => {
+        tableHTML += `<th>${header}</th>`;
+      });
+      tableHTML += '</tr></thead>';
+      
+      // Corps du tableau
+      tableHTML += '<tbody>';
+      data.forEach((row, index) => {
+        tableHTML += '<tr>';
+        // ID
+        tableHTML += `<td data-label="ID">${row[0] || ''}</td>`;
+        // Requestor
+        tableHTML += `<td data-label="Requestor">${row[1] || ''}</td>`;
+        // DIN Portfolio
+        tableHTML += `<td data-label="DIN Portfolio">${row[2] || ''}</td>`;
+        // Initiative Name
+        tableHTML += `<td data-label="Initiative Name">${row[4] || ''}</td>`;
+        // Status
+        tableHTML += `<td data-label="Status">${row[12] || ''}</td>`;
+        // GO/NO-GO
+        tableHTML += `<td data-label="GO/NO-GO">${row[14] || ''}</td>`;
+        // Budget Estimated
+        tableHTML += `<td data-label="Budget Estimated">${row[17] || ''}</td>`;
+        tableHTML += '</tr>';
+      });
+      tableHTML += '</tbody>';
+      tableHTML += '</table>';
+      
+      container.innerHTML = tableHTML;
     }
   </script>
 </body>

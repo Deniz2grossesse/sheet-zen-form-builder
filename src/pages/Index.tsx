@@ -119,10 +119,10 @@ const Index = () => {
             </p>
           </div>
           <Button 
-            className="mt-4 sm:mt-0 self-center sm:self-auto px-6 py-2 bg-gradient-to-r from-[#252525] to-[#333] hover:from-[#333] hover:to-[#444] text-white rounded-xl transition-all duration-300 hover:shadow-lg hover:shadow-[#FF4B00]/20 hover:scale-[1.02] flex items-center"
+            className="mt-4 sm:mt-0 self-center sm:self-auto px-6 py-2 bg-gradient-to-r from-[#FF4B00] to-[#FF8E00] hover:from-[#FF6B00] hover:to-[#FFAA00] text-white rounded-xl transition-all duration-300 hover:shadow-lg hover:shadow-[#FF4B00]/20 hover:scale-[1.02] flex items-center"
             onClick={() => navigate('/data-view')}
           >
-            <Eye className="mr-2 h-5 w-5 text-[#FF4B00]" />
+            <Eye className="mr-2 h-5 w-5 text-white" />
             Visualiser
           </Button>
         </div>

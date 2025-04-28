@@ -1,11 +1,18 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+
+import { useEffect } from 'react';
 
 const Index = () => {
+  useEffect(() => {
+    // This component is a placeholder - the actual content is loaded directly from Index.html
+    console.log('GAS Portfolio Management Dashboard is loading...');
+  }, []);
+
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <div className="text-center">
-        <h1 className="text-4xl font-bold mb-4">Welcome to Your Blank App</h1>
-        <p className="text-xl text-gray-600">Start building your amazing project here!</p>
+    <div id="gas-content">
+      {/* The GAS HTML content will be injected here by main.tsx */}
+      <div style={{textAlign: 'center', padding: '2rem'}}>
+        <h2>Portfolio Management Dashboard</h2>
+        <p>Loading content...</p>
       </div>
     </div>
   );

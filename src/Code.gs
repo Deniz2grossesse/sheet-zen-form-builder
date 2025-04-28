@@ -91,3 +91,8 @@ function saveData(data) {
     return false;
   }
 }
+
+// Fonction de test pour vérifier que l'application fonctionne
+function testConnection() {
+  return "Connection successful!";
+}

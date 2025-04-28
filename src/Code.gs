@@ -43,17 +43,30 @@ function saveData(data) {
     var spreadsheet = SpreadsheetApp.openById(SPREADSHEET_ID);
     var sheet = spreadsheet.getActiveSheet();
     
-    // Trouver la dernière ligne avec des données dans la colonne A
-    var lastRow = Math.max(
-      2,
-      sheet.getRange("A3:A").getValues().filter(String).length + 2
-    );
+    // Trouver toutes les valeurs de la colonne A à partir de la ligne 4
+    var idValues = sheet.getRange("A4:A").getValues();
+    
+    // Filtrer pour ne garder que les cellules qui contiennent des données
+    var nonEmptyIds = idValues.filter(function(row) {
+      return row[0] !== "";
+    });
     
     // Calculer le nouvel ID
     var newId = 1;
-    if (lastRow > 2) {
-      var lastId = sheet.getRange(lastRow, 1).getValue();
-      newId = lastId + 1;
+    if (nonEmptyIds.length > 0) {
+      // Prendre la dernière valeur d'ID et l'incrémenter
+      var lastId = nonEmptyIds[nonEmptyIds.length - 1][0];
+      
+      // S'assurer que c'est un nombre
+      if (typeof lastId === 'number') {
+        newId = lastId + 1;
+      } else {
+        // Si ce n'est pas un nombre, essayer de le convertir
+        var parsedId = parseInt(lastId, 10);
+        if (!isNaN(parsedId)) {
+          newId = parsedId + 1;
+        }
+      }
     }
     
     // Préparation des données à insérer
@@ -85,8 +98,11 @@ function saveData(data) {
       data.dinsLink || ""
     ];
     
+    // Trouver la prochaine ligne vide pour l'insertion
+    var nextRow = nonEmptyIds.length + 4;
+    
     // Écriture des données
-    var range = sheet.getRange(lastRow + 1, 1, 1, rowData.length);
+    var range = sheet.getRange(nextRow, 1, 1, rowData.length);
     range.setValues([rowData]);
     
     // Journal de succès

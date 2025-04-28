@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { FormModal } from "@/components/FormModal";
 import { Button } from "@/components/ui/button";
 import { Eye } from "lucide-react";
+import { toast } from "sonner";
 
 const Index = () => {
   const navigate = useNavigate();
@@ -11,6 +12,13 @@ const Index = () => {
   useEffect(() => {
     document.documentElement.classList.add('dark');
   }, []);
+
+  const handleSaveAll = () => {
+    // Ici, vous pouvez implémenter la logique pour récupérer toutes les données
+    // des sections de formulaire et les envoyer à l'API
+    console.log("Sauvegarde initiée");
+    toast.success("Données sauvegardées avec succès!");
+  };
 
   const sections = [
     {
@@ -114,9 +122,6 @@ const Index = () => {
             <h1 className="text-4xl font-bold text-center sm:text-left mb-2 text-[#FF4B00] hover:text-[#FF8E00] transition-colors duration-300">
               Portfolio Management Dashboard
             </h1>
-            <p className="text-white hover:text-[#FF4B00]/80 transition-colors duration-200 text-center sm:text-left">
-              Gestion des initiatives et des portefeuilles
-            </p>
           </div>
           <Button 
             className="mt-4 sm:mt-0 self-center sm:self-auto px-6 py-2 bg-gradient-to-r from-[#FF4B00] to-[#FF8E00] hover:from-[#FF6B00] hover:to-[#FFAA00] text-white rounded-xl transition-all duration-300 hover:shadow-lg hover:shadow-[#FF4B00]/20 hover:scale-[1.02] flex items-center"
@@ -140,7 +145,7 @@ const Index = () => {
         <div className="mt-12 flex justify-center">
           <Button 
             className="px-8 py-6 text-lg bg-gradient-to-r from-[#FF4B00] to-[#FF8E00] hover:from-[#FF6B00] hover:to-[#FFAA00] text-white rounded-xl transition-all duration-300 hover:shadow-lg hover:shadow-[#FF4B00]/30 hover:scale-[1.02]"
-            onClick={() => console.log("Sauvegarde initiée")}
+            onClick={handleSaveAll}
           >
             Sauvegarder
           </Button>

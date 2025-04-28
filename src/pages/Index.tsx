@@ -1,6 +1,7 @@
 
 import { useEffect } from 'react';
 import { FormModal } from "@/components/FormModal";
+import { Button } from "@/components/ui/button";
 
 const Index = () => {
   useEffect(() => {
@@ -88,30 +89,32 @@ const Index = () => {
   return (
     <div className="min-h-screen bg-[#1A1A1A] text-white relative overflow-hidden">
       {/* Background Design */}
-      <div className="absolute inset-0 overflow-hidden">
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div 
           className="absolute w-full h-full"
           style={{
             background: `
-              radial-gradient(circle at 20% 20%, #FF4B00 0%, transparent 50%),
-              radial-gradient(circle at 80% 80%, #00E0FF 0%, transparent 50%)
+              radial-gradient(circle at 20% 20%, #FF4B00 0%, transparent 40%),
+              radial-gradient(circle at 80% 80%, #FF8E00 0%, transparent 40%)
             `,
             opacity: 0.1
           }}
         />
         <div className="absolute -top-[50%] -left-[10%] w-[100%] h-[150%] bg-[#FF4B00]/10 blur-[120px] transform rotate-12" />
-        <div className="absolute -bottom-[50%] -right-[10%] w-[100%] h-[150%] bg-[#00E0FF]/10 blur-[120px] transform -rotate-12" />
+        <div className="absolute -bottom-[50%] -right-[10%] w-[100%] h-[150%] bg-[#FF8E00]/10 blur-[120px] transform -rotate-12" />
       </div>
       
       <div className="relative z-10 max-w-7xl mx-auto p-6">
         <div className="mb-12 pt-8">
-          <h1 className="text-4xl font-bold text-center mb-2 text-white hover:bg-gradient-to-r hover:from-[#FF4B00] hover:via-[#FF8E00] hover:to-[#00E0FF] hover:bg-clip-text hover:text-transparent transition-all duration-200">
+          <h1 className="text-4xl font-bold text-center mb-2 text-[#FF4B00] hover:text-[#FF8E00] transition-colors duration-300">
             Portfolio Management Dashboard
           </h1>
-          <p className="text-white hover:text-[#00E0FF] transition-colors duration-200 text-center">Gestion des initiatives et des portefeuilles</p>
+          <p className="text-white hover:text-[#FF4B00]/80 transition-colors duration-200 text-center">
+            Gestion des initiatives et des portefeuilles
+          </p>
         </div>
 
-        <div className="grid grid-cols-2 gap-6 max-w-4xl mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
           {sections.map((section, index) => (
             <FormModal 
               key={index}
@@ -119,6 +122,15 @@ const Index = () => {
               fields={section.fields}
             />
           ))}
+        </div>
+
+        <div className="mt-12 flex justify-center">
+          <Button 
+            className="px-8 py-6 text-lg bg-gradient-to-r from-[#FF4B00] to-[#FF8E00] hover:from-[#FF6B00] hover:to-[#FFAA00] text-white rounded-xl transition-all duration-300 hover:shadow-lg hover:shadow-[#FF4B00]/30 hover:scale-[1.02]"
+            onClick={() => console.log("Sauvegarde initiée")}
+          >
+            Sauvegarder
+          </Button>
         </div>
       </div>
     </div>

@@ -34,7 +34,7 @@
       left: 0;
       background: 
         radial-gradient(circle at 20% 20%, #FF4B00 0%, transparent 50%),
-        radial-gradient(circle at 80% 80%, #00E0FF 0%, transparent 50%);
+        radial-gradient(circle at 80% 80%, #FF8E00 0%, transparent 50%);
       opacity: 0.1;
       pointer-events: none;
     }
@@ -49,7 +49,7 @@
       left: 0;
       background: 
         linear-gradient(12deg, rgba(255, 75, 0, 0.1) 0%, transparent 50%),
-        linear-gradient(-12deg, rgba(0, 224, 255, 0.1) 0%, transparent 50%);
+        linear-gradient(-12deg, rgba(255, 142, 0, 0.1) 0%, transparent 50%);
       opacity: 0.1;
       pointer-events: none;
     }
@@ -79,7 +79,7 @@
     }
     
     .header h1:hover {
-      background: linear-gradient(to right, #FF4B00, #FF8E00, #00E0FF);
+      background: linear-gradient(to right, #FF4B00, #FF8E00);
       -webkit-background-clip: text;
       background-clip: text;
       color: transparent;
@@ -91,7 +91,7 @@
     }
     
     .header p:hover {
-      color: #00E0FF;
+      color: #FF8E00;
     }
     
     /* Bouton Visualiser */
@@ -168,7 +168,7 @@
     .card-glow {
       position: absolute;
       inset: 0;
-      background: linear-gradient(to bottom right, rgba(255, 75, 0, 0.2), rgba(0, 224, 255, 0.2));
+      background: linear-gradient(to bottom right, rgba(255, 75, 0, 0.2), rgba(255, 142, 0, 0.2));
       opacity: 0;
       transition: opacity 0.3s;
       border-radius: 23px;
@@ -189,10 +189,7 @@
     }
     
     .card:hover .card-title {
-      background: linear-gradient(to right, #FF4B00, #00E0FF);
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
+      color: #FF4B00;
     }
     
     /* Lien de détails */
@@ -245,7 +242,7 @@
     .modal-title {
       font-size: 24px;
       font-weight: 700;
-      background: linear-gradient(to right, #FF4B00, #00E0FF);
+      background: linear-gradient(to right, #FF4B00, #FF8E00);
       -webkit-background-clip: text;
       background-clip: text;
       color: transparent;
@@ -321,23 +318,6 @@
       margin-top: 24px;
     }
     
-    .btn-publish {
-      width: 100%;
-      background: linear-gradient(to right, #FF4B00, #00E0FF);
-      color: #fff;
-      padding: 12px 24px;
-      border: none;
-      border-radius: 12px;
-      font-weight: 600;
-      font-size: 16px;
-      cursor: pointer;
-      transition: opacity 0.2s;
-    }
-    
-    .btn-publish:hover {
-      opacity: 0.9;
-    }
-    
     .btn-save-container {
       text-align: center;
       margin: 40px auto;
@@ -346,7 +326,7 @@
     
     .btn-save {
       width: 100%;
-      background: linear-gradient(to right, #FF4B00, #00E0FF);
+      background: linear-gradient(to right, #FF4B00, #FF8E00);
       color: #fff;
       padding: 16px 32px;
       border: none;
@@ -370,7 +350,7 @@
     /* === VALIDATION MESSAGE === */
     .validation-message {
       display: none;
-      background: linear-gradient(to right, #FF4B00, #00E0FF);
+      background: linear-gradient(to right, #FF4B00, #FF8E00);
       color: white;
       text-align: center;
       padding: 15px;
@@ -650,11 +630,6 @@
             </div>
             <div class="modal-body">
               ${createFields(section.fields)}
-              <div class="btn-container">
-                <button onclick="handleSave(${section.id})" class="btn-publish">
-                  Valider
-                </button>
-              </div>
             </div>
           </div>
         `;

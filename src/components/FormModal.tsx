@@ -38,7 +38,7 @@ export function FormModal({ title, fields }: FormModalProps) {
       </DialogTrigger>
       <DialogContent className="sm:max-w-[600px] bg-[#1A1A1A] border border-[#333] text-white rounded-3xl">
         <DialogHeader>
-          <DialogTitle className="text-2xl font-bold text-[#FF4B00]">
+          <DialogTitle className="text-2xl font-bold text-[#FF4B00] text-center">
             {title}
           </DialogTitle>
         </DialogHeader>

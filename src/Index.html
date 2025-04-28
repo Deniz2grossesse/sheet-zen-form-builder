@@ -15,12 +15,43 @@
     }
     
     body {
-      background-color: #1A1F2C;
+      background-color: #1A1A1A;
       color: #fff;
       line-height: 1.6;
       padding: 20px;
       max-width: 1200px;
       margin: 0 auto;
+      position: relative;
+    }
+    
+    /* Background gradients */
+    body::before {
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      background: 
+        radial-gradient(circle at 20% 20%, #FF4B00 0%, transparent 50%),
+        radial-gradient(circle at 80% 80%, #00E0FF 0%, transparent 50%);
+      opacity: 0.1;
+      pointer-events: none;
+    }
+    
+    /* Background glows */
+    body::after {
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      background: 
+        linear-gradient(12deg, #FF4B00/10 0%, transparent 50%),
+        linear-gradient(-12deg, #00E0FF/10 0%, transparent 50%);
+      opacity: 0.1;
+      pointer-events: none;
     }
     
     /* === HEADER === */
@@ -28,58 +59,159 @@
       text-align: center;
       padding: 20px 0;
       margin-bottom: 30px;
-      background: linear-gradient(to right, #2A2F3C, #252A36);
-      border-radius: 8px;
-      border: 1px solid #3A3F4C;
+      position: relative;
+      z-index: 1;
     }
     
     .header h1 {
-      background: linear-gradient(to right, #9b87f5, #847ad1);
+      font-size: 32px;
+      font-weight: 700;
+      color: #fff;
+      transition: all 0.3s;
+    }
+    
+    .header h1:hover {
+      background: linear-gradient(to right, #FF4B00, #FF8E00, #00E0FF);
       -webkit-background-clip: text;
       background-clip: text;
       color: transparent;
-      font-size: 24px;
-      font-weight: 500;
     }
     
-    /* === ACCORDION === */
-    .accordion {
-      margin-bottom: 20px;
-      border: 1px solid #3A3F4C;
-      border-radius: 8px;
-      overflow: hidden;
-      background-color: #2A2F3C;
-    }
-    
-    .accordion-header {
-      background: linear-gradient(to right, #2A2F3C, #252A36);
-      padding: 15px 20px;
-      cursor: pointer;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      border-bottom: 1px solid #3A3F4C;
-      transition: background-color 0.3s;
-    }
-    
-    .accordion-header:hover {
-      background-color: #252A36;
-    }
-    
-    .accordion-title {
-      font-weight: 600;
-      font-size: 16px;
+    .header p {
       color: #fff;
+      transition: color 0.2s;
     }
     
-    .accordion-icon {
-      color: #9b87f5;
+    .header p:hover {
+      color: #00E0FF;
     }
     
-    .accordion-content {
+    /* === CARDS CONTAINER === */
+    .cards-container {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    
+    /* === CARD === */
+    .card {
+      position: relative;
+      height: 200px;
+      width: 100%;
+      overflow: hidden;
+      border-radius: 24px;
+      cursor: pointer;
+      transition: all 0.3s;
+      background: linear-gradient(to bottom right, #1A1A1A, #252525);
+      padding: 1px;
+    }
+    
+    .card:hover {
+      transform: scale(1.02);
+      box-shadow: 0 10px 25px rgba(255, 75, 0, 0.2);
+    }
+    
+    .card-inner {
+      height: 100%;
+      width: 100%;
+      border-radius: 23px;
+      padding: 24px;
+      background: linear-gradient(to bottom right, #1A1A1A, #252525);
+      transition: background 0.3s;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      position: relative;
+    }
+    
+    .card:hover .card-inner {
+      background: rgba(0, 0, 0, 0.5);
+    }
+    
+    .card-glow {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to bottom right, rgba(255, 75, 0, 0.2), rgba(0, 224, 255, 0.2));
+      opacity: 0;
+      transition: opacity 0.3s;
+      border-radius: 23px;
+    }
+    
+    .card:hover .card-glow {
+      opacity: 1;
+    }
+    
+    .card-title {
+      font-size: 20px;
+      font-weight: 700;
+      color: #fff;
+      transition: all 0.3s;
+      position: relative;
+      z-index: 2;
+    }
+    
+    .card:hover .card-title {
+      background: linear-gradient(to right, #FF4B00, #00E0FF);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    
+    /* === MODAL === */
+    .modal {
       display: none;
-      padding: 20px;
-      background-color: #1A1F2C;
+      position: fixed;
+      z-index: 100;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0, 0, 0, 0.8);
+      backdrop-filter: blur(5px);
+    }
+    
+    .modal-content {
+      background: #1A1A1A;
+      margin: 10% auto;
+      padding: 30px;
+      border: 1px solid #333;
+      border-radius: 24px;
+      max-width: 600px;
+      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+      position: relative;
+    }
+    
+    .modal-header {
+      margin-bottom: 20px;
+      text-align: left;
+    }
+    
+    .modal-title {
+      font-size: 24px;
+      font-weight: 700;
+      background: linear-gradient(to right, #FF4B00, #00E0FF);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      margin-bottom: 10px;
+    }
+    
+    .close {
+      position: absolute;
+      right: 20px;
+      top: 20px;
+      font-size: 28px;
+      font-weight: 700;
+      color: #666;
+      cursor: pointer;
+      transition: color 0.3s;
+    }
+    
+    .close:hover {
+      color: #FF4B00;
     }
     
     /* === FORM STYLES === */
@@ -90,80 +222,91 @@
     .form-label {
       display: block;
       margin-bottom: 8px;
-      color: #8E9196;
+      color: #fff;
       font-size: 14px;
+      transition: color 0.2s;
+    }
+    
+    .form-label:hover {
+      color: #FF4B00;
     }
     
     .form-control {
       width: 100%;
-      padding: 10px 12px;
-      background-color: #252A36;
-      border: 1px solid #3A3F4C;
-      border-radius: 4px;
+      padding: 12px 16px;
+      background-color: #252525;
+      border: 1px solid #333;
+      border-radius: 12px;
       color: #fff;
       font-size: 14px;
       transition: border-color 0.3s;
     }
     
+    .form-control:hover {
+      border-color: #FF4B00;
+    }
+    
     .form-control:focus {
       outline: none;
-      border-color: #9b87f5;
+      border-color: #FF4B00;
+      box-shadow: 0 0 0 3px rgba(255, 75, 0, 0.1);
     }
     
     select.form-control {
-      background-color: #252A36;
+      background-color: #252525;
       color: #fff;
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23ffffff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 12px center;
+      padding-right: 40px;
     }
     
     /* === BUTTONS === */
     .btn-container {
       text-align: center;
-      margin-top: 30px;
+      margin-top: 24px;
     }
     
     .btn-publish {
-      background-color: #9b87f5;
+      width: 100%;
+      background: linear-gradient(to right, #FF4B00, #00E0FF);
       color: #fff;
-      padding: 16px 32px;
+      padding: 12px 24px;
       border: none;
-      border-radius: 8px;
+      border-radius: 12px;
       font-weight: 600;
       font-size: 16px;
       cursor: pointer;
-      transition: all 0.2s;
-      box-shadow: 0 4px 6px rgba(155, 135, 245, 0.2);
+      transition: opacity 0.2s;
     }
     
     .btn-publish:hover {
-      background-color: #847ad1;
-      transform: scale(1.05);
-      box-shadow: 0 6px 8px rgba(155, 135, 245, 0.3);
+      opacity: 0.9;
     }
     
     /* === VALIDATION MESSAGE === */
     .validation-message {
       display: none;
-      background-color: #9b87f5;
+      background: linear-gradient(to right, #FF4B00, #00E0FF);
       color: white;
       text-align: center;
       padding: 15px;
       margin-top: 20px;
-      border-radius: 4px;
+      border-radius: 12px;
       font-size: 16px;
+      font-weight: 500;
     }
     
     /* === RESPONSIVE === */
     @media (max-width: 768px) {
-      body {
-        padding: 10px;
+      .cards-container {
+        grid-template-columns: 1fr;
       }
       
-      .header h1 {
-        font-size: 20px;
-      }
-      
-      .btn-publish {
-        width: 100%;
+      .modal-content {
+        width: 90%;
+        margin: 20% auto;
       }
     }
   </style>
@@ -172,32 +315,25 @@
   <!-- En-tête -->
   <div class="header">
     <h1>Portfolio Management Dashboard</h1>
+    <p>Gestion des initiatives et des portefeuilles</p>
   </div>
   
-  <!-- Accordion Sections -->
-  <div id="accordionContainer">
-    <!-- Les sections seront générées dynamiquement par le script -->
+  <!-- Card Sections -->
+  <div class="cards-container" id="cardsContainer">
+    <!-- Les cartes seront générées dynamiquement par le script -->
   </div>
   
-  <!-- Bouton de publication -->
-  <div class="btn-container">
-    <button onclick="handlePublish()" class="btn-publish">
-      Publier
-    </button>
+  <!-- Modals -->
+  <div id="modalsContainer">
+    <!-- Les modals seront générées dynamiquement par le script -->
   </div>
-
+  
   <!-- Message de validation -->
   <div class="validation-message" id="validationMessage">
     Données sauvegardées avec succès !
   </div>
 
   <script>
-    // Initialisation au chargement
-    document.addEventListener('DOMContentLoaded', function() {
-      initializeAccordions();
-      loadDropdownOptions();
-    });
-    
     // Structure des sections
     const sections = [
       {
@@ -206,7 +342,17 @@
         fields: [
           { type: "text", id: "requestor", label: "Requestor/Customer" },
           { type: "select", id: "dinPortfolio", label: "DIN portfolio" },
-          { type: "text", id: "dinFocalPoint", label: "DIN focal point" }
+          { type: "text", id: "dinFocalPoint", label: "DIN focal point" },
+          { type: "text", id: "initiativeName", label: "Initiative name" },
+          { type: "text", id: "initiativeDeliverables", label: "Initiative deliverables" },
+          { type: "text", id: "year", label: "Year" },
+          { type: "text", id: "sourceDemand", label: "Source of demand" },
+          { type: "text", id: "ppmId", label: "PPM ID" },
+          { type: "select", id: "category", label: "Category" },
+          { type: "text", id: "workloadPsl", label: "Workload per PSL" },
+          { type: "select", id: "transversal", label: "Transversal" },
+          { type: "select", id: "status", label: "Status" },
+          { type: "text", id: "teamMember", label: "Team member" }
         ]
       },
       {
@@ -223,8 +369,9 @@
         title: "Financial Assessment",
         fields: [
           { type: "text", id: "budgetEstimated", label: "Budget Estimated" },
-          { type: "text", id: "budgetValidated", label: "Budget Validated" },
-          { type: "text", id: "cpn", label: "CPN" }
+          { type: "text", id: "budgetValidated", label: "Budget Validated K€" },
+          { type: "text", id: "cpn", label: "CPN" },
+          { type: "text", id: "impactRcDin", label: "Impact RC DIN" }
         ]
       },
       {
@@ -233,35 +380,69 @@
         fields: [
           { type: "text", id: "statusFinal", label: "Status" },
           { type: "text", id: "dinsNeeded", label: "DINS needed" },
-          { type: "textarea", id: "dinsComment", label: "DINS comment" }
+          { type: "textarea", id: "dinsComment", label: "DINS comment" },
+          { type: "text", id: "dinsLink", label: "DINS link to the project" }
         ]
       }
     ];
     
-    // Initialisation des accordéons
-    function initializeAccordions() {
-      const container = document.getElementById('accordionContainer');
+    // Initialisation au chargement
+    document.addEventListener('DOMContentLoaded', function() {
+      createCards();
+      createModals();
+      loadDropdownOptions();
+    });
+    
+    // Créer les cartes pour chaque section
+    function createCards() {
+      const container = document.getElementById('cardsContainer');
       
       sections.forEach(section => {
-        const accordion = createAccordionSection(section);
-        container.appendChild(accordion);
+        const card = document.createElement('div');
+        card.className = 'card';
+        card.onclick = function() {
+          openModal(section.id);
+        };
+        
+        card.innerHTML = `
+          <div class="card-inner">
+            <div class="card-glow"></div>
+            <h3 class="card-title">${section.title}</h3>
+          </div>
+        `;
+        
+        container.appendChild(card);
       });
     }
     
-    // Création d'une section d'accordéon
-    function createAccordionSection(section) {
-      const accordion = document.createElement('div');
-      accordion.className = 'accordion';
-      accordion.innerHTML = `
-        <div class="accordion-header" onclick="toggleAccordion(${section.id})">
-          <span class="accordion-title">${section.title}</span>
-          <span class="accordion-icon">▼</span>
-        </div>
-        <div class="accordion-content" id="content-${section.id}">
-          ${createFields(section.fields)}
-        </div>
-      `;
-      return accordion;
+    // Créer les modals pour chaque section
+    function createModals() {
+      const container = document.getElementById('modalsContainer');
+      
+      sections.forEach(section => {
+        const modal = document.createElement('div');
+        modal.className = 'modal';
+        modal.id = `modal-${section.id}`;
+        
+        modal.innerHTML = `
+          <div class="modal-content">
+            <span class="close" onclick="closeModal(${section.id})">&times;</span>
+            <div class="modal-header">
+              <h2 class="modal-title">${section.title}</h2>
+            </div>
+            <div class="modal-body">
+              ${createFields(section.fields)}
+              <div class="btn-container">
+                <button onclick="handleSave(${section.id})" class="btn-publish">
+                  Valider
+                </button>
+              </div>
+            </div>
+          </div>
+        `;
+        
+        container.appendChild(modal);
+      });
     }
     
     // Création des champs de formulaire
@@ -281,17 +462,29 @@
       } else if (field.type === 'textarea') {
         return `<textarea class="form-control" id="${field.id}" rows="3"></textarea>`;
       }
-      return `<input type="text" class="form-control" id="${field.id}">`;
+      return `<input type="text" class="form-control" id="${field.id}" placeholder="Saisir une valeur...">`;
     }
     
-    // Toggle accordéon
-    function toggleAccordion(id) {
-      const content = document.getElementById(`content-${id}`);
-      const header = content.previousElementSibling;
-      const icon = header.querySelector('.accordion-icon');
-      
-      content.style.display = content.style.display === 'block' ? 'none' : 'block';
-      icon.textContent = content.style.display === 'block' ? '▼' : '▲';
+    // Ouvrir une modal
+    function openModal(id) {
+      const modal = document.getElementById(`modal-${id}`);
+      modal.style.display = 'block';
+    }
+    
+    // Fermer une modal
+    function closeModal(id) {
+      const modal = document.getElementById(`modal-${id}`);
+      modal.style.display = 'none';
+    }
+    
+    // Fermer la modal si on clique en dehors
+    window.onclick = function(event) {
+      const modals = document.getElementsByClassName('modal');
+      for (let i = 0; i < modals.length; i++) {
+        if (event.target === modals[i]) {
+          modals[i].style.display = 'none';
+        }
+      }
     }
     
     // Chargement des options des menus déroulants
@@ -306,9 +499,39 @@
     // Remplissage des menus déroulants
     function populateDropdowns(options) {
       Object.keys(options).forEach(key => {
-        const select = document.getElementById(key);
+        const selectElements = document.querySelectorAll(`select[id="${key}"]`);
+        selectElements.forEach(select => {
+          if (select) {
+            options[key].forEach(option => {
+              const opt = document.createElement('option');
+              opt.value = option;
+              opt.textContent = option;
+              select.appendChild(opt);
+            });
+          }
+        });
+      });
+      
+      // Ajout des options pour category
+      const categoryOptions = [
+        "Design", "Expertise", "Solution deployment", "Site extension",
+        "New solution", "Cabling deployment", "Evolution", "Mobility deployment"
+      ];
+      populateSelectOptions("category", categoryOptions);
+      
+      // Ajout des options pour transversal
+      populateSelectOptions("transversal", ["Yes", "No"]);
+      
+      // Ajout des options pour status
+      populateSelectOptions("status", ["Not started", "In qualification", "In progress", "Completed", "Cancelled", "Postponed"]);
+    }
+    
+    // Fonction utilitaire pour populer un select
+    function populateSelectOptions(id, options) {
+      const selectElements = document.querySelectorAll(`select[id="${id}"]`);
+      selectElements.forEach(select => {
         if (select) {
-          options[key].forEach(option => {
+          options.forEach(option => {
             const opt = document.createElement('option');
             opt.value = option;
             opt.textContent = option;
@@ -318,13 +541,16 @@
       });
     }
     
-    // Gestion de la publication
-    function handlePublish() {
-      const formData = collectFormData();
+    // Gestion de la sauvegarde
+    function handleSave(sectionId) {
+      const formData = collectFormData(sectionId);
       
       google.script.run
         .withSuccessHandler(function(success) {
           showValidationMessage(success);
+          if (success) {
+            closeModal(sectionId);
+          }
         })
         .withFailureHandler(function(error) {
           console.error('Erreur:', error);
@@ -334,16 +560,19 @@
     }
     
     // Collecte des données du formulaire
-    function collectFormData() {
+    function collectFormData(sectionId) {
       const formData = {};
-      sections.forEach(section => {
+      const section = sections.find(s => s.id === sectionId);
+      
+      if (section) {
         section.fields.forEach(field => {
           const element = document.getElementById(field.id);
           if (element) {
             formData[field.id] = element.value;
           }
         });
-      });
+      }
+      
       return formData;
     }
     

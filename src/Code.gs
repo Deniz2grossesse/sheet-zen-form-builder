@@ -1,7 +1,8 @@
 
 /**
  * Portfolio Management Dashboard
- * Application backend for Google Apps Script
+ * Application backend pour Google Apps Script
+ * Design modernisé avec dégradés orange et turquoise
  */
 
 // ID du fichier Google Sheets
@@ -61,20 +62,35 @@ function saveData(data) {
       data.requestor || "",
       data.dinPortfolio || "",
       data.dinFocalPoint || "",
+      data.initiativeName || "",
+      data.initiativeDeliverables || "",
+      data.year || "",
+      data.sourceDemand || "",
+      data.ppmId || "",
+      data.category || "",
+      data.workloadPsl || "",
+      data.transversal || "",
+      data.status || "",
+      data.teamMember || "",
       data.goNoGo || "",
       data.prioDin || "",
       data.dinLead || "",
       data.budgetEstimated || "",
       data.budgetValidated || "",
       data.cpn || "",
+      data.impactRcDin || "",
       data.statusFinal || "",
       data.dinsNeeded || "",
-      data.dinsComment || ""
+      data.dinsComment || "",
+      data.dinsLink || ""
     ];
     
     // Écriture des données
     var range = sheet.getRange(lastRow + 1, 1, 1, rowData.length);
     range.setValues([rowData]);
+    
+    // Journal de succès
+    Logger.log("Données sauvegardées avec succès pour l'ID " + newId);
     
     return true;
   } catch (error) {
@@ -83,7 +99,10 @@ function saveData(data) {
   }
 }
 
-// Fonction de test pour vérifier que l'application fonctionne
+/**
+ * Fonction de test pour vérifier que l'application fonctionne
+ * @return {String} Message indiquant si la connexion est réussie
+ */
 function testConnection() {
   try {
     var spreadsheet = SpreadsheetApp.openById(SPREADSHEET_ID);
@@ -93,3 +112,22 @@ function testConnection() {
   }
 }
 
+/**
+ * Obtenir toutes les données pour l'affichage dans un tableau
+ * @return {Array} Tableau de toutes les entrées
+ */
+function getAllData() {
+  try {
+    var spreadsheet = SpreadsheetApp.openById(SPREADSHEET_ID);
+    var sheet = spreadsheet.getActiveSheet();
+    var data = sheet.getDataRange().getValues();
+    
+    // Supprimer l'en-tête
+    data.shift();
+    
+    return data;
+  } catch (error) {
+    Logger.log("Erreur lors de la récupération des données: " + error.toString());
+    return [];
+  }
+}

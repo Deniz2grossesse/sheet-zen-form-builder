@@ -1,9 +1,13 @@
 
 import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { FormModal } from "@/components/FormModal";
 import { Button } from "@/components/ui/button";
+import { Eye } from "lucide-react";
 
 const Index = () => {
+  const navigate = useNavigate();
+  
   useEffect(() => {
     document.documentElement.classList.add('dark');
   }, []);
@@ -105,13 +109,22 @@ const Index = () => {
       </div>
       
       <div className="relative z-10 max-w-7xl mx-auto p-6">
-        <div className="mb-12 pt-8">
-          <h1 className="text-4xl font-bold text-center mb-2 text-[#FF4B00] hover:text-[#FF8E00] transition-colors duration-300">
-            Portfolio Management Dashboard
-          </h1>
-          <p className="text-white hover:text-[#FF4B00]/80 transition-colors duration-200 text-center">
-            Gestion des initiatives et des portefeuilles
-          </p>
+        <div className="mb-8 pt-8 flex flex-col sm:flex-row sm:justify-between sm:items-center">
+          <div>
+            <h1 className="text-4xl font-bold text-center sm:text-left mb-2 text-[#FF4B00] hover:text-[#FF8E00] transition-colors duration-300">
+              Portfolio Management Dashboard
+            </h1>
+            <p className="text-white hover:text-[#FF4B00]/80 transition-colors duration-200 text-center sm:text-left">
+              Gestion des initiatives et des portefeuilles
+            </p>
+          </div>
+          <Button 
+            className="mt-4 sm:mt-0 self-center sm:self-auto px-6 py-2 bg-gradient-to-r from-[#252525] to-[#333] hover:from-[#333] hover:to-[#444] text-white rounded-xl transition-all duration-300 hover:shadow-lg hover:shadow-[#FF4B00]/20 hover:scale-[1.02] flex items-center"
+            onClick={() => navigate('/data-view')}
+          >
+            <Eye className="mr-2 h-5 w-5 text-[#FF4B00]" />
+            Visualiser
+          </Button>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">

@@ -1,3 +1,4 @@
+
 import { useEffect } from 'react';
 import { FormModal } from "@/components/FormModal";
 
@@ -86,14 +87,25 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-[#1A1A1A] text-white relative overflow-hidden">
+      {/* Background Design */}
       <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute -top-[30%] -left-[10%] w-[70%] h-[150%] bg-[#FF7E00]/20 blur-[120px] transform rotate-12" />
-        <div className="absolute -bottom-[30%] -right-[10%] w-[70%] h-[150%] bg-[#00B7D3]/20 blur-[120px] transform -rotate-12" />
+        <div 
+          className="absolute w-full h-full"
+          style={{
+            background: `
+              radial-gradient(circle at 20% 20%, #FF4B00 0%, transparent 50%),
+              radial-gradient(circle at 80% 80%, #00E0FF 0%, transparent 50%)
+            `,
+            opacity: 0.1
+          }}
+        />
+        <div className="absolute -top-[50%] -left-[10%] w-[100%] h-[150%] bg-[#FF4B00]/10 blur-[120px] transform rotate-12" />
+        <div className="absolute -bottom-[50%] -right-[10%] w-[100%] h-[150%] bg-[#00E0FF]/10 blur-[120px] transform -rotate-12" />
       </div>
       
       <div className="relative z-10 max-w-7xl mx-auto p-6">
         <div className="mb-12 pt-8">
-          <h1 className="text-4xl font-bold text-center mb-2 bg-gradient-to-r from-[#FF7E00] via-[#FFA500] to-[#00B7D3] bg-clip-text text-transparent">
+          <h1 className="text-4xl font-bold text-center mb-2 bg-gradient-to-r from-[#FF4B00] via-[#FF8E00] to-[#00E0FF] bg-clip-text text-transparent">
             Portfolio Management Dashboard
           </h1>
           <p className="text-[#8E9196] text-center">Gestion des initiatives et des portefeuilles</p>

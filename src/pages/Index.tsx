@@ -7,6 +7,13 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { Button } from "@/components/ui/button";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 const Index = () => {
   useEffect(() => {
@@ -17,33 +24,80 @@ const Index = () => {
     {
       title: "Initiative Description",
       fields: [
-        { id: "requestor", label: "Requestor/Customer" },
-        { id: "dinPortfolio", label: "DIN portfolio" },
-        { id: "dinFocalPoint", label: "DIN focal point" }
+        { id: "requestor", label: "Requestor/Customer", type: "text" },
+        {
+          id: "dinPortfolio",
+          label: "DIN portfolio",
+          type: "select",
+          options: [
+            "Digital workspace", "Cyber security", "Roof", "Div", "Affiliate", 
+            "DI-infrastructure", "LAN", "SECURITY", "Wireless & industry", 
+            "Infra & deploy", "WAN", "Asiapac", "North america", "GE", "UK", "SP", "FR"
+          ]
+        },
+        { id: "dinFocalPoint", label: "DIN focal point", type: "text" },
+        { id: "initiativeName", label: "Initiative name", type: "text" },
+        { id: "initiativeDeliverables", label: "Initiative deliverables", type: "text" },
+        { id: "year", label: "Year", type: "text" },
+        { id: "sourceDemand", label: "Source of demand", type: "text" },
+        { id: "ppmId", label: "PPM ID", type: "text" },
+        {
+          id: "category",
+          label: "Category",
+          type: "select",
+          options: [
+            "Design", "Expertise", "Solution deployment", "Site extension",
+            "New solution", "Cabling deployment", "Evolution", "Mobility deployment"
+          ]
+        },
+        { id: "workloadPsl", label: "Workload per PSL", type: "text" },
+        {
+          id: "transversal",
+          label: "Transversal",
+          type: "select",
+          options: ["Yes", "No"]
+        },
+        {
+          id: "status",
+          label: "Status",
+          type: "select",
+          options: [
+            "Not started", "In qualification", "In progress",
+            "Completed", "Cancelled", "Postponed"
+          ]
+        },
+        { id: "teamMember", label: "Team member", type: "text" }
       ]
     },
     {
       title: "Portfolio Management Decision",
       fields: [
-        { id: "goNoGo", label: "GO/NO-GO" },
-        { id: "prioDin", label: "Prio DIN" },
-        { id: "dinLead", label: "DIN Lead" }
+        {
+          id: "goNoGo",
+          label: "GO/NO-GO",
+          type: "select",
+          options: ["Waiting", "Go pending budget", "GO", "No GO", "Canceled"]
+        },
+        { id: "prioDin", label: "Prio DIN", type: "text" },
+        { id: "dinLead", label: "DIN Lead", type: "text" }
       ]
     },
     {
       title: "Financial Assessment",
       fields: [
-        { id: "budgetEstimated", label: "Budget Estimated" },
-        { id: "budgetValidated", label: "Budget Validated" },
-        { id: "cpn", label: "CPN" }
+        { id: "budgetEstimated", label: "Budget Estimated", type: "text" },
+        { id: "budgetValidated", label: "Budget Validated K€", type: "text" },
+        { id: "cpn", label: "CPN", type: "text" },
+        { id: "impactRcDin", label: "Impact RC DIN", type: "text" }
       ]
     },
     {
       title: "Risk / Issue / Status",
       fields: [
-        { id: "statusFinal", label: "Status" },
-        { id: "dinsNeeded", label: "DINS needed" },
-        { id: "dinsComment", label: "DINS comment" }
+        { id: "statusFinal", label: "Status", type: "text" },
+        { id: "dinsNeeded", label: "DINS needed", type: "text" },
+        { id: "dinsComment", label: "DINS comment", type: "text" },
+        { id: "dinsLink", label: "DINS link to the project", type: "text" }
       ]
     }
   ];
@@ -93,15 +147,43 @@ const Index = () => {
                         <label className="block text-sm text-[#8E9196] font-medium">
                           {field.label}
                         </label>
-                        <input
-                          type="text"
-                          className="w-full bg-[#1A1A1A] border border-[#333333] rounded-lg p-3 text-white placeholder-[#4A4A4A] 
-                                   focus:border-[#FF7E00] focus:ring-1 focus:ring-[#FF7E00] transition-all duration-200
-                                   hover:border-[#333333]/80"
-                          placeholder="Enter value..."
-                        />
+                        {field.type === "select" ? (
+                          <Select>
+                            <SelectTrigger className="w-full bg-[#1A1A1A] border border-[#333333] rounded-lg p-3 text-white">
+                              <SelectValue placeholder="Select..." />
+                            </SelectTrigger>
+                            <SelectContent className="bg-[#252525] border border-[#333333]">
+                              {field.options?.map((option) => (
+                                <SelectItem
+                                  key={option}
+                                  value={option.toLowerCase()}
+                                  className="text-white hover:bg-[#333333] focus:bg-[#333333] focus:text-white"
+                                >
+                                  {option}
+                                </SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                        ) : (
+                          <input
+                            type="text"
+                            className="w-full bg-[#1A1A1A] border border-[#333333] rounded-lg p-3 text-white placeholder-[#4A4A4A] 
+                                     focus:border-[#FF7E00] focus:ring-1 focus:ring-[#FF7E00] transition-all duration-200
+                                     hover:border-[#333333]/80"
+                            placeholder="Enter value..."
+                          />
+                        )}
                       </div>
                     ))}
+                  </div>
+                  <div className="mt-6 flex justify-end">
+                    <Button 
+                      className="px-6 py-2 bg-gradient-to-r from-[#FF7E00] to-[#00B7D3] hover:from-[#FF7E00]/90 hover:to-[#00B7D3]/90
+                               text-white font-medium rounded-lg transition-all duration-300 transform hover:scale-105
+                               shadow-lg hover:shadow-[#FF7E00]/20"
+                    >
+                      Valider
+                    </Button>
                   </div>
                 </AccordionContent>
               </AccordionItem>

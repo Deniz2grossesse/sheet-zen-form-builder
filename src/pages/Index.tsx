@@ -105,10 +105,10 @@ const Index = () => {
       
       <div className="relative z-10 max-w-7xl mx-auto p-6">
         <div className="mb-12 pt-8">
-          <h1 className="text-4xl font-bold text-center mb-2 bg-gradient-to-r from-[#FF4B00] via-[#FF8E00] to-[#00E0FF] bg-clip-text text-transparent">
+          <h1 className="text-4xl font-bold text-center mb-2 text-white hover:bg-gradient-to-r hover:from-[#FF4B00] hover:via-[#FF8E00] hover:to-[#00E0FF] hover:bg-clip-text hover:text-transparent transition-all duration-200">
             Portfolio Management Dashboard
           </h1>
-          <p className="text-[#8E9196] text-center">Gestion des initiatives et des portefeuilles</p>
+          <p className="text-white hover:text-[#00E0FF] transition-colors duration-200 text-center">Gestion des initiatives et des portefeuilles</p>
         </div>
 
         <div className="grid grid-cols-2 gap-6 max-w-4xl mx-auto">

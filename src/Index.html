@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -285,6 +284,35 @@
       opacity: 0.9;
     }
     
+    .btn-save-container {
+      text-align: center;
+      margin: 40px auto;
+      max-width: 300px;
+    }
+    
+    .btn-save {
+      width: 100%;
+      background: linear-gradient(to right, #FF4B00, #00E0FF);
+      color: #fff;
+      padding: 16px 32px;
+      border: none;
+      border-radius: 12px;
+      font-weight: 600;
+      font-size: 18px;
+      cursor: pointer;
+      transition: all 0.3s;
+      box-shadow: 0 8px 20px rgba(255, 75, 0, 0.2);
+    }
+    
+    .btn-save:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 25px rgba(255, 75, 0, 0.3);
+    }
+    
+    .btn-save:active {
+      transform: translateY(1px);
+    }
+    
     /* === VALIDATION MESSAGE === */
     .validation-message {
       display: none;
@@ -321,6 +349,13 @@
   <!-- Card Sections -->
   <div class="cards-container" id="cardsContainer">
     <!-- Les cartes seront générées dynamiquement par le script -->
+  </div>
+  
+  <!-- Bouton Sauvegarder -->
+  <div class="btn-save-container">
+    <button onclick="handleSaveAll()" class="btn-save">
+      Sauvegarder
+    </button>
   </div>
   
   <!-- Modals -->
@@ -574,6 +609,32 @@
       }
       
       return formData;
+    }
+    
+    // Fonction pour sauvegarder toutes les sections
+    function handleSaveAll() {
+      const formData = {};
+      
+      // Collecter les données de toutes les sections
+      sections.forEach(section => {
+        section.fields.forEach(field => {
+          const element = document.getElementById(field.id);
+          if (element) {
+            formData[field.id] = element.value;
+          }
+        });
+      });
+      
+      // Appel à la fonction de sauvegarde côté serveur
+      google.script.run
+        .withSuccessHandler(function(success) {
+          showValidationMessage(success);
+        })
+        .withFailureHandler(function(error) {
+          console.error('Erreur:', error);
+          alert('Une erreur s\'est produite: ' + error);
+        })
+        .saveData(formData);
     }
     
     // Affichage du message de validation

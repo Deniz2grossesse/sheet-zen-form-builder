@@ -184,15 +184,7 @@ const RequestForm = () => {
                 )}
               />
               
-              <div className="flex justify-between pt-4">
-                <Button 
-                  type="button" 
-                  variant="outline" 
-                  onClick={() => navigate('/dashboard')}
-                  className="border-[#FF4B00] text-[#FF4B00] hover:bg-[#FF4B00]/10"
-                >
-                  Retour au tableau de bord
-                </Button>
+              <div className="flex justify-end pt-4">
                 <Button 
                   type="submit" 
                   disabled={isSubmitting}

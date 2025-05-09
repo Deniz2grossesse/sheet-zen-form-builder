@@ -1,5 +1,5 @@
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
@@ -39,8 +39,8 @@ const RequestForm = () => {
     },
   });
   
-  // Charger les options de portfolio au chargement de la page
-  useState(() => {
+  // Fixed: Changed useState to useEffect for loading options
+  useEffect(() => {
     // @ts-ignore - La fonction window.google n'est pas reconnue par TypeScript
     if (typeof window.google !== 'undefined') {
       // @ts-ignore

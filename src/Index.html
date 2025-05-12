@@ -257,20 +257,26 @@
         google.script.run
           .withSuccessHandler(function(result) {
             if (result.success) {
-              showValidationMessage(`Demande n°${result.id} créée avec succès. Un email a été envoyé.`);
+              showValidationMessage(`La demande portant l'ID ${result.id} est créée`, true);
               document.getElementById('requestForm').reset();
+            } else if (result.fileWriteSuccess && !result.emailSentSuccess) {
+              showValidationMessage(`La demande portant l'ID ${result.id} est créée, mais une erreur s'est produite lors de l'envoi de l'email`, false);
+              document.getElementById('requestForm').reset();
+            } else if (!result.fileWriteSuccess) {
+              showValidationMessage(`Une erreur s'est produite lors de l'écriture sur le fichier: ${result.error || 'Raison inconnue'}`, false);
             } else {
-              showValidationMessage(`Erreur: ${result.error || 'Raison inconnue'}`, false);
+              showValidationMessage(`Une erreur s'est produite: ${result.error || 'Raison inconnue'}`, false);
             }
           })
           .withFailureHandler(function(error) {
-            showValidationMessage(`Une erreur est survenue: ${error.message}`, false);
+            showValidationMessage(`Une erreur s'est produite: ${error.message}`, false);
           })
           .saveSimpleRequest(formData);
       } else {
         // Simulation pour le développement local
         setTimeout(() => {
-          showValidationMessage("Demande créée avec succès (simulation). Un email aurait été envoyé.");
+          const mockId = Math.floor(Math.random() * 100) + 1;
+          showValidationMessage(`La demande portant l'ID ${mockId} est créée (simulation)`, true);
           document.getElementById('requestForm').reset();
         }, 1000);
       }

@@ -65,25 +65,37 @@ const RequestForm = () => {
     if (typeof window.google !== 'undefined') {
       // @ts-ignore
       google.script.run
-        .withSuccessHandler(function(result: { success: boolean, id?: number, error?: string }) {
+        .withSuccessHandler(function(result: { 
+          success: boolean, 
+          id?: number, 
+          fileWriteSuccess: boolean, 
+          emailSentSuccess: boolean,
+          error?: string 
+        }) {
           setIsSubmitting(false);
           if (result.success) {
-            toast.success(`Demande n°${result.id} créée avec succès. Un email a été envoyé.`);
+            toast.success(`La demande portant l'ID ${result.id} est créée`);
             form.reset();
+          } else if (result.fileWriteSuccess && !result.emailSentSuccess) {
+            toast.warning(`La demande portant l'ID ${result.id} est créée, mais une erreur s'est produite lors de l'envoi de l'email`);
+            form.reset();
+          } else if (!result.fileWriteSuccess) {
+            toast.error(`Une erreur s'est produite lors de l'écriture sur le fichier: ${result.error || 'Raison inconnue'}`);
           } else {
-            toast.error(`Erreur lors de la création de la demande: ${result.error || 'Raison inconnue'}`);
+            toast.error(`Une erreur s'est produite: ${result.error || 'Raison inconnue'}`);
           }
         })
         .withFailureHandler(function(error: Error) {
           setIsSubmitting(false);
-          toast.error(`Une erreur est survenue: ${error.message}`);
+          toast.error(`Une erreur s'est produite: ${error.message}`);
         })
         .saveSimpleRequest(values);
     } else {
       // Simulation pour le développement local
       setTimeout(() => {
         setIsSubmitting(false);
-        toast.success("Demande créée avec succès (simulation). Un email aurait été envoyé.");
+        const mockId = Math.floor(Math.random() * 100) + 1;
+        toast.success(`La demande portant l'ID ${mockId} est créée (simulation)`);
         form.reset();
       }, 1000);
     }

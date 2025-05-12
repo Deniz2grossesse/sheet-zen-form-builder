@@ -44,9 +44,17 @@ function getDropdownOptions() {
 /**
  * Sauvegarde les données simplifiées et envoie un email
  * @param {Object} data - Données à sauvegarder (version simplifiée)
- * @return {Boolean} - True si sauvegarde réussie, False sinon
+ * @return {Object} - Objet détaillé avec les résultats de l'opération
  */
 function saveSimpleRequest(data) {
+  var result = {
+    success: false,
+    fileWriteSuccess: false,
+    emailSentSuccess: false,
+    id: null,
+    error: null
+  };
+  
   try {
     // Accès au fichier Google Sheets spécifié par l'ID
     var spreadsheet = SpreadsheetApp.openById(SPREADSHEET_ID);
@@ -94,16 +102,23 @@ function saveSimpleRequest(data) {
     var range = sheet.getRange(nextRow, 1, 1, rowData.length);
     range.setValues([rowData]);
     
-    // Envoyer l'email de notification
-    var success = sendNotificationEmail(newId, data);
-    
-    // Journal de succès
+    // Marquer le succès de l'écriture du fichier
+    result.fileWriteSuccess = true;
+    result.id = newId;
     Logger.log("Données sauvegardées avec succès pour l'ID " + newId);
     
-    return {success: true, id: newId};
+    // Envoi de l'email de notification
+    var emailResult = sendNotificationEmail(newId, data);
+    result.emailSentSuccess = emailResult;
+    
+    // Déterminer le succès global de l'opération
+    result.success = result.fileWriteSuccess && result.emailSentSuccess;
+    
+    return result;
   } catch (error) {
     Logger.log("Erreur lors de la sauvegarde des données: " + error.toString());
-    return {success: false, error: error.toString()};
+    result.error = error.toString();
+    return result;
   }
 }
 

@@ -16,6 +16,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import { Eye } from "lucide-react";
 
 const formSchema = z.object({
   requestor: z.string().min(2, "Le nom du demandeur est requis"),
@@ -39,8 +40,9 @@ const RequestForm = () => {
     },
   });
   
-  // Fixed: Changed useState to useEffect for loading options
   useEffect(() => {
+    document.documentElement.classList.add('dark');
+    
     // @ts-ignore - La fonction window.google n'est pas reconnue par TypeScript
     if (typeof window.google !== 'undefined') {
       // @ts-ignore
@@ -90,34 +92,27 @@ const RequestForm = () => {
   };
   
   return (
-    <div className="min-h-screen bg-[#1A1A1A] text-white relative overflow-hidden">
-      {/* Background Design */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div 
-          className="absolute w-full h-full"
-          style={{
-            background: `
-              radial-gradient(circle at 20% 20%, #FF4B00 0%, transparent 40%),
-              radial-gradient(circle at 80% 80%, #FF8E00 0%, transparent 40%)
-            `,
-            opacity: 0.1
-          }}
-        />
-        <div className="absolute -top-[50%] -left-[10%] w-[100%] h-[150%] bg-[#FF4B00]/10 blur-[120px] transform rotate-12" />
-        <div className="absolute -bottom-[50%] -right-[10%] w-[100%] h-[150%] bg-[#FF8E00]/10 blur-[120px] transform -rotate-12" />
-      </div>
-      
-      <div className="relative z-10 max-w-3xl mx-auto p-6">
-        <div className="mb-8 pt-8">
-          <h1 className="text-4xl font-bold text-center mb-2 text-[#FF4B00] hover:text-[#FF8E00] transition-colors duration-300">
-            Nouvelle Demande DIN
-          </h1>
-          <p className="text-center text-gray-300 mb-6">
-            Remplissez le formulaire ci-dessous pour soumettre une nouvelle demande
-          </p>
+    <div className="min-h-screen bg-[#4D2E19] text-white relative">
+      <div className="container max-w-3xl mx-auto p-6">
+        <div className="mb-8 pt-8 flex justify-between items-center">
+          <div>
+            <h1 className="text-3xl font-bold text-[#FF5500]">
+              Nouvelle Demande DIN
+            </h1>
+            <p className="text-[#AAAAAA] text-sm">
+              Remplissez le formulaire ci-dessous pour soumettre une nouvelle demande
+            </p>
+          </div>
+          <Button 
+            className="bg-[#222222] hover:bg-[#333333] text-white"
+            onClick={() => navigate('/data-view')}
+          >
+            <Eye className="mr-2 h-4 w-4" />
+            Visualiser
+          </Button>
         </div>
         
-        <div className="bg-[#222222] p-6 rounded-xl shadow-lg border border-[#333333]">
+        <div className="bg-[#222222] p-6 rounded-xl shadow-lg border border-[#444444]">
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
               <FormField
@@ -125,12 +120,12 @@ const RequestForm = () => {
                 name="requestor"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Requestor / Customer</FormLabel>
+                    <FormLabel className="text-white">Requestor / Customer</FormLabel>
                     <FormControl>
                       <Input 
                         placeholder="Nom du demandeur" 
                         {...field} 
-                        className="bg-[#2A2A2A] border-[#444] focus:border-[#FF4B00]"
+                        className="bg-[#333333] border-[#444444] text-white focus:border-[#FF5500] focus:ring-[#FF5500]"
                       />
                     </FormControl>
                     <FormMessage />
@@ -143,19 +138,19 @@ const RequestForm = () => {
                 name="dinPortfolio"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>DIN Portfolio</FormLabel>
+                    <FormLabel className="text-white">DIN Portfolio</FormLabel>
                     <Select 
                       onValueChange={field.onChange} 
                       defaultValue={field.value}
                     >
                       <FormControl>
-                        <SelectTrigger className="bg-[#2A2A2A] border-[#444] focus:border-[#FF4B00]">
+                        <SelectTrigger className="bg-[#333333] border-[#444444] text-white focus:border-[#FF5500] focus:ring-[#FF5500]">
                           <SelectValue placeholder="Sélectionnez un portfolio" />
                         </SelectTrigger>
                       </FormControl>
-                      <SelectContent className="bg-[#2A2A2A] border-[#444]">
+                      <SelectContent className="bg-[#222222] border-[#444444]">
                         {portfolioOptions.map((option) => (
-                          <SelectItem key={option} value={option}>
+                          <SelectItem key={option} value={option} className="text-white hover:bg-[#333333]">
                             {option}
                           </SelectItem>
                         ))}
@@ -171,12 +166,12 @@ const RequestForm = () => {
                 name="dinFocalPoint"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>DIN Focal Point</FormLabel>
+                    <FormLabel className="text-white">DIN Focal Point</FormLabel>
                     <FormControl>
                       <Input 
                         placeholder="Point focal DIN" 
                         {...field} 
-                        className="bg-[#2A2A2A] border-[#444] focus:border-[#FF4B00]"
+                        className="bg-[#333333] border-[#444444] text-white focus:border-[#FF5500] focus:ring-[#FF5500]"
                       />
                     </FormControl>
                     <FormMessage />
@@ -188,7 +183,7 @@ const RequestForm = () => {
                 <Button 
                   type="submit" 
                   disabled={isSubmitting}
-                  className="bg-gradient-to-r from-[#FF4B00] to-[#FF8E00] hover:from-[#FF6B00] hover:to-[#FFAA00]"
+                  className="bg-[#FF5500] hover:bg-[#FF7700] text-white"
                 >
                   {isSubmitting ? "Soumission en cours..." : "Soumettre la demande"}
                 </Button>

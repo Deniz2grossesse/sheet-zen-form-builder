@@ -2,7 +2,7 @@
 /**
  * Portfolio Management Dashboard
  * Application backend pour Google Apps Script
- * Design modernisé avec dégradés orange et turquoise
+ * Design modernisé avec dégradés Netscope (orange, gris, bleu)
  */
 
 // ID du fichier Google Sheets
@@ -41,7 +41,7 @@ function getDropdownOptions() {
 /**
  * Sauvegarde les données simplifiées et envoie un email
  * @param {Object} data - Données à sauvegarder (version simplifiée)
- * @return {Boolean} - True si sauvegarde réussie, False sinon
+ * @return {Object} - Objet contenant le statut et l'ID de la demande
  */
 function saveSimpleRequest(data) {
   try {

@@ -75,7 +75,7 @@ const DataView = () => {
       <div className="container max-w-7xl mx-auto p-6">
         <div className="mb-8 pt-8 flex items-center">
           <Button 
-            className="mr-4 bg-[#222222] hover:bg-[#333333] text-white"
+            className="mr-4 bg-[#00A9D2] hover:bg-[#0095B8] text-white"
             onClick={() => navigate('/')}
           >
             <ArrowLeft className="mr-2 h-4 w-4" />
@@ -91,13 +91,13 @@ const DataView = () => {
           </div>
         </div>
 
-        <Card className="bg-[#222222] border border-[#444444] rounded-xl shadow-lg overflow-hidden">
+        <Card className="bg-[#222222] border border-[#00A9D2] rounded-xl shadow-lg overflow-hidden">
           <CardContent className="p-0">
             {loading ? (
               <div className="flex justify-center items-center h-64">
                 <div className="relative w-16 h-16">
                   <div className="absolute top-0 left-0 w-full h-full border-4 border-[#333333] rounded-full animate-spin" />
-                  <div className="absolute top-0 left-0 w-full h-full border-t-4 border-[#FF5500] rounded-full animate-spin" />
+                  <div className="absolute top-0 left-0 w-full h-full border-t-4 border-[#00A9D2] rounded-full animate-spin" />
                 </div>
               </div>
             ) : data.length > 0 ? (
@@ -108,7 +108,7 @@ const DataView = () => {
                       {getTableHeaders().map((header, index) => (
                         <th 
                           key={index}
-                          className="px-6 py-4 text-left text-[#FF5500] font-medium tracking-wider"
+                          className="px-6 py-4 text-left text-[#00A9D2] font-medium tracking-wider"
                         >
                           {header === 'id' ? 'ID' : header
                             .replace(/([A-Z])/g, ' $1')
@@ -140,7 +140,7 @@ const DataView = () => {
               <div className="flex flex-col justify-center items-center h-64 text-center">
                 <p className="text-lg text-[#AAAAAA] mb-4">Aucune donnée disponible</p>
                 <Button 
-                  className="bg-[#FF5500] hover:bg-[#FF7700] text-white"
+                  className="bg-[#00A9D2] hover:bg-[#0095B8] text-white"
                   onClick={() => fetchData()}
                 >
                   Rafraîchir

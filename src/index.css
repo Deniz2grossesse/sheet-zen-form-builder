@@ -1,4 +1,5 @@
 
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -17,7 +18,7 @@
     --primary: 16 100% 50%; /* #FF5500 orange */
     --primary-foreground: 0 0% 100%;
     
-    --secondary: 0 0% 13%;
+    --secondary: 192 100% 41%; /* #00A9D2 Netscope blue */
     --secondary-foreground: 0 0% 100%;
     
     --muted: 0 0% 20%;
@@ -48,7 +49,7 @@
     --primary: 16 100% 50%; /* #FF5500 orange */
     --primary-foreground: 0 0% 100%;
     
-    --secondary: 0 0% 13%;
+    --secondary: 192 100% 41%; /* #00A9D2 Netscope blue */
     --secondary-foreground: 0 0% 100%;
     
     --muted: 0 0% 20%;
@@ -87,6 +88,18 @@
   .tufin-button {
     @apply bg-[#FF5500] hover:bg-[#FF7700] text-white rounded-xl;
   }
+
+  .netscope-card {
+    @apply relative overflow-hidden rounded-xl bg-[#222222] border border-[#00A9D2] p-[1px] hover:border-[#FF5500] cursor-pointer;
+  }
+  
+  .netscope-button {
+    @apply bg-[#00A9D2] hover:bg-[#0095B8] text-white rounded-xl;
+  }
+  
+  .netscope-border {
+    @apply border-[#00A9D2];
+  }
 }
 
 /* Animations */
@@ -101,3 +114,16 @@
     box-shadow: 0 0 5px 0px #FF5500;
   }
 }
+
+@keyframes netscopeGlow {
+  0% {
+    box-shadow: 0 0 5px 0px #00A9D2;
+  }
+  50% {
+    box-shadow: 0 0 20px 5px #00A9D2;
+  }
+  100% {
+    box-shadow: 0 0 5px 0px #00A9D2;
+  }
+}
+

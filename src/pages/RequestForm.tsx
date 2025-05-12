@@ -104,7 +104,7 @@ const RequestForm = () => {
             </p>
           </div>
           <Button 
-            className="bg-[#222222] hover:bg-[#333333] text-white"
+            className="bg-[#00A9D2] hover:bg-[#0095B8] text-white"
             onClick={() => navigate('/data-view')}
           >
             <Eye className="mr-2 h-4 w-4" />
@@ -112,7 +112,7 @@ const RequestForm = () => {
           </Button>
         </div>
         
-        <div className="bg-[#222222] p-6 rounded-xl shadow-lg border border-[#444444]">
+        <div className="bg-[#222222] p-6 rounded-xl shadow-lg border border-[#00A9D2]">
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
               <FormField
@@ -125,7 +125,7 @@ const RequestForm = () => {
                       <Input 
                         placeholder="Nom du demandeur" 
                         {...field} 
-                        className="bg-[#333333] border-[#444444] text-white focus:border-[#FF5500] focus:ring-[#FF5500]"
+                        className="bg-[#333333] border-[#444444] text-white focus:border-[#00A9D2] focus:ring-[#00A9D2]"
                       />
                     </FormControl>
                     <FormMessage />
@@ -144,7 +144,7 @@ const RequestForm = () => {
                       defaultValue={field.value}
                     >
                       <FormControl>
-                        <SelectTrigger className="bg-[#333333] border-[#444444] text-white focus:border-[#FF5500] focus:ring-[#FF5500]">
+                        <SelectTrigger className="bg-[#333333] border-[#444444] text-white focus:border-[#00A9D2] focus:ring-[#00A9D2]">
                           <SelectValue placeholder="Sélectionnez un portfolio" />
                         </SelectTrigger>
                       </FormControl>
@@ -171,7 +171,7 @@ const RequestForm = () => {
                       <Input 
                         placeholder="Point focal DIN" 
                         {...field} 
-                        className="bg-[#333333] border-[#444444] text-white focus:border-[#FF5500] focus:ring-[#FF5500]"
+                        className="bg-[#333333] border-[#444444] text-white focus:border-[#00A9D2] focus:ring-[#00A9D2]"
                       />
                     </FormControl>
                     <FormMessage />
@@ -179,7 +179,14 @@ const RequestForm = () => {
                 )}
               />
               
-              <div className="flex justify-end pt-4">
+              <div className="flex justify-end pt-4 space-x-4">
+                <Button 
+                  type="button" 
+                  className="bg-[#00A9D2] hover:bg-[#0095B8] text-white"
+                  onClick={() => form.reset()}
+                >
+                  Réinitialiser
+                </Button>
                 <Button 
                   type="submit" 
                   disabled={isSubmitting}

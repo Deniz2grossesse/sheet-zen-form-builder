@@ -1,13 +1,10 @@
 import { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { FormModal } from "@/components/FormModal";
 import { Button } from "@/components/ui/button";
 import { Eye } from "lucide-react";
 import { toast } from "sonner";
 
 const Index = () => {
-  const navigate = useNavigate();
-  
   useEffect(() => {
     document.documentElement.classList.add('dark');
   }, []);

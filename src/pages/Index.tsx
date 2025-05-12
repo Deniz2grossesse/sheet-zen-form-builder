@@ -1,4 +1,3 @@
-
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FormModal } from "@/components/FormModal";
@@ -117,19 +116,10 @@ const Index = () => {
       </div>
       
       <div className="relative z-10 max-w-7xl mx-auto p-6">
-        <div className="mb-8 pt-8 flex flex-col sm:flex-row sm:justify-between sm:items-center">
-          <div>
-            <h1 className="text-4xl font-bold text-center sm:text-left mb-2 text-[#FF4B00] hover:text-[#FF8E00] transition-colors duration-300">
-              Portfolio Management Dashboard
-            </h1>
-          </div>
-          <Button 
-            className="mt-4 sm:mt-0 self-center sm:self-auto px-6 py-2 bg-gradient-to-r from-[#FF4B00] to-[#FF8E00] hover:from-[#FF6B00] hover:to-[#FFAA00] text-white rounded-xl transition-all duration-300 hover:shadow-lg hover:shadow-[#FF4B00]/20 hover:scale-[1.02] flex items-center"
-            onClick={() => navigate('/data-view')}
-          >
-            <Eye className="mr-2 h-5 w-5 text-white" />
-            Visualiser
-          </Button>
+        <div className="mb-8 pt-8">
+          <h1 className="text-4xl font-bold text-center mb-2 text-[#FF4B00] hover:text-[#FF8E00] transition-colors duration-300">
+            Portfolio Management Dashboard
+          </h1>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">

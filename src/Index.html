@@ -4,294 +4,898 @@
 <head>
   <base target="_top">
   <meta charset="UTF-8">
-  <title>Demande Portfolio DIN</title>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap">
+  <title>Portfolio Management Dashboard</title>
   <style>
-    /* === RESET AND BASE STYLES === */
+    /* === RESET ET STYLES DE BASE === */
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
-      font-family: 'Inter', sans-serif;
-    }
-    
-    :root {
-      --netscope-orange: #FF5500;
-      --netscope-gray: #5A5E62;
-      --netscope-blue: #00A9D2;
-      --background-brown: #4D2E19;
-      --card-dark: #222222;
-      --text-light: #FFFFFF;
-      --text-muted: #AAAAAA;
-      --input-bg: #333333;
-      --input-border: #444444;
-      --button-orange: #FF5500;
-      --button-hover: #FF7700;
+      font-family: Arial, sans-serif;
     }
     
     body {
-      background-color: var(--background-brown);
-      color: var(--text-light);
+      background-color: #1A1A1A;
+      color: #fff;
       line-height: 1.6;
-      padding: 40px 20px;
-      margin: 0;
-      height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
+      padding: 20px;
+      max-width: 1200px;
+      margin: 0 auto;
+      position: relative;
     }
     
-    /* === CONTAINER === */
-    .container {
+    /* Background gradients */
+    body::before {
+      content: '';
+      position: absolute;
       width: 100%;
-      max-width: 800px;
-      margin: 0 auto;
-      border-radius: 12px;
-      overflow: hidden;
-      position: relative;
+      height: 100%;
+      top: 0;
+      left: 0;
+      background: 
+        radial-gradient(circle at 20% 20%, #FF4B00 0%, transparent 50%),
+        radial-gradient(circle at 80% 80%, #FF8E00 0%, transparent 50%);
+      opacity: 0.1;
+      pointer-events: none;
+    }
+    
+    /* Background glows */
+    body::after {
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      background: 
+        linear-gradient(12deg, rgba(255, 75, 0, 0.1) 0%, transparent 50%),
+        linear-gradient(-12deg, rgba(255, 142, 0, 0.1) 0%, transparent 50%);
+      opacity: 0.1;
+      pointer-events: none;
     }
     
     /* === HEADER === */
     .header {
-      padding: 32px;
       text-align: center;
+      padding: 20px 0;
+      margin-bottom: 30px;
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    
+    .header-content {
       margin-bottom: 20px;
+      text-align: center;
     }
     
     .header h1 {
-      font-size: 40px;
+      font-size: 32px;
       font-weight: 700;
-      margin-bottom: 8px;
-      color: var(--netscope-orange);
+      color: #fff;
+      transition: all 0.3s;
+    }
+    
+    .header h1:hover {
+      background: linear-gradient(to right, #FF4B00, #FF8E00);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
     }
     
     .header p {
-      font-size: 18px;
-      color: var(--text-light);
+      color: #fff;
+      transition: color 0.2s;
+    }
+    
+    .header p:hover {
+      color: #FF8E00;
+    }
+    
+    /* Bouton Visualiser */
+    .btn-visualiser {
+      background: linear-gradient(to right, #FF4B00, #FF8E00);
+      color: #fff;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.3s;
+      box-shadow: 0 4px 12px rgba(255, 75, 0, 0.2);
+      margin-top: 10px;
+    }
+    
+    .btn-visualiser:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(255, 75, 0, 0.3);
+    }
+    
+    .btn-visualiser:active {
+      transform: translateY(0);
+    }
+    
+    /* === CARDS CONTAINER === */
+    .cards-container {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    
+    /* === CARD === */
+    .card {
+      position: relative;
+      height: 200px;
+      width: 100%;
+      overflow: hidden;
+      border-radius: 24px;
+      cursor: pointer;
+      transition: all 0.3s;
+      background: linear-gradient(to bottom right, #1A1A1A, #252525);
+      padding: 1px;
+    }
+    
+    .card:hover {
+      transform: scale(1.02);
+      box-shadow: 0 10px 25px rgba(255, 75, 0, 0.2);
+    }
+    
+    .card-inner {
+      height: 100%;
+      width: 100%;
+      border-radius: 23px;
+      padding: 24px;
+      background: linear-gradient(to bottom right, #1A1A1A, #252525);
+      transition: background 0.3s;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+    }
+    
+    .card:hover .card-inner {
+      background: rgba(0, 0, 0, 0.5);
+    }
+    
+    .card-glow {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to bottom right, rgba(255, 75, 0, 0.2), rgba(255, 142, 0, 0.2));
+      opacity: 0;
+      transition: opacity 0.3s;
+      border-radius: 23px;
+    }
+    
+    .card:hover .card-glow {
+      opacity: 1;
+    }
+    
+    .card-title {
+      font-size: 20px;
+      font-weight: 700;
+      color: #fff;
+      transition: all 0.3s;
+      position: relative;
+      z-index: 2;
+      text-align: center;
+    }
+    
+    .card:hover .card-title {
+      color: #FF4B00;
+    }
+    
+    /* Lien de détails */
+    .details-link {
+      position: absolute;
+      bottom: 16px;
+      right: 16px;
+      color: #FF4B00;
+      font-size: 14px;
+      opacity: 0;
+      transform: translateY(8px);
+      transition: all 0.3s ease;
+    }
+    
+    .card:hover .details-link {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    
+    /* === MODAL === */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 100;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0, 0, 0, 0.8);
+      backdrop-filter: blur(5px);
+    }
+    
+    .modal-content {
+      background: #1A1A1A;
+      margin: 10% auto;
+      padding: 30px;
+      border: 1px solid #333;
+      border-radius: 24px;
+      max-width: 600px;
+      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+      position: relative;
+    }
+    
+    .modal-header {
+      margin-bottom: 20px;
+      text-align: center;
+    }
+    
+    .modal-title {
+      font-size: 24px;
+      font-weight: 700;
+      background: linear-gradient(to right, #FF4B00, #FF8E00);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      margin-bottom: 10px;
+    }
+    
+    .close {
+      position: absolute;
+      right: 20px;
+      top: 20px;
+      font-size: 28px;
+      font-weight: 700;
+      color: #666;
+      cursor: pointer;
+      transition: color 0.3s;
+    }
+    
+    .close:hover {
+      color: #FF4B00;
     }
     
     /* === FORM STYLES === */
-    .form-section {
-      background-color: var(--card-dark);
-      padding: 32px;
-      border-radius: 12px;
-    }
-    
     .form-group {
-      margin-bottom: 24px;
-      position: relative;
+      margin-bottom: 15px;
     }
     
     .form-label {
       display: block;
-      margin-bottom: 12px;
-      color: var(--text-light);
-      font-size: 16px;
-      font-weight: 500;
+      margin-bottom: 8px;
+      color: #fff;
+      font-size: 14px;
+      transition: color 0.2s;
+    }
+    
+    .form-label:hover {
+      color: #FF4B00;
     }
     
     .form-control {
       width: 100%;
-      padding: 14px 16px;
-      background-color: var(--input-bg);
-      border: 1px solid var(--input-border);
-      border-radius: 8px;
-      color: var(--text-light);
-      font-size: 16px;
-      transition: all 0.3s;
+      padding: 12px 16px;
+      background-color: #252525;
+      border: 1px solid #333;
+      border-radius: 12px;
+      color: #fff;
+      font-size: 14px;
+      transition: border-color 0.3s;
     }
     
-    .form-control:hover, .form-control:focus {
-      border-color: var(--netscope-orange);
+    .form-control:hover {
+      border-color: #FF4B00;
+    }
+    
+    .form-control:focus {
       outline: none;
+      border-color: #FF4B00;
+      box-shadow: 0 0 0 3px rgba(255, 75, 0, 0.1);
     }
     
     select.form-control {
+      background-color: #252525;
+      color: #fff;
       appearance: none;
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23FFFFFF' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23ffffff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
       background-repeat: no-repeat;
-      background-position: right 16px center;
+      background-position: right 12px center;
       padding-right: 40px;
     }
     
     /* === BUTTONS === */
+    .btn-container {
+      text-align: center;
+      margin-top: 24px;
+    }
+    
+    .btn-save-container {
+      text-align: center;
+      margin: 40px auto;
+      max-width: 300px;
+    }
+    
     .btn-save {
-      width: auto;
-      float: right;
-      background-color: var(--button-orange);
-      color: var(--text-light);
-      padding: 12px 24px;
+      width: 100%;
+      background: linear-gradient(to right, #FF4B00, #FF8E00);
+      color: #fff;
+      padding: 16px 32px;
       border: none;
-      border-radius: 8px;
+      border-radius: 12px;
       font-weight: 600;
-      font-size: 16px;
+      font-size: 18px;
       cursor: pointer;
       transition: all 0.3s;
+      box-shadow: 0 8px 20px rgba(255, 75, 0, 0.2);
     }
     
     .btn-save:hover {
-      background-color: var(--button-hover);
+      transform: translateY(-2px);
+      box-shadow: 0 12px 25px rgba(255, 75, 0, 0.3);
+    }
+    
+    .btn-save:active {
+      transform: translateY(1px);
     }
     
     /* === VALIDATION MESSAGE === */
     .validation-message {
       display: none;
-      background: #333333;
-      color: var(--text-light);
+      background: linear-gradient(to right, #FF4B00, #FF8E00);
+      color: white;
       text-align: center;
-      padding: 16px;
-      margin-top: 24px;
-      border-radius: 8px;
-      font-size: 14px;
+      padding: 15px;
+      margin-top: 20px;
+      border-radius: 12px;
+      font-size: 16px;
       font-weight: 500;
-      animation: slideIn 0.3s ease-out;
     }
     
-    .validation-message.success {
-      background: #225533;
-      border-left: 4px solid #44AA66;
+    /* === DATA VIEW STYLES === */
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 20px 0;
+      background: #1A1A1A;
+      border-radius: 12px;
+      overflow: hidden;
     }
     
-    .validation-message.error {
-      background: #552233;
-      border-left: 4px solid #AA4466;
+    .data-table th {
+      background: #252525;
+      color: #FF4B00;
+      padding: 12px;
+      text-align: left;
     }
     
-    @keyframes slideIn {
-      from {
-        opacity: 0;
-        transform: translateY(10px);
+    .data-table tr:nth-child(odd) {
+      background: #1A1A1A;
+    }
+    
+    .data-table tr:nth-child(even) {
+      background: #222;
+    }
+    
+    .data-table td {
+      padding: 12px;
+      border-top: 1px solid #333;
+    }
+    
+    .data-table tr:hover {
+      background: #252525;
+    }
+    
+    .back-button {
+      background: #252525;
+      color: #fff;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.3s;
+      margin-bottom: 20px;
+    }
+    
+    .back-button:hover {
+      background: #333;
+    }
+    
+    .loading {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 200px;
+    }
+    
+    .loading-spinner {
+      width: 40px;
+      height: 40px;
+      border: 4px solid rgba(255, 75, 0, 0.2);
+      border-left-color: #FF4B00;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+    
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+    
+    /* === RESPONSIVE === */
+    @media (max-width: 768px) {
+      .cards-container {
+        grid-template-columns: 1fr;
       }
-      to {
-        opacity: 1;
-        transform: translateY(0);
+      
+      .modal-content {
+        width: 90%;
+        margin: 20% auto;
+      }
+      
+      .data-table {
+        font-size: 14px;
+      }
+      
+      .data-table thead {
+        display: none;
+      }
+      
+      .data-table tr {
+        border-bottom: 3px solid #333;
+        display: block;
+        margin-bottom: 10px;
+      }
+      
+      .data-table td {
+        border: none;
+        border-bottom: 1px solid #3a3a3a;
+        display: block;
+        text-align: right;
+        padding-left: 50%;
+        position: relative;
+      }
+      
+      .data-table td:before {
+        content: attr(data-label);
+        position: absolute;
+        left: 12px;
+        font-weight: 700;
+        text-align: left;
+        color: #FF4B00;
       }
     }
   </style>
 </head>
 <body>
-  <!-- Container principal -->
-  <div class="container">
-    <!-- En-tête -->
-    <div class="header">
-      <h1>Nouvelle Demande DIN</h1>
-      <p>Remplissez le formulaire ci-dessous pour soumettre une nouvelle demande</p>
+  <!-- En-tête -->
+  <div class="header">
+    <div class="header-content">
+      <h1>Portfolio Management Dashboard</h1>
+      <p>Gestion des initiatives et des portefeuilles</p>
     </div>
+    <button onclick="navigateToDataView()" class="btn-visualiser">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="2"></circle><path d="M12 19c-4 0-7.5-3.37-7.5-7.5S8 4 12 4s7.5 3.37 7.5 7.5S16 19 12 19Z"></path></svg>
+      Visualiser
+    </button>
+  </div>
+  
+  <!-- Card Sections -->
+  <div class="cards-container" id="cardsContainer">
+    <!-- Les cartes seront générées dynamiquement par le script -->
+  </div>
+  
+  <!-- Bouton Sauvegarder -->
+  <div class="btn-save-container">
+    <button onclick="handleSaveAll()" class="btn-save">
+      Sauvegarder
+    </button>
+  </div>
+  
+  <!-- Modals -->
+  <div id="modalsContainer">
+    <!-- Les modals seront générées dynamiquement par le script -->
+  </div>
+  
+  <!-- Message de validation -->
+  <div class="validation-message" id="validationMessage">
+    Données sauvegardées avec succès !
+  </div>
+
+  <!-- Page de visualisation des données -->
+  <div id="dataView" style="display: none;">
+    <button onclick="navigateToHome()" class="back-button">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 19-7-7 7-7"></path><path d="M19 12H5"></path></svg>
+      Retour
+    </button>
     
-    <!-- Formulaire de demande simplifié -->
-    <div class="form-section">
-      <form id="requestForm">
-        <div class="form-group">
-          <label class="form-label" for="requestor">Requestor / Customer</label>
-          <input type="text" class="form-control" id="requestor" placeholder="Nom du demandeur">
-        </div>
-        
-        <div class="form-group">
-          <label class="form-label" for="dinPortfolio">DIN Portfolio</label>
-          <select class="form-control" id="dinPortfolio">
-            <option value="">Sélectionnez un portfolio</option>
-            <!-- Options will be loaded dynamically -->
-          </select>
-        </div>
-        
-        <div class="form-group">
-          <label class="form-label" for="dinFocalPoint">DIN Focal Point</label>
-          <input type="text" class="form-control" id="dinFocalPoint" placeholder="Point focal DIN">
-        </div>
-        
-        <button type="submit" class="btn-save">Soumettre la demande</button>
-        <div style="clear: both;"></div>
-      </form>
-    </div>
+    <h1 class="modal-title">Visualisation des données</h1>
+    <p style="text-align: center; margin-bottom: 20px;">Initiatives et portefeuilles enregistrés</p>
     
-    <!-- Message de validation -->
-    <div class="validation-message" id="validationMessage">
-      Demande enregistrée avec succès !
+    <div id="dataTableContainer" class="loading">
+      <div class="loading-spinner"></div>
     </div>
   </div>
 
   <script>
-    // Chargement des options des menus déroulants
-    document.addEventListener('DOMContentLoaded', function() {
-      // Si Google Apps Script est disponible
-      if (typeof google !== 'undefined') {
-        google.script.run
-          .withSuccessHandler(function(options) {
-            populateDropdowns(options);
-          })
-          .getDropdownOptions();
-      } else {
-        // Options de secours pour le développement local
-        const fallbackOptions = {
-          dinPortfolio: [
-            "Digital workspace", "Cyber security", "Roof", "Div", "Affiliate", 
-            "DI-infrastructure", "LAN", "SECURITY", "Wireless & industry",
-            "Infra & deploy", "WAN", "Asiapac", "North america", "GE", "UK", "SP", "FR"
-          ]
-        };
-        populateDropdowns(fallbackOptions);
+    // Structure des sections
+    const sections = [
+      {
+        id: 1,
+        title: "Initiative Description",
+        fields: [
+          { type: "text", id: "requestor", label: "Requestor/Customer" },
+          { type: "select", id: "dinPortfolio", label: "DIN portfolio" },
+          { type: "text", id: "dinFocalPoint", label: "DIN focal point" },
+          { type: "text", id: "initiativeName", label: "Initiative name" },
+          { type: "text", id: "initiativeDeliverables", label: "Initiative deliverables" },
+          { type: "text", id: "year", label: "Year" },
+          { type: "text", id: "sourceDemand", label: "Source of demand" },
+          { type: "text", id: "ppmId", label: "PPM ID" },
+          { type: "select", id: "category", label: "Category" },
+          { type: "text", id: "workloadPsl", label: "Workload per PSL" },
+          { type: "select", id: "transversal", label: "Transversal" },
+          { type: "select", id: "status", label: "Status" },
+          { type: "text", id: "teamMember", label: "Team member" }
+        ]
+      },
+      {
+        id: 2,
+        title: "Portfolio Management Decision",
+        fields: [
+          { type: "select", id: "goNoGo", label: "GO/NO-GO" },
+          { type: "text", id: "prioDin", label: "Prio DIN" },
+          { type: "text", id: "dinLead", label: "DIN Lead" }
+        ]
+      },
+      {
+        id: 3,
+        title: "Financial Assessment",
+        fields: [
+          { type: "text", id: "budgetEstimated", label: "Budget Estimated" },
+          { type: "text", id: "budgetValidated", label: "Budget Validated K€" },
+          { type: "text", id: "cpn", label: "CPN" },
+          { type: "text", id: "impactRcDin", label: "Impact RC DIN" }
+        ]
+      },
+      {
+        id: 4,
+        title: "Risk / Issue / Status",
+        fields: [
+          { type: "text", id: "statusFinal", label: "Status" },
+          { type: "text", id: "dinsNeeded", label: "DINS needed" },
+          { type: "textarea", id: "dinsComment", label: "DINS comment" },
+          { type: "text", id: "dinsLink", label: "DINS link to the project" }
+        ]
       }
+    ];
+    
+    // Initialisation au chargement
+    document.addEventListener('DOMContentLoaded', function() {
+      createCards();
+      createModals();
+      loadDropdownOptions();
     });
+    
+    // Créer les cartes pour chaque section
+    function createCards() {
+      const container = document.getElementById('cardsContainer');
+      
+      sections.forEach(section => {
+        const card = document.createElement('div');
+        card.className = 'card';
+        card.onclick = function() {
+          openModal(section.id);
+        };
+        
+        card.innerHTML = `
+          <div class="card-inner">
+            <div class="card-glow"></div>
+            <h3 class="card-title">${section.title}</h3>
+            <div class="details-link">
+              <span>Voir les détails →</span>
+            </div>
+          </div>
+        `;
+        
+        container.appendChild(card);
+      });
+    }
+    
+    // Créer les modals pour chaque section
+    function createModals() {
+      const container = document.getElementById('modalsContainer');
+      
+      sections.forEach(section => {
+        const modal = document.createElement('div');
+        modal.className = 'modal';
+        modal.id = `modal-${section.id}`;
+        
+        modal.innerHTML = `
+          <div class="modal-content">
+            <span class="close" onclick="closeModal(${section.id})">&times;</span>
+            <div class="modal-header">
+              <h2 class="modal-title">${section.title}</h2>
+            </div>
+            <div class="modal-body">
+              ${createFields(section.fields)}
+            </div>
+          </div>
+        `;
+        
+        container.appendChild(modal);
+      });
+    }
+    
+    // Création des champs de formulaire
+    function createFields(fields) {
+      return fields.map(field => `
+        <div class="form-group">
+          <label class="form-label" for="${field.id}">${field.label}</label>
+          ${createInput(field)}
+        </div>
+      `).join('');
+    }
+    
+    // Création d'un champ de formulaire
+    function createInput(field) {
+      if (field.type === 'select') {
+        return `<select class="form-control" id="${field.id}"><option value="">-- Sélectionner --</option></select>`;
+      } else if (field.type === 'textarea') {
+        return `<textarea class="form-control" id="${field.id}" rows="3"></textarea>`;
+      }
+      return `<input type="text" class="form-control" id="${field.id}" placeholder="Saisir une valeur...">`;
+    }
+    
+    // Ouvrir une modal
+    function openModal(id) {
+      const modal = document.getElementById(`modal-${id}`);
+      modal.style.display = 'block';
+    }
+    
+    // Fermer une modal
+    function closeModal(id) {
+      const modal = document.getElementById(`modal-${id}`);
+      modal.style.display = 'none';
+    }
+    
+    // Fermer la modal si on clique en dehors
+    window.onclick = function(event) {
+      const modals = document.getElementsByClassName('modal');
+      for (let i = 0; i < modals.length; i++) {
+        if (event.target === modals[i]) {
+          modals[i].style.display = 'none';
+        }
+      }
+    }
+    
+    // Chargement des options des menus déroulants
+    function loadDropdownOptions() {
+      google.script.run
+        .withSuccessHandler(function(options) {
+          populateDropdowns(options);
+        })
+        .getDropdownOptions();
+    }
     
     // Remplissage des menus déroulants
     function populateDropdowns(options) {
-      if (options.dinPortfolio) {
-        const select = document.getElementById('dinPortfolio');
+      Object.keys(options).forEach(key => {
+        const selectElements = document.querySelectorAll(`select[id="${key}"]`);
+        selectElements.forEach(select => {
+          if (select) {
+            options[key].forEach(option => {
+              const opt = document.createElement('option');
+              opt.value = option;
+              opt.textContent = option;
+              select.appendChild(opt);
+            });
+          }
+        });
+      });
+      
+      // Ajout des options pour category
+      const categoryOptions = [
+        "Design", "Expertise", "Solution deployment", "Site extension",
+        "New solution", "Cabling deployment", "Evolution", "Mobility deployment"
+      ];
+      populateSelectOptions("category", categoryOptions);
+      
+      // Ajout des options pour transversal
+      populateSelectOptions("transversal", ["Yes", "No"]);
+      
+      // Ajout des options pour status
+      populateSelectOptions("status", ["Not started", "In qualification", "In progress", "Completed", "Cancelled", "Postponed"]);
+    }
+    
+    // Fonction utilitaire pour populer un select
+    function populateSelectOptions(id, options) {
+      const selectElements = document.querySelectorAll(`select[id="${id}"]`);
+      selectElements.forEach(select => {
         if (select) {
-          options.dinPortfolio.forEach(option => {
+          options.forEach(option => {
             const opt = document.createElement('option');
             opt.value = option;
             opt.textContent = option;
             select.appendChild(opt);
           });
         }
+      });
+    }
+    
+    // Gestion de la sauvegarde
+    function handleSave(sectionId) {
+      const formData = collectFormData(sectionId);
+      
+      google.script.run
+        .withSuccessHandler(function(success) {
+          showValidationMessage(success);
+          if (success) {
+            closeModal(sectionId);
+          }
+        })
+        .withFailureHandler(function(error) {
+          console.error('Erreur:', error);
+          alert('Une erreur s\'est produite: ' + error);
+        })
+        .saveData(formData);
+    }
+    
+    // Collecte des données du formulaire
+    function collectFormData(sectionId) {
+      const formData = {};
+      const section = sections.find(s => s.id === sectionId);
+      
+      if (section) {
+        section.fields.forEach(field => {
+          const element = document.getElementById(field.id);
+          if (element) {
+            formData[field.id] = element.value;
+          }
+        });
+      }
+      
+      return formData;
+    }
+    
+    // Fonction pour sauvegarder toutes les sections
+    function handleSaveAll() {
+      const formData = {};
+      
+      // Collecter les données de toutes les sections
+      sections.forEach(section => {
+        section.fields.forEach(field => {
+          const element = document.getElementById(field.id);
+          if (element) {
+            formData[field.id] = element.value;
+          }
+        });
+      });
+      
+      // Appel à la fonction de sauvegarde côté serveur
+      google.script.run
+        .withSuccessHandler(function(success) {
+          showValidationMessage(success);
+        })
+        .withFailureHandler(function(error) {
+          console.error('Erreur:', error);
+          alert('Une erreur s\'est produite: ' + error);
+        })
+        .saveData(formData);
+    }
+    
+    // Affichage du message de validation
+    function showValidationMessage(success) {
+      const message = document.getElementById('validationMessage');
+      if (success) {
+        message.style.display = 'block';
+        setTimeout(() => {
+          message.style.display = 'none';
+        }, 3000);
+      } else {
+        alert('Erreur lors de la sauvegarde des données. Veuillez réessayer.');
       }
     }
     
-    // Gestion de la soumission du formulaire
-    document.getElementById('requestForm').addEventListener('submit', function(event) {
-      event.preventDefault();
+    // Navigation
+    function navigateToDataView() {
+      document.querySelector('.header').style.display = 'none';
+      document.getElementById('cardsContainer').style.display = 'none';
+      document.querySelector('.btn-save-container').style.display = 'none';
+      document.getElementById('dataView').style.display = 'block';
       
-      const formData = {
-        requestor: document.getElementById('requestor').value,
-        dinPortfolio: document.getElementById('dinPortfolio').value,
-        dinFocalPoint: document.getElementById('dinFocalPoint').value
-      };
-      
-      // Si Google Apps Script est disponible
-      if (typeof google !== 'undefined') {
-        google.script.run
-          .withSuccessHandler(function(result) {
-            if (result.success) {
-              showValidationMessage(`Demande n°${result.id} créée avec succès. Un email a été envoyé.`);
-              document.getElementById('requestForm').reset();
-            } else {
-              showValidationMessage(`Erreur: ${result.error || 'Raison inconnue'}`, false);
-            }
-          })
-          .withFailureHandler(function(error) {
-            showValidationMessage(`Une erreur est survenue: ${error.message}`, false);
-          })
-          .saveSimpleRequest(formData);
-      } else {
-        // Simulation pour le développement local
-        setTimeout(() => {
-          showValidationMessage("Demande créée avec succès (simulation). Un email aurait été envoyé.");
-          document.getElementById('requestForm').reset();
-        }, 1000);
-      }
-    });
+      loadData();
+    }
     
-    // Affichage du message de validation
-    function showValidationMessage(message, success = true) {
-      const validationMessage = document.getElementById('validationMessage');
-      validationMessage.textContent = message;
-      validationMessage.className = 'validation-message ' + (success ? 'success' : 'error');
-      validationMessage.style.display = 'block';
+    function navigateToHome() {
+      document.querySelector('.header').style.display = 'flex';
+      document.getElementById('cardsContainer').style.display = 'grid';
+      document.querySelector('.btn-save-container').style.display = 'block';
+      document.getElementById('dataView').style.display = 'none';
+    }
+    
+    // Chargement des données pour la page de visualisation
+    function loadData() {
+      const container = document.getElementById('dataTableContainer');
+      container.innerHTML = '<div class="loading-spinner"></div>';
+      container.className = 'loading';
       
-      setTimeout(() => {
-        validationMessage.style.display = 'none';
-      }, 5000);
+      google.script.run
+        .withSuccessHandler(function(data) {
+          displayData(data);
+        })
+        .withFailureHandler(function(error) {
+          console.error('Erreur:', error);
+          container.innerHTML = `<div style="text-align: center; padding: 20px;">
+            <p>Une erreur s'est produite lors du chargement des données.</p>
+            <button onclick="loadData()" class="btn-visualiser" style="margin: 20px auto;">
+              Réessayer
+            </button>
+          </div>`;
+          container.className = '';
+        })
+        .getAllData();
+    }
+    
+    // Affichage des données dans un tableau
+    function displayData(data) {
+      const container = document.getElementById('dataTableContainer');
+      container.className = '';
+      
+      if (!data || data.length === 0) {
+        container.innerHTML = `<div style="text-align: center; padding: 20px;">
+          <p>Aucune donnée disponible.</p>
+        </div>`;
+        return;
+      }
+      
+      // Construire le tableau
+      let tableHTML = '<table class="data-table">';
+      
+      // En-têtes du tableau
+      tableHTML += '<thead><tr>';
+      // Utiliser les étiquettes des champs comme en-têtes
+      const headers = ['ID', 'Requestor', 'DIN Portfolio', 'Initiative Name', 'Status', 'GO/NO-GO', 'Budget Estimated'];
+      headers.forEach(header => {
+        tableHTML += `<th>${header}</th>`;
+      });
+      tableHTML += '</tr></thead>';
+      
+      // Corps du tableau
+      tableHTML += '<tbody>';
+      data.forEach((row, index) => {
+        tableHTML += '<tr>';
+        // ID
+        tableHTML += `<td data-label="ID">${row[0] || ''}</td>`;
+        // Requestor
+        tableHTML += `<td data-label="Requestor">${row[1] || ''}</td>`;
+        // DIN Portfolio
+        tableHTML += `<td data-label="DIN Portfolio">${row[2] || ''}</td>`;
+        // Initiative Name
+        tableHTML += `<td data-label="Initiative Name">${row[4] || ''}</td>`;
+        // Status
+        tableHTML += `<td data-label="Status">${row[12] || ''}</td>`;
+        // GO/NO-GO
+        tableHTML += `<td data-label="GO/NO-GO">${row[14] || ''}</td>`;
+        // Budget Estimated
+        tableHTML += `<td data-label="Budget Estimated">${row[17] || ''}</td>`;
+        tableHTML += '</tr>';
+      });
+      tableHTML += '</tbody>';
+      tableHTML += '</table>';
+      
+      container.innerHTML = tableHTML;
     }
   </script>
 </body>

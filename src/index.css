@@ -1,69 +1,68 @@
 
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
   :root {
-    --background: 24 60% 20%; /* #4D2E19 brown background */
-    --foreground: 0 0% 100%;
+    --background: 240 10% 3.9%;
+    --foreground: 0 0% 98%;
     
-    --card: 0 0% 13%; /* #222222 card background */
-    --card-foreground: 0 0% 100%;
+    --card: 240 10% 3.9%;
+    --card-foreground: 0 0% 98%;
     
-    --popover: 0 0% 13%;
-    --popover-foreground: 0 0% 100%;
+    --popover: 240 10% 3.9%;
+    --popover-foreground: 0 0% 98%;
     
-    --primary: 16 100% 50%; /* #FF5500 orange */
+    --primary: 20 100% 50%;
     --primary-foreground: 0 0% 100%;
     
-    --secondary: 192 100% 41%; /* #00A9D2 Netscope blue */
-    --secondary-foreground: 0 0% 100%;
+    --secondary: 240 3.7% 15.9%;
+    --secondary-foreground: 0 0% 98%;
     
-    --muted: 0 0% 20%;
-    --muted-foreground: 0 0% 67%;
+    --muted: 240 3.7% 15.9%;
+    --muted-foreground: 240 5% 64.9%;
     
-    --accent: 16 100% 50%;
-    --accent-foreground: 0 0% 100%;
+    --accent: 20 100% 50%;
+    --accent-foreground: 0 0% 98%;
     
-    --destructive: 0 63% 31%;
-    --destructive-foreground: 0 0% 100%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
     
-    --border: 0 0% 27%;
-    --input: 0 0% 20%;
-    --ring: 16 100% 50%;
+    --border: 240 3.7% 15.9%;
+    --input: 240 3.7% 15.9%;
+    --ring: 20 100% 50%;
     --radius: 0.75rem;
   }
 
   .dark {
-    --background: 24 60% 20%; /* #4D2E19 brown background */
-    --foreground: 0 0% 100%;
+    --background: 226 24% 10%;
+    --foreground: 0 0% 98%;
     
-    --card: 0 0% 13%; /* #222222 card background */
-    --card-foreground: 0 0% 100%;
+    --card: 226 24% 14%;
+    --card-foreground: 0 0% 98%;
     
-    --popover: 0 0% 13%;
-    --popover-foreground: 0 0% 100%;
+    --popover: 226 24% 10%;
+    --popover-foreground: 0 0% 98%;
     
-    --primary: 16 100% 50%; /* #FF5500 orange */
+    --primary: 20 100% 50%;
     --primary-foreground: 0 0% 100%;
     
-    --secondary: 192 100% 41%; /* #00A9D2 Netscope blue */
-    --secondary-foreground: 0 0% 100%;
+    --secondary: 226 24% 17%;
+    --secondary-foreground: 0 0% 98%;
     
-    --muted: 0 0% 20%;
-    --muted-foreground: 0 0% 67%;
+    --muted: 226 24% 17%;
+    --muted-foreground: 240 5% 64.9%;
     
-    --accent: 16 100% 50%;
-    --accent-foreground: 0 0% 100%;
+    --accent: 20 100% 50%;
+    --accent-foreground: 0 0% 98%;
     
-    --destructive: 0 63% 31%;
-    --destructive-foreground: 0 0% 100%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
     
-    --border: 0 0% 27%;
-    --input: 0 0% 20%;
-    --ring: 16 100% 50%;
+    --border: 226 24% 25%;
+    --input: 226 24% 17%;
+    --ring: 20 100% 50%;
   }
 }
 
@@ -78,52 +77,42 @@
 
 @layer components {
   .tufin-card {
-    @apply relative overflow-hidden rounded-xl bg-[#222222] border border-[#444444] p-[1px] hover:border-[#FF5500] cursor-pointer;
+    @apply relative overflow-hidden rounded-3xl bg-gradient-to-br from-[#1A1A1A] to-[#252525] p-[1px] transition-all hover:scale-[1.02] hover:shadow-xl hover:shadow-[#FF4B00]/30 cursor-pointer;
+  }
+  
+  .tufin-glow {
+    @apply absolute inset-0 bg-gradient-to-br from-[#FF4B00]/20 to-[#FF8E00]/20 opacity-0 transition-opacity hover:opacity-100;
   }
   
   .tufin-input {
-    @apply bg-[#333333] border-[#444444] text-white rounded-xl hover:border-[#FF5500] focus:border-[#FF5500] focus:ring-1 focus:ring-[#FF5500];
+    @apply bg-[#252525] border-[#333] text-white rounded-xl hover:border-[#FF4B00] focus:border-[#FF4B00] focus:ring-1 focus:ring-[#FF4B00] transition-colors duration-200;
   }
   
   .tufin-button {
-    @apply bg-[#FF5500] hover:bg-[#FF7700] text-white rounded-xl;
-  }
-
-  .netscope-card {
-    @apply relative overflow-hidden rounded-xl bg-[#222222] border border-[#00A9D2] p-[1px] hover:border-[#FF5500] cursor-pointer;
-  }
-  
-  .netscope-button {
-    @apply bg-[#00A9D2] hover:bg-[#0095B8] text-white rounded-xl;
-  }
-  
-  .netscope-border {
-    @apply border-[#00A9D2];
+    @apply bg-[#FF4B00] hover:bg-[#FF6B00] text-white rounded-xl transition-all duration-300 hover:shadow-lg hover:shadow-[#FF4B00]/20;
   }
 }
 
-/* Animations */
 @keyframes tufinGlow {
   0% {
-    box-shadow: 0 0 5px 0px #FF5500;
+    box-shadow: 0 0 5px 0px #FF4B00;
   }
   50% {
-    box-shadow: 0 0 20px 5px #FF5500;
+    box-shadow: 0 0 20px 5px #FF4B00;
   }
   100% {
-    box-shadow: 0 0 5px 0px #FF5500;
+    box-shadow: 0 0 5px 0px #FF4B00;
   }
 }
 
-@keyframes netscopeGlow {
+@keyframes tufinHover {
   0% {
-    box-shadow: 0 0 5px 0px #00A9D2;
+    transform: translateY(0px);
   }
   50% {
-    box-shadow: 0 0 20px 5px #00A9D2;
+    transform: translateY(-5px);
   }
   100% {
-    box-shadow: 0 0 5px 0px #00A9D2;
+    transform: translateY(0px);
   }
 }
-

@@ -71,44 +71,60 @@ const DataView = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#4D2E19] text-white">
-      <div className="container max-w-7xl mx-auto p-6">
+    <div className="min-h-screen bg-[#1A1A1A] text-white relative overflow-hidden">
+      {/* Background Design */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div 
+          className="absolute w-full h-full"
+          style={{
+            background: `
+              radial-gradient(circle at 20% 20%, #FF4B00 0%, transparent 40%),
+              radial-gradient(circle at 80% 80%, #FF8E00 0%, transparent 40%)
+            `,
+            opacity: 0.1
+          }}
+        />
+        <div className="absolute -top-[50%] -left-[10%] w-[100%] h-[150%] bg-[#FF4B00]/10 blur-[120px] transform rotate-12" />
+        <div className="absolute -bottom-[50%] -right-[10%] w-[100%] h-[150%] bg-[#FF8E00]/10 blur-[120px] transform -rotate-12" />
+      </div>
+      
+      <div className="relative z-10 max-w-7xl mx-auto p-6">
         <div className="mb-8 pt-8 flex items-center">
           <Button 
-            className="mr-4 bg-[#00A9D2] hover:bg-[#0095B8] text-white"
+            className="mr-4 bg-gradient-to-r from-[#252525] to-[#333] hover:from-[#333] hover:to-[#444] text-white rounded-xl transition-all duration-300"
             onClick={() => navigate('/')}
           >
             <ArrowLeft className="mr-2 h-4 w-4" />
             Retour
           </Button>
           <div>
-            <h1 className="text-3xl font-bold text-[#FF5500]">
+            <h1 className="text-4xl font-bold text-[#FF4B00] hover:text-[#FF8E00] transition-colors duration-300">
               Visualisation des données
             </h1>
-            <p className="text-[#AAAAAA] text-sm">
+            <p className="text-white hover:text-[#FF4B00]/80 transition-colors duration-200">
               Initiatives et portefeuilles enregistrés
             </p>
           </div>
         </div>
 
-        <Card className="bg-[#222222] border border-[#00A9D2] rounded-xl shadow-lg overflow-hidden">
+        <Card className="bg-[#1A1A1A] border border-[#333] rounded-3xl shadow-lg overflow-hidden">
           <CardContent className="p-0">
             {loading ? (
               <div className="flex justify-center items-center h-64">
                 <div className="relative w-16 h-16">
-                  <div className="absolute top-0 left-0 w-full h-full border-4 border-[#333333] rounded-full animate-spin" />
-                  <div className="absolute top-0 left-0 w-full h-full border-t-4 border-[#00A9D2] rounded-full animate-spin" />
+                  <div className="absolute top-0 left-0 w-full h-full border-4 border-[#FF4B00]/20 rounded-full animate-spin" />
+                  <div className="absolute top-0 left-0 w-full h-full border-t-4 border-[#FF4B00] rounded-full animate-spin" />
                 </div>
               </div>
             ) : data.length > 0 ? (
               <div className="overflow-x-auto">
                 <table className="w-full">
                   <thead>
-                    <tr className="bg-[#1A1A1A] border-b border-[#444444]">
+                    <tr className="bg-[#252525] border-b border-[#333]">
                       {getTableHeaders().map((header, index) => (
                         <th 
                           key={index}
-                          className="px-6 py-4 text-left text-[#00A9D2] font-medium tracking-wider"
+                          className="px-6 py-4 text-left text-[#FF4B00] font-medium tracking-wider"
                         >
                           {header === 'id' ? 'ID' : header
                             .replace(/([A-Z])/g, ' $1')
@@ -121,7 +137,7 @@ const DataView = () => {
                     {data.map((row, rowIndex) => (
                       <tr 
                         key={rowIndex} 
-                        className={`hover:bg-[#2A2A2A] transition-colors ${rowIndex % 2 === 0 ? 'bg-[#222222]' : 'bg-[#1A1A1A]'}`}
+                        className={`hover:bg-[#252525]/50 transition-colors ${rowIndex % 2 === 0 ? 'bg-[#1A1A1A]' : 'bg-[#222]'}`}
                       >
                         {getTableHeaders().map((header, colIndex) => (
                           <td 
@@ -138,9 +154,9 @@ const DataView = () => {
               </div>
             ) : (
               <div className="flex flex-col justify-center items-center h-64 text-center">
-                <p className="text-lg text-[#AAAAAA] mb-4">Aucune donnée disponible</p>
+                <p className="text-lg text-gray-400 mb-4">Aucune donnée disponible</p>
                 <Button 
-                  className="bg-[#00A9D2] hover:bg-[#0095B8] text-white"
+                  className="bg-[#FF4B00] hover:bg-[#FF6B00] text-white rounded-xl transition-all duration-300"
                   onClick={() => fetchData()}
                 >
                   Rafraîchir

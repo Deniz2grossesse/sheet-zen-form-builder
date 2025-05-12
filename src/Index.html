@@ -15,11 +15,22 @@
       font-family: 'Inter', sans-serif;
     }
     
+    :root {
+      --netscope-orange: #FF7A00;
+      --netscope-gray: #5A5E62;
+      --netscope-blue: #00A9D2;
+      --light-gray: #f5f7fa;
+      --white: #ffffff;
+      --text-dark: #333333;
+      --text-light: #666666;
+      --border-light: #e0e4e8;
+    }
+    
     body {
-      background-color: #f9fafb;
-      color: #333;
+      background-color: var(--light-gray);
+      color: var(--text-dark);
       line-height: 1.6;
-      padding: 0;
+      padding: 20px;
       margin: 0;
       height: 100vh;
       display: flex;
@@ -33,9 +44,9 @@
       width: 100%;
       max-width: 500px;
       margin: 0 auto;
-      background-color: #fff;
-      border-radius: 16px;
-      box-shadow: 0 4px 24px rgba(0, 102, 204, 0.08);
+      background-color: var(--white);
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
       overflow: hidden;
       position: relative;
       transition: transform 0.3s ease, box-shadow 0.3s ease;
@@ -43,41 +54,38 @@
     
     .container:hover {
       transform: translateY(-5px);
-      box-shadow: 0 8px 30px rgba(0, 102, 204, 0.15);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
     }
     
     /* === HEADER === */
     .header {
-      background: linear-gradient(135deg, #0066CC, #3399FF);
-      color: white;
-      padding: 28px 32px;
       position: relative;
+      padding: 28px 32px;
       overflow: hidden;
+      border-bottom: 1px solid var(--border-light);
     }
     
     .header::before {
       content: '';
       position: absolute;
-      width: 200%;
-      height: 200%;
-      top: -50%;
-      left: -50%;
-      background: radial-gradient(circle at center, rgba(255,255,255,0.2) 0%, transparent 60%);
-      transform: rotate(30deg);
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(to right, var(--netscope-orange), var(--netscope-gray), var(--netscope-blue));
     }
     
     .header h1 {
       font-size: 24px;
       font-weight: 700;
       margin-bottom: 8px;
-      position: relative;
+      color: var(--netscope-gray);
     }
     
     .header p {
       font-size: 14px;
       font-weight: 400;
-      opacity: 0.9;
-      position: relative;
+      color: var(--text-light);
     }
     
     /* === FORM STYLES === */
@@ -92,7 +100,7 @@
     .form-label {
       display: block;
       margin-bottom: 8px;
-      color: #4b5563;
+      color: var(--netscope-gray);
       font-size: 14px;
       font-weight: 500;
       transition: color 0.2s;
@@ -101,29 +109,27 @@
     .form-control {
       width: 100%;
       padding: 12px 16px;
-      background-color: #f9fafb;
-      border: 1px solid #e5e7eb;
+      background-color: var(--white);
+      border: 1px solid var(--border-light);
       border-radius: 8px;
-      color: #111827;
+      color: var(--text-dark);
       font-size: 14px;
       transition: all 0.3s;
     }
     
     .form-control:hover {
-      border-color: #d1d5db;
-      background-color: #f3f4f6;
+      border-color: var(--netscope-gray);
     }
     
     .form-control:focus {
       outline: none;
-      border-color: #0066CC;
-      box-shadow: 0 0 0 3px rgba(0, 102, 204, 0.1);
-      background-color: #fff;
+      border-color: var(--netscope-blue);
+      box-shadow: 0 0 0 3px rgba(0, 169, 210, 0.1);
     }
     
     select.form-control {
       appearance: none;
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%236b7280' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%235A5E62' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
       background-repeat: no-repeat;
       background-position: right 12px center;
       padding-right: 40px;
@@ -132,8 +138,8 @@
     /* === BUTTONS === */
     .btn-save {
       width: 100%;
-      background: linear-gradient(to right, #0066CC, #3399FF);
-      color: #fff;
+      background: var(--netscope-blue);
+      color: var(--white);
       padding: 14px 24px;
       border: none;
       border-radius: 8px;
@@ -161,18 +167,46 @@
     }
     
     .btn-save:hover {
-      box-shadow: 0 4px 12px rgba(0, 102, 204, 0.25);
+      background: #0090b3;
+      box-shadow: 0 4px 12px rgba(0, 169, 210, 0.25);
     }
     
     .btn-save:active {
       transform: translateY(1px);
-      box-shadow: 0 2px 8px rgba(0, 102, 204, 0.2);
+      box-shadow: 0 2px 8px rgba(0, 169, 210, 0.2);
+    }
+    
+    /* === FEATURE INDICATORS === */
+    .feature-dots {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      display: flex;
+      gap: 6px;
+    }
+    
+    .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+    }
+    
+    .dot-orange {
+      background-color: var(--netscope-orange);
+    }
+    
+    .dot-gray {
+      background-color: var(--netscope-gray);
+    }
+    
+    .dot-blue {
+      background-color: var(--netscope-blue);
     }
     
     /* === VALIDATION MESSAGE === */
     .validation-message {
       display: none;
-      background: #0066CC;
+      background: var(--netscope-gray);
       color: white;
       text-align: center;
       padding: 16px;
@@ -181,6 +215,14 @@
       font-size: 14px;
       font-weight: 500;
       animation: slideIn 0.3s ease-out;
+    }
+    
+    .validation-message.success {
+      background: var(--netscope-blue);
+    }
+    
+    .validation-message.error {
+      background: #ff5252;
     }
     
     @keyframes slideIn {
@@ -192,11 +234,6 @@
         opacity: 1;
         transform: translateY(0);
       }
-    }
-    
-    /* === INPUT FOCUS STYLE === */
-    input:focus, select:focus {
-      border-color: #0066CC;
     }
     
     /* === RESPONSIVE === */
@@ -214,11 +251,51 @@
         padding: 24px;
       }
     }
+    
+    /* === NETSCOPE LOGO COLORS === */
+    .netscope-logo {
+      display: flex;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+    
+    .logo-node {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      margin-right: 4px;
+    }
+    
+    .logo-node.orange {
+      background-color: var(--netscope-orange);
+    }
+    
+    .logo-node.gray {
+      background-color: var(--netscope-gray);
+    }
+    
+    .logo-node.blue {
+      background-color: var(--netscope-blue);
+    }
+    
+    .logo-connector {
+      height: 2px;
+      width: 8px;
+      background-color: var(--netscope-gray);
+      margin-right: 4px;
+    }
   </style>
 </head>
 <body>
   <!-- Container principal -->
   <div class="container">
+    <!-- Indicateur visuel des couleurs Netscope -->
+    <div class="feature-dots">
+      <div class="dot dot-orange"></div>
+      <div class="dot dot-gray"></div>
+      <div class="dot dot-blue"></div>
+    </div>
+    
     <!-- En-tête -->
     <div class="header">
       <h1>Demande Portfolio DIN</h1>
@@ -332,9 +409,7 @@
     function showValidationMessage(message, success = true) {
       const validationMessage = document.getElementById('validationMessage');
       validationMessage.textContent = message;
-      validationMessage.style.background = success 
-        ? '#0066CC'
-        : '#dc2626';
+      validationMessage.className = 'validation-message ' + (success ? 'success' : 'error');
       validationMessage.style.display = 'block';
       
       setTimeout(() => {

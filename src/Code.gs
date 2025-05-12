@@ -11,6 +11,9 @@ const SPREADSHEET_ID = '10QxgzOtwTq3zAcuV8YQxtIJd7dzwAgvADq1QaiFp30E';
 // Adresse email de destination pour les notifications
 const EMAIL_DESTINATION = "votre_email@exemple.com";
 
+// Adresses email en copie (CC) pour les notifications
+const EMAIL_CC = "cc_email@exemple.com, autre_cc@exemple.com";
+
 // Lien vers l'application pour les mises à jour
 const UPDATE_LINK = "https://votre-lien-application.com";
 
@@ -125,10 +128,15 @@ function sendNotificationEmail(id, data) {
       "Please click on this [link](" + UPDATE_LINK + ") to show the updates.\n\n" +
       "Thanks & Regards.";
     
-    // Envoi de l'email
-    GmailApp.sendEmail(EMAIL_DESTINATION, subject, body);
+    // Options pour l'email avec CC
+    var options = {
+      cc: EMAIL_CC
+    };
     
-    Logger.log("Email envoyé avec succès à " + EMAIL_DESTINATION);
+    // Envoi de l'email avec options CC
+    GmailApp.sendEmail(EMAIL_DESTINATION, subject, body, options);
+    
+    Logger.log("Email envoyé avec succès à " + EMAIL_DESTINATION + " avec CC à " + EMAIL_CC);
     return true;
   } catch (error) {
     Logger.log("Erreur lors de l'envoi de l'email: " + error.toString());

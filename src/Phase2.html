@@ -410,45 +410,6 @@
   </div>
 
   <script>
-    // Get ID from URL
-    function getIdFromUrl() {
-      try {
-        const url = new URL(window.location.href);
-        console.log("Phase2 - Full URL:", url.toString());
-        
-        // Use URLSearchParams to retrieve ID more robustly
-        const params = new URLSearchParams(url.search);
-        const id = params.get('id');
-        
-        console.log("Phase2 - ID retrieved from URL with URLSearchParams: ", id, " (type: " + typeof id + ")");
-        
-        if (id) {
-          return id;
-        } else {
-          // Fallback method: manually search the URL
-          console.log("Phase2 - Attempting manual ID retrieval");
-          const urlString = url.toString();
-          const idIndex = urlString.indexOf("id=");
-          
-          if (idIndex !== -1) {
-            let extractedId = urlString.substring(idIndex + 3);
-            const endIndex = extractedId.indexOf("&");
-            if (endIndex !== -1) {
-              extractedId = extractedId.substring(0, endIndex);
-            }
-            console.log("Phase2 - ID retrieved manually: ", extractedId);
-            return extractedId;
-          }
-        }
-        
-        console.warn("Phase2 - No request ID found in URL");
-        return null;
-      } catch (error) {
-        console.error("Phase2 - Error retrieving ID:", error);
-        return null;
-      }
-    }
-    
     // Function to search by ID
     function searchById() {
       const searchId = document.getElementById('searchIdInput').value.trim();
@@ -468,12 +429,6 @@
           .withSuccessHandler(function(result) {
             console.log("Phase2 - Search result:", result);
             if (result.success) {
-              // Update URL with new ID
-              const url = new URL(window.location.href);
-              url.searchParams.set('id', searchId);
-              window.history.pushState({}, '', url);
-              console.log("Phase2 - URL updated with new ID:", url.toString());
-              
               // Fill form with data
               populateForm(result.data);
               showValidationMessage("Data found for ID: " + searchId);
@@ -509,11 +464,6 @@
           };
           console.log("Phase2 - Generated mock data:", mockData);
           
-          // Update URL with new ID
-          const url = new URL(window.location.href);
-          url.searchParams.set('id', searchId);
-          window.history.pushState({}, '', url);
-          
           populateForm(mockData);
           showValidationMessage("Data found for ID: " + searchId + " (simulation)");
         }, 500);
@@ -548,10 +498,6 @@
     // Load data and dropdown options
     document.addEventListener('DOMContentLoaded', function() {
       console.log("Phase2 - DOM loaded, page initialization");
-      console.log("URL before any processing: " + window.location.href);
-      console.log("Search parameters: " + window.location.search);
-      
-      const requestId = getIdFromUrl();
       
       // Add search handlers
       const searchButton = document.getElementById('searchButton');
@@ -570,52 +516,17 @@
             searchById();
           }
         });
-        
-        // Pre-fill search field with URL ID if available
-        if (requestId) {
-          console.log("Phase2 - Pre-filling search field with URL ID:", requestId);
-          searchInput.value = requestId;
-        }
       }
       
-      // Load dropdown options regardless of whether we have an ID or not
+      // Load dropdown options
       loadDropdownOptions();
       
-      if (!requestId) {
-        console.log("Phase2 - No ID found in URL - search-only mode");
-        // Don't show error, allows using search only
-        return;
-      }
-      
-      console.log("Phase2 - Starting data loading for ID:", requestId, " (type: " + typeof requestId + ")");
-      
-      // If Google Apps Script is available
-      if (typeof google !== 'undefined' && google.script) {
-        console.log("Phase2 - Google Apps Script mode detected");
-        
-        // Load request data
-        console.log("Phase2 - Calling getRequestById with ID:", requestId);
-        google.script.run
-          .withSuccessHandler(function(result) {
-            console.log("Phase2 - Response received for ID " + requestId + ":", result);
-            if (result.success) {
-              populateForm(result.data);
-            } else {
-              console.error("Phase2 - Error in response:", result.error);
-              showErrorMessage("Error loading data: " + result.error);
-            }
-          })
-          .withFailureHandler(function(error) {
-            console.error("Phase2 - Error calling getRequestById:", error);
-            showErrorMessage("Error: " + error);
-          })
-          .getRequestById(requestId);
-      } else {
-        // Simulation for local development
+      // Initialize with mock data for local development
+      if (typeof google === 'undefined' || !google.script) {
         console.log("Phase2 - Local development mode detected - data simulation");
         
         const mockData = {
-          id: requestId || "123",
+          id: "123",
           requestor: "John Doe",
           dinPortfolio: "Digital workspace",
           dinFocalPoint: "Jane Smith",
@@ -636,7 +547,7 @@
       }
     });
     
-    // Separate function to load dropdown options to ensure it's called regardless of ID
+    // Separate function to load dropdown options
     function loadDropdownOptions() {
       console.log("Phase2 - Loading dropdown options");
       
@@ -738,14 +649,14 @@
     document.getElementById('updateForm').addEventListener('submit', function(event) {
       event.preventDefault();
       
-      const requestId = getIdFromUrl();
-      if (!requestId) {
-        console.error("Phase2 - Update attempt without ID");
-        showErrorMessage("No request ID found in URL.");
+      const requestId = document.getElementById('summaryId').textContent;
+      if (!requestId || requestId === '-') {
+        console.error("Phase2 - Update attempt without valid ID");
+        showErrorMessage("No request ID available. Please search for a record first.");
         return;
       }
       
-      console.log("Phase2 - Form submission for ID:", requestId, " (type: " + typeof requestId + ")");
+      console.log("Phase2 - Form submission for ID:", requestId);
       
       const formData = {
         initiativeName: document.getElementById('initiativeName').value,

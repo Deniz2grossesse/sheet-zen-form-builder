@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -351,11 +350,22 @@
     // Récupérer l'ID depuis l'URL
     function getIdFromUrl() {
       const urlParams = new URLSearchParams(window.location.search);
-      return urlParams.get('id');
+      const id = urlParams.get('id');
+      console.log("ID récupéré depuis l'URL: ", id);
+      
+      if (id) {
+        return id;
+      } else {
+        console.error("Aucun ID de demande trouvé dans l'URL");
+        showErrorMessage("Aucun ID de demande trouvé dans l'URL.");
+        return null;
+      }
     }
     
     // Fonction pour remplir le formulaire avec les données existantes
     function populateForm(data) {
+      console.log("Données reçues pour remplir le formulaire:", data);
+      
       // Remplir la section résumé
       document.getElementById('summaryId').textContent = data.id || '-';
       document.getElementById('summaryRequestor').textContent = data.requestor || '-';
@@ -373,6 +383,8 @@
       document.getElementById('transversal').value = data.transversal || '';
       document.getElementById('status').value = data.status || '';
       document.getElementById('teamMember').value = data.teamMember || '';
+      
+      console.log("Formulaire rempli avec succès avec les données de l'ID: " + data.id);
     }
     
     // Chargement des données et options des menus déroulants
@@ -384,33 +396,49 @@
         return;
       }
       
+      console.log("Démarrage du chargement des données pour l'ID:", requestId);
+      
       // Si Google Apps Script est disponible
       if (typeof google !== 'undefined' && google.script) {
+        console.log("Mode Google Apps Script détecté");
+        
         // Charger les options des menus déroulants
         google.script.run
           .withSuccessHandler(function(options) {
-            populateDropdowns(options);
+            console.log("Options des menus déroulants reçues:", options);
+            if (options) {
+              populateDropdowns(options);
+            } else {
+              console.error("Options des menus déroulants vides ou mal formatées");
+              showErrorMessage("Erreur lors du chargement des options des menus déroulants.");
+            }
           })
           .withFailureHandler(function(error) {
+            console.error("Erreur lors du chargement des options:", error);
             showErrorMessage("Erreur lors du chargement des options: " + error);
           })
           .getDropdownOptions();
         
         // Charger les données de la demande
+        console.log("Demande de données pour l'ID:", requestId);
         google.script.run
           .withSuccessHandler(function(result) {
+            console.log("Réponse reçue pour l'ID " + requestId + ":", result);
             if (result.success) {
               populateForm(result.data);
             } else {
+              console.error("Erreur dans la réponse:", result.error);
               showErrorMessage("Erreur lors du chargement des données: " + result.error);
             }
           })
           .withFailureHandler(function(error) {
+            console.error("Erreur lors de l'appel à getRequestById:", error);
             showErrorMessage("Erreur: " + error);
           })
           .getRequestById(requestId);
       } else {
         // Simulation pour le développement local
+        console.log("Mode développement local détecté - simulation de données");
         const mockOptions = {
           category: ["design", "expertise", "solution deployment", "site extension", 
                      "new solution", "cabling deployment", "evolution", "mobility deployment"],
@@ -421,7 +449,7 @@
         populateDropdowns(mockOptions);
         
         const mockData = {
-          id: "123",
+          id: requestId || "123",
           requestor: "John Doe",
           dinPortfolio: "Digital workspace",
           dinFocalPoint: "Jane Smith",
@@ -443,43 +471,64 @@
     
     // Remplissage des menus déroulants
     function populateDropdowns(options) {
-      // Category
-      if (options.category) {
-        const categorySelect = document.getElementById('category');
-        if (categorySelect) {
-          options.category.forEach(option => {
-            const opt = document.createElement('option');
-            opt.value = option;
-            opt.textContent = option;
-            categorySelect.appendChild(opt);
-          });
-        }
-      }
+      console.log("Début du remplissage des menus déroulants avec options:", options);
       
-      // Transversal
-      if (options.transversal) {
-        const transversalSelect = document.getElementById('transversal');
-        if (transversalSelect) {
-          options.transversal.forEach(option => {
-            const opt = document.createElement('option');
-            opt.value = option;
-            opt.textContent = option;
-            transversalSelect.appendChild(opt);
-          });
+      try {
+        // Category
+        if (options && options.category && Array.isArray(options.category)) {
+          const categorySelect = document.getElementById('category');
+          if (categorySelect) {
+            options.category.forEach(option => {
+              const opt = document.createElement('option');
+              opt.value = option;
+              opt.textContent = option;
+              categorySelect.appendChild(opt);
+            });
+            console.log("Menu déroulant category rempli avec succès");
+          } else {
+            console.error("Élément category non trouvé dans le DOM");
+          }
+        } else {
+          console.error("Options category invalides ou manquantes");
         }
-      }
-      
-      // Status
-      if (options.status) {
-        const statusSelect = document.getElementById('status');
-        if (statusSelect) {
-          options.status.forEach(option => {
-            const opt = document.createElement('option');
-            opt.value = option;
-            opt.textContent = option;
-            statusSelect.appendChild(opt);
-          });
+        
+        // Transversal
+        if (options && options.transversal && Array.isArray(options.transversal)) {
+          const transversalSelect = document.getElementById('transversal');
+          if (transversalSelect) {
+            options.transversal.forEach(option => {
+              const opt = document.createElement('option');
+              opt.value = option;
+              opt.textContent = option;
+              transversalSelect.appendChild(opt);
+            });
+            console.log("Menu déroulant transversal rempli avec succès");
+          } else {
+            console.error("Élément transversal non trouvé dans le DOM");
+          }
+        } else {
+          console.error("Options transversal invalides ou manquantes");
         }
+        
+        // Status
+        if (options && options.status && Array.isArray(options.status)) {
+          const statusSelect = document.getElementById('status');
+          if (statusSelect) {
+            options.status.forEach(option => {
+              const opt = document.createElement('option');
+              opt.value = option;
+              opt.textContent = option;
+              statusSelect.appendChild(opt);
+            });
+            console.log("Menu déroulant status rempli avec succès");
+          } else {
+            console.error("Élément status non trouvé dans le DOM");
+          }
+        } else {
+          console.error("Options status invalides ou manquantes");
+        }
+      } catch (error) {
+        console.error("Erreur lors du remplissage des menus déroulants:", error);
       }
     }
     

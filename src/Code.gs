@@ -34,7 +34,8 @@ function doGet(e) {
  * @return {Object} Objet contenant toutes les options des menus déroulants
  */
 function getDropdownOptions() {
-  return {
+  Logger.log("Début de la fonction getDropdownOptions()");
+  var options = {
     dinPortfolio: [
       "Digital workspace", "Cyber security", "Roof", "Div", "Affiliate", 
       "DI-infrastructure", "LAN", "SECURITY", "Wireless & industry", 
@@ -52,6 +53,9 @@ function getDropdownOptions() {
       "not started", "in qualification", "in progress", "completed", "cancelled", "postponed"
     ]
   };
+  
+  Logger.log("Options de menus déroulants générées avec succès: " + JSON.stringify(options));
+  return options;
 }
 
 /**
@@ -183,29 +187,34 @@ function sendNotificationEmail(id, data) {
  */
 function getRequestById(id) {
   try {
+    Logger.log("Début de la fonction getRequestById() avec ID: " + id);
     var spreadsheet = SpreadsheetApp.openById(SPREADSHEET_ID);
-    var sheet = spreadsheet.getSheets()[2]; // Changé de [1] à [2]
+    var sheet = spreadsheet.getSheets()[2]; // Feuille n°2
+    var data = sheet.getDataRange().getValues();
     
-    // Trouver toutes les valeurs de la colonne A à partir de la ligne 4
-    var idValues = sheet.getRange("A4:A").getValues();
+    Logger.log("Données récupérées depuis la feuille: lignes = " + data.length);
     var rowIndex = -1;
-    
-    // Rechercher l'ID
-    for (var i = 0; i < idValues.length; i++) {
-      if (idValues[i][0] == id) {
-        rowIndex = i + 4; // +4 car on commence à la ligne 4
+
+    // Recherche de l'ID dans la colonne A (index 0)
+    for (var i = 3; i < data.length; i++) { // Démarrer à la ligne 4 (index 3)
+      Logger.log("Comparaison - ID URL: " + String(id) + ", ID ligne " + (i+1) + ": " + String(data[i][0]));
+      if (String(data[i][0]) === String(id)) {
+        rowIndex = i;
+        Logger.log("ID trouvé à la ligne " + (rowIndex + 1));
         break;
       }
     }
-    
+
     if (rowIndex === -1) {
+      Logger.log("ID " + id + " non trouvé dans la feuille");
       return { success: false, error: "ID non trouvé" };
     }
-    
-    // Récupérer les données de la ligne
-    var rowData = sheet.getRange(rowIndex, 1, 1, 25).getValues()[0];
-    
-    return {
+
+    // Récupération des données de la ligne
+    var rowData = data[rowIndex];
+    Logger.log("Données de la ligne récupérées: " + JSON.stringify(rowData.slice(0, 14)));
+
+    var result = {
       success: true,
       data: {
         id: rowData[0],
@@ -224,6 +233,9 @@ function getRequestById(id) {
         teamMember: rowData[13]
       }
     };
+
+    Logger.log("Données formatées à renvoyer: " + JSON.stringify(result));
+    return result;
   } catch (error) {
     Logger.log("Erreur lors de la récupération des données: " + error.toString());
     return { success: false, error: error.toString() };

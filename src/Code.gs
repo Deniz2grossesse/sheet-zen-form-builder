@@ -18,7 +18,13 @@ const EMAIL_CC = "cc_email@exemple.com, autre_cc@exemple.com";
 const UPDATE_LINK = "https://votre-lien-application.com";
 
 // Fonction exécutée à l'ouverture de l'application web
-function doGet() {
+function doGet(e) {
+  const page = e.parameter.page;
+  if (page === "phase2") {
+    return HtmlService.createHtmlOutputFromFile('Phase2')
+      .setTitle('Liste de diffusion - Portfolio DIN')
+      .setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL);
+  }
   return HtmlService.createHtmlOutputFromFile('Index')
     .setTitle('Portfolio Management Dashboard')
     .setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL);
@@ -37,6 +43,14 @@ function getDropdownOptions() {
     ],
     goNoGo: [
       "Waiting", "Go pending budget", "GO", "No GO", "Canceled"
+    ],
+    category: [
+      "design", "expertise", "solution deployment", "site extension",
+      "new solution", "cabling deployment", "evolution", "mobility deployment"
+    ],
+    transversal: ["yes", "no"],
+    status: [
+      "not started", "in qualification", "in progress", "completed", "cancelled", "postponed"
     ]
   };
 }
@@ -133,6 +147,10 @@ function sendNotificationEmail(id, data) {
     // Construction de l'objet de l'email
     var subject = "NEW request " + id + " created for DIN Portfolio management";
     
+    // URL dynamique pour accéder à la phase 2
+    var scriptUrl = ScriptApp.getService().getUrl();
+    var updateLink = scriptUrl + "?page=phase2&id=" + id;
+    
     // Construction du corps de l'email
     var body = "Dear users,\n\n" +
       "A new request is now created as " + id + ". " +
@@ -140,7 +158,7 @@ function sendNotificationEmail(id, data) {
       "Requestor/customer: " + data.requestor + "\n" +
       "DIN portfolio: " + data.dinPortfolio + "\n" +
       "DIN focal point: " + data.dinFocalPoint + "\n\n" +
-      "Please click on this [link](" + UPDATE_LINK + ") to show the updates.\n\n" +
+      "Please click on this link to show the updates: " + updateLink + "\n\n" +
       "Thanks & Regards.";
     
     // Options pour l'email avec CC
@@ -155,6 +173,157 @@ function sendNotificationEmail(id, data) {
     return true;
   } catch (error) {
     Logger.log("Erreur lors de l'envoi de l'email: " + error.toString());
+    return false;
+  }
+}
+
+/**
+ * Récupère les données d'une demande spécifique par son ID
+ * @param {Number} id - ID de la demande à récupérer
+ * @return {Object} - Objet contenant les données ou une erreur
+ */
+function getRequestById(id) {
+  try {
+    var spreadsheet = SpreadsheetApp.openById(SPREADSHEET_ID);
+    var sheet = spreadsheet.getSheets()[1];
+    
+    // Trouver toutes les valeurs de la colonne A à partir de la ligne 4
+    var idValues = sheet.getRange("A4:A").getValues();
+    var rowIndex = -1;
+    
+    // Rechercher l'ID
+    for (var i = 0; i < idValues.length; i++) {
+      if (idValues[i][0] == id) {
+        rowIndex = i + 4; // +4 car on commence à la ligne 4
+        break;
+      }
+    }
+    
+    if (rowIndex === -1) {
+      return { success: false, error: "ID non trouvé" };
+    }
+    
+    // Récupérer les données de la ligne
+    var rowData = sheet.getRange(rowIndex, 1, 1, 25).getValues()[0];
+    
+    return {
+      success: true,
+      data: {
+        id: rowData[0],
+        requestor: rowData[1],
+        dinPortfolio: rowData[2],
+        dinFocalPoint: rowData[3],
+        initiativeName: rowData[4],
+        initiativeDeliverables: rowData[5],
+        year: rowData[6],
+        sourceDemand: rowData[7],
+        ppmId: rowData[8],
+        category: rowData[9],
+        workloadPsl: rowData[10],
+        transversal: rowData[11],
+        status: rowData[12],
+        teamMember: rowData[13]
+      }
+    };
+  } catch (error) {
+    Logger.log("Erreur lors de la récupération des données: " + error.toString());
+    return { success: false, error: error.toString() };
+  }
+}
+
+/**
+ * Met à jour les données d'une demande existante
+ * @param {Number} id - ID de la demande à mettre à jour
+ * @param {Object} data - Nouvelles données pour la demande
+ * @return {Object} - Résultat de la mise à jour
+ */
+function updateRequest(id, data) {
+  try {
+    var spreadsheet = SpreadsheetApp.openById(SPREADSHEET_ID);
+    var sheet = spreadsheet.getSheets()[1];
+    
+    // Trouver la ligne correspondant à l'ID
+    var idValues = sheet.getRange("A4:A").getValues();
+    var rowIndex = -1;
+    
+    for (var i = 0; i < idValues.length; i++) {
+      if (idValues[i][0] == id) {
+        rowIndex = i + 4; // +4 car on commence à la ligne 4
+        break;
+      }
+    }
+    
+    if (rowIndex === -1) {
+      return { success: false, error: "ID non trouvé" };
+    }
+    
+    // Mise à jour des colonnes E à N (indices 4 à 13)
+    sheet.getRange(rowIndex, 5, 1, 10).setValues([[
+      data.initiativeName || "",
+      data.initiativeDeliverables || "",
+      data.year || "",
+      data.sourceDemand || "",
+      data.ppmId || "",
+      data.category || "",
+      data.workloadPsl || "",
+      data.transversal || "",
+      data.status || "",
+      data.teamMember || ""
+    ]]);
+    
+    // Envoi de l'email de confirmation
+    var emailResult = sendUpdateEmail(id, data);
+    
+    return {
+      success: true,
+      emailSentSuccess: emailResult
+    };
+  } catch (error) {
+    Logger.log("Erreur lors de la mise à jour: " + error.toString());
+    return {
+      success: false,
+      error: error.toString()
+    };
+  }
+}
+
+/**
+ * Envoie un email de confirmation après mise à jour d'une demande
+ * @param {Number} id - ID de la demande mise à jour
+ * @param {Object} data - Données mises à jour
+ * @return {Boolean} - True si envoi réussi, False sinon
+ */
+function sendUpdateEmail(id, data) {
+  try {
+    // Construction de l'objet de l'email
+    var subject = "DIN portfolio update request " + id;
+    
+    // Construction du corps de l'email
+    var body = "Dear user, the request " + id + " has been updated. Here are the new details:\n\n" +
+      "* Initiative name: " + data.initiativeName + "\n" +
+      "* Initiative deliverables: " + data.initiativeDeliverables + "\n" +
+      "* Year: " + data.year + "\n" +
+      "* Source of demand: " + data.sourceDemand + "\n" +
+      "* PPM ID: " + data.ppmId + "\n" +
+      "* Category: " + data.category + "\n" +
+      "* Workload per PSL: " + data.workloadPsl + "\n" +
+      "* Transversal: " + data.transversal + "\n" +
+      "* Status: " + data.status + "\n" +
+      "* Team member: " + data.teamMember + "\n\n" +
+      "Thanks & Regards.";
+    
+    // Options pour l'email avec CC
+    var options = {
+      cc: EMAIL_CC
+    };
+    
+    // Envoi de l'email avec options CC
+    GmailApp.sendEmail(EMAIL_DESTINATION, subject, body, options);
+    
+    Logger.log("Email de mise à jour envoyé avec succès à " + EMAIL_DESTINATION + " avec CC à " + EMAIL_CC);
+    return true;
+  } catch (error) {
+    Logger.log("Erreur lors de l'envoi de l'email de mise à jour: " + error.toString());
     return false;
   }
 }

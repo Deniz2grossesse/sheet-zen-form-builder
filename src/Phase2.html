@@ -278,6 +278,17 @@
     .form-section, .summary-section {
       animation: fadeIn 0.5s ease-out forwards;
     }
+    
+    /* === Dropdown specific styling === */
+    select.form-control option {
+      padding: 10px;
+      background-color: #FFFFFF;
+      color: #333;
+    }
+    
+    select.form-control:hover {
+      border-color: #1E88E5;
+    }
   </style>
 </head>
 <body>
@@ -567,6 +578,9 @@
         }
       }
       
+      // Load dropdown options regardless of whether we have an ID or not
+      loadDropdownOptions();
+      
       if (!requestId) {
         console.log("Phase2 - No ID found in URL - search-only mode");
         // Don't show error, allows using search only
@@ -578,24 +592,6 @@
       // If Google Apps Script is available
       if (typeof google !== 'undefined' && google.script) {
         console.log("Phase2 - Google Apps Script mode detected");
-        
-        // Load dropdown options
-        console.log("Phase2 - Calling getDropdownOptions");
-        google.script.run
-          .withSuccessHandler(function(options) {
-            console.log("Phase2 - Dropdown options received:", options);
-            if (options) {
-              populateDropdowns(options);
-            } else {
-              console.error("Phase2 - Empty or malformed dropdown options");
-              showErrorMessage("Error loading dropdown options.");
-            }
-          })
-          .withFailureHandler(function(error) {
-            console.error("Phase2 - Error loading options:", error);
-            showErrorMessage("Error loading options: " + error);
-          })
-          .getDropdownOptions();
         
         // Load request data
         console.log("Phase2 - Calling getRequestById with ID:", requestId);
@@ -617,14 +613,6 @@
       } else {
         // Simulation for local development
         console.log("Phase2 - Local development mode detected - data simulation");
-        const mockOptions = {
-          category: ["design", "expertise", "solution deployment", "site extension", 
-                     "new solution", "cabling deployment", "evolution", "mobility deployment"],
-          transversal: ["yes", "no"],
-          status: ["not started", "in qualification", "in progress", "completed", "cancelled", "postponed"]
-        };
-        
-        populateDropdowns(mockOptions);
         
         const mockData = {
           id: requestId || "123",
@@ -648,67 +636,102 @@
       }
     });
     
+    // Separate function to load dropdown options to ensure it's called regardless of ID
+    function loadDropdownOptions() {
+      console.log("Phase2 - Loading dropdown options");
+      
+      // If Google Apps Script is available
+      if (typeof google !== 'undefined' && google.script) {
+        console.log("Phase2 - Google Apps Script mode detected - calling getDropdownOptions");
+        google.script.run
+          .withSuccessHandler(function(options) {
+            console.log("Phase2 - Dropdown options received:", options);
+            if (options) {
+              populateDropdowns(options);
+            } else {
+              console.error("Phase2 - Empty or malformed dropdown options");
+              showErrorMessage("Error loading dropdown options.");
+            }
+          })
+          .withFailureHandler(function(error) {
+            console.error("Phase2 - Error loading options:", error);
+            showErrorMessage("Error loading options: " + error);
+            
+            // Fallback to mock options in case of error
+            useFallbackOptions();
+          })
+          .getDropdownOptions();
+      } else {
+        // Simulation for local development - use fallback options
+        console.log("Phase2 - Local development mode detected - using fallback options");
+        useFallbackOptions();
+      }
+    }
+    
+    // Fallback options for local development or in case of error
+    function useFallbackOptions() {
+      console.log("Phase2 - Using fallback dropdown options");
+      const mockOptions = {
+        category: ["design", "expertise", "solution deployment", "site extension", 
+                   "new solution", "cabling deployment", "evolution", "mobility deployment"],
+        transversal: ["yes", "no"],
+        status: ["not started", "in qualification", "in progress", "completed", "cancelled", "postponed"]
+      };
+      
+      populateDropdowns(mockOptions);
+    }
+    
     // Fill dropdowns
     function populateDropdowns(options) {
       console.log("Phase2 - Starting dropdown population with options:", options);
       
       try {
-        // Category
-        if (options && options.category && Array.isArray(options.category)) {
-          const categorySelect = document.getElementById('category');
-          if (categorySelect) {
-            options.category.forEach(option => {
-              const opt = document.createElement('option');
-              opt.value = option;
-              opt.textContent = option;
-              categorySelect.appendChild(opt);
-            });
-            console.log("Phase2 - Category dropdown successfully filled");
-          } else {
-            console.error("Phase2 - Category element not found in DOM");
-          }
-        } else {
-          console.error("Phase2 - Invalid or missing category options");
-        }
+        // Category dropdown
+        populateSpecificDropdown('category', options.category);
         
-        // Transversal
-        if (options && options.transversal && Array.isArray(options.transversal)) {
-          const transversalSelect = document.getElementById('transversal');
-          if (transversalSelect) {
-            options.transversal.forEach(option => {
-              const opt = document.createElement('option');
-              opt.value = option;
-              opt.textContent = option;
-              transversalSelect.appendChild(opt);
-            });
-            console.log("Phase2 - Transversal dropdown successfully filled");
-          } else {
-            console.error("Phase2 - Transversal element not found in DOM");
-          }
-        } else {
-          console.error("Phase2 - Invalid or missing transversal options");
-        }
+        // Transversal dropdown
+        populateSpecificDropdown('transversal', options.transversal);
         
-        // Status
-        if (options && options.status && Array.isArray(options.status)) {
-          const statusSelect = document.getElementById('status');
-          if (statusSelect) {
-            options.status.forEach(option => {
-              const opt = document.createElement('option');
-              opt.value = option;
-              opt.textContent = option;
-              statusSelect.appendChild(opt);
-            });
-            console.log("Phase2 - Status dropdown successfully filled");
-          } else {
-            console.error("Phase2 - Status element not found in DOM");
-          }
-        } else {
-          console.error("Phase2 - Invalid or missing status options");
-        }
+        // Status dropdown
+        populateSpecificDropdown('status', options.status);
+        
+        console.log("Phase2 - All dropdowns populated successfully");
       } catch (error) {
         console.error("Phase2 - Error filling dropdowns:", error);
+        showErrorMessage("Error populating dropdown menus: " + error.message);
       }
+    }
+    
+    // Helper function to populate a specific dropdown
+    function populateSpecificDropdown(id, optionsArray) {
+      console.log(`Phase2 - Populating ${id} dropdown with options:`, optionsArray);
+      
+      const selectElement = document.getElementById(id);
+      if (!selectElement) {
+        console.error(`Phase2 - Element with ID '${id}' not found in DOM`);
+        return;
+      }
+      
+      // Clear existing options except the first one
+      while (selectElement.options.length > 1) {
+        selectElement.remove(1);
+      }
+      
+      // Check if options is an array
+      if (!Array.isArray(optionsArray)) {
+        console.error(`Phase2 - Options for '${id}' is not an array:`, optionsArray);
+        return;
+      }
+      
+      // Add new options
+      optionsArray.forEach(option => {
+        const opt = document.createElement('option');
+        opt.value = option;
+        opt.textContent = option;
+        selectElement.appendChild(opt);
+      });
+      
+      console.log(`Phase2 - ${id} dropdown successfully filled with ${optionsArray.length} options`);
     }
     
     // Form submission handling

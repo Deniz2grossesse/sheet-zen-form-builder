@@ -1,4 +1,3 @@
-
 /**
  * Portfolio Management Dashboard
  * Application backend pour Google Apps Script
@@ -72,7 +71,7 @@ function saveSimpleRequest(data) {
   try {
     // Accès au fichier Google Sheets spécifié par l'ID
     var spreadsheet = SpreadsheetApp.openById(SPREADSHEET_ID);
-    var sheet = spreadsheet.getSheets()[1];
+    var sheet = spreadsheet.getSheets()[2]; // Changé de [1] à [2]
     
     // Trouver toutes les valeurs de la colonne A à partir de la ligne 4
     var idValues = sheet.getRange("A4:A").getValues();
@@ -185,7 +184,7 @@ function sendNotificationEmail(id, data) {
 function getRequestById(id) {
   try {
     var spreadsheet = SpreadsheetApp.openById(SPREADSHEET_ID);
-    var sheet = spreadsheet.getSheets()[1];
+    var sheet = spreadsheet.getSheets()[2]; // Changé de [1] à [2]
     
     // Trouver toutes les valeurs de la colonne A à partir de la ligne 4
     var idValues = sheet.getRange("A4:A").getValues();
@@ -240,7 +239,7 @@ function getRequestById(id) {
 function updateRequest(id, data) {
   try {
     var spreadsheet = SpreadsheetApp.openById(SPREADSHEET_ID);
-    var sheet = spreadsheet.getSheets()[1];
+    var sheet = spreadsheet.getSheets()[2]; // Changé de [1] à [2]
     
     // Trouver la ligne correspondant à l'ID
     var idValues = sheet.getRange("A4:A").getValues();
@@ -337,7 +336,7 @@ function saveData(data) {
   try {
     // Accès au fichier Google Sheets spécifié par l'ID
     var spreadsheet = SpreadsheetApp.openById(SPREADSHEET_ID);
-    var sheet = spreadsheet.getSheets()[1];
+    var sheet = spreadsheet.getSheets()[2]; // Changé de [1] à [2]
     
     // Trouver toutes les valeurs de la colonne A à partir de la ligne 4
     var idValues = sheet.getRange("A4:A").getValues();
@@ -431,7 +430,7 @@ function testConnection() {
 function getAllData() {
   try {
     var spreadsheet = SpreadsheetApp.openById(SPREADSHEET_ID);
-    var sheet = spreadsheet.getSheets()[1];
+    var sheet = spreadsheet.getSheets()[2]; // Changé de [1] à [2]
     var data = sheet.getDataRange().getValues();
     
     // Supprimer l'en-tête

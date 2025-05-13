@@ -54,6 +54,49 @@
       font-size: 16px;
     }
     
+    /* === SEARCH SECTION === */
+    .search-section {
+      margin-bottom: 20px;
+      background-color: #F5F9FF;
+      border-radius: 8px;
+      padding: 15px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    }
+
+    .search-container {
+      display: flex;
+      gap: 10px;
+    }
+
+    .search-input {
+      flex: 1;
+      padding: 12px 16px;
+      border: 1px solid #DDD;
+      border-radius: 6px;
+      font-size: 14px;
+    }
+
+    .search-input:focus {
+      outline: none;
+      border-color: #1E88E5;
+      box-shadow: 0 0 0 3px rgba(30, 136, 229, 0.1);
+    }
+
+    .search-button {
+      background-color: #1E88E5;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      padding: 0 20px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .search-button:hover {
+      background-color: #1976D2;
+    }
+    
     /* === SUMMARY SECTION === */
     .summary-section {
       background-color: #F5F9FF;
@@ -243,6 +286,14 @@
     <p>Édition de la demande existante</p>
   </div>
   
+  <!-- Barre de recherche -->
+  <div class="search-section">
+    <div class="search-container">
+      <input type="text" id="searchIdInput" class="search-input" placeholder="Rechercher par ID...">
+      <button id="searchButton" class="search-button">Rechercher</button>
+    </div>
+  </div>
+  
   <!-- Section de résumé -->
   <div class="summary-section">
     <h2 class="summary-title">Informations de la demande initiale</h2>
@@ -349,16 +400,93 @@
   <script>
     // Récupérer l'ID depuis l'URL
     function getIdFromUrl() {
-      const urlParams = new URLSearchParams(window.location.search);
-      const id = urlParams.get('id');
-      console.log("ID récupéré depuis l'URL: ", id);
+      const url = window.location.href;
+      console.log("URL complète:", url);
       
-      if (id) {
+      // Chercher "id=" dans l'URL
+      const idIndex = url.indexOf("id=");
+      
+      if (idIndex !== -1) {
+        // Extraire tout ce qui suit "id="
+        let id = url.substring(idIndex + 3); // +3 pour sauter "id="
+        
+        // Si l'ID est suivi d'autres paramètres (&), ne prendre que l'ID
+        const endIndex = id.indexOf("&");
+        if (endIndex !== -1) {
+          id = id.substring(0, endIndex);
+        }
+        
+        console.log("ID récupéré depuis l'URL: ", id);
         return id;
       } else {
         console.error("Aucun ID de demande trouvé dans l'URL");
         showErrorMessage("Aucun ID de demande trouvé dans l'URL.");
         return null;
+      }
+    }
+    
+    // Fonction pour rechercher par ID
+    function searchById() {
+      const searchId = document.getElementById('searchIdInput').value.trim();
+      
+      if (!searchId) {
+        showErrorMessage("Veuillez entrer un ID valide.");
+        return;
+      }
+      
+      console.log("Recherche pour l'ID:", searchId);
+      
+      // Si Google Apps Script est disponible
+      if (typeof google !== 'undefined' && google.script) {
+        google.script.run
+          .withSuccessHandler(function(result) {
+            if (result.success) {
+              // Mettre à jour l'URL avec le nouvel ID
+              const url = new URL(window.location.href);
+              url.searchParams.set('id', searchId);
+              window.history.pushState({}, '', url);
+              
+              // Remplir le formulaire avec les données
+              populateForm(result.data);
+              showValidationMessage("Données trouvées pour l'ID: " + searchId);
+            } else {
+              console.error("Erreur dans la réponse:", result.error);
+              showErrorMessage("ID non trouvé ou erreur: " + result.error);
+            }
+          })
+          .withFailureHandler(function(error) {
+            console.error("Erreur lors de la recherche:", error);
+            showErrorMessage("Erreur: " + error);
+          })
+          .getRequestById(searchId);
+      } else {
+        // Simulation pour le développement local
+        setTimeout(() => {
+          const mockData = {
+            id: searchId,
+            requestor: "John Doe (via recherche)",
+            dinPortfolio: "Digital workspace",
+            dinFocalPoint: "Jane Smith",
+            initiativeName: "Initiative trouvée",
+            initiativeDeliverables: "Livrable trouvé",
+            year: "2025",
+            sourceDemand: "Source trouvée",
+            ppmId: "PPM" + searchId,
+            category: "design",
+            workloadPsl: "10",
+            transversal: "yes",
+            status: "in progress",
+            teamMember: "John Doe"
+          };
+          
+          // Mettre à jour l'URL avec le nouvel ID
+          const url = new URL(window.location.href);
+          url.searchParams.set('id', searchId);
+          window.history.pushState({}, '', url);
+          
+          populateForm(mockData);
+          showValidationMessage("Données trouvées pour l'ID: " + searchId + " (simulation)");
+        }, 500);
       }
     }
     
@@ -390,6 +518,22 @@
     // Chargement des données et options des menus déroulants
     document.addEventListener('DOMContentLoaded', function() {
       const requestId = getIdFromUrl();
+      
+      // Ajouter les gestionnaires pour la recherche
+      const searchButton = document.getElementById('searchButton');
+      const searchInput = document.getElementById('searchIdInput');
+      
+      if (searchButton) {
+        searchButton.addEventListener('click', searchById);
+      }
+      
+      if (searchInput) {
+        searchInput.addEventListener('keypress', function(e) {
+          if (e.key === 'Enter') {
+            searchById();
+          }
+        });
+      }
       
       if (!requestId) {
         showErrorMessage("Aucun ID de demande trouvé dans l'URL.");

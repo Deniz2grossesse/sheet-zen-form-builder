@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
@@ -41,15 +40,23 @@ const RequestForm = () => {
   
   // Fixed: Changed useState to useEffect for loading options
   useEffect(() => {
+    console.log("RequestForm - Chargement des options du portfolio");
     // @ts-ignore - La fonction window.google n'est pas reconnue par TypeScript
     if (typeof window.google !== 'undefined') {
+      console.log("Mode Google Apps Script détecté - appel à getDropdownOptions");
       // @ts-ignore
       google.script.run
         .withSuccessHandler(function(options: { dinPortfolio: string[] }) {
+          console.log("Options reçues du serveur:", options);
           setPortfolioOptions(options.dinPortfolio || []);
+        })
+        .withFailureHandler(function(error: Error) {
+          console.error("Erreur lors de la récupération des options:", error);
+          toast.error("Erreur de chargement des options");
         })
         .getDropdownOptions();
     } else {
+      console.log("Mode développement local - utilisation des options de secours");
       // Options de secours pour le développement local
       setPortfolioOptions([
         "Digital workspace", "Cyber security", "Roof", "Div", "Affiliate", 
@@ -59,10 +66,12 @@ const RequestForm = () => {
   }, []);
   
   const onSubmit = (values: FormValues) => {
+    console.log("Soumission du formulaire avec les valeurs:", values);
     setIsSubmitting(true);
     
     // @ts-ignore - La fonction window.google n'est pas reconnue par TypeScript
     if (typeof window.google !== 'undefined') {
+      console.log("Appel à saveSimpleRequest avec les données:", values);
       // @ts-ignore
       google.script.run
         .withSuccessHandler(function(result: { 
@@ -72,29 +81,37 @@ const RequestForm = () => {
           emailSentSuccess: boolean,
           error?: string 
         }) {
+          console.log("Réponse du serveur:", result);
           setIsSubmitting(false);
           if (result.success) {
             toast.success(`La demande portant l'ID ${result.id} est créée`);
+            console.log("Demande créée avec succès - ID:", result.id);
             form.reset();
           } else if (result.fileWriteSuccess && !result.emailSentSuccess) {
             toast.warning(`La demande portant l'ID ${result.id} est créée, mais une erreur s'est produite lors de l'envoi de l'email`);
+            console.warn("Demande créée mais email non envoyé - ID:", result.id);
             form.reset();
           } else if (!result.fileWriteSuccess) {
+            console.error("Erreur d'écriture sur le fichier:", result.error);
             toast.error(`Une erreur s'est produite lors de l'écriture sur le fichier: ${result.error || 'Raison inconnue'}`);
           } else {
+            console.error("Erreur générale:", result.error);
             toast.error(`Une erreur s'est produite: ${result.error || 'Raison inconnue'}`);
           }
         })
         .withFailureHandler(function(error: Error) {
+          console.error("Erreur lors de l'appel à saveSimpleRequest:", error);
           setIsSubmitting(false);
           toast.error(`Une erreur s'est produite: ${error.message}`);
         })
         .saveSimpleRequest(values);
     } else {
       // Simulation pour le développement local
+      console.log("Mode développement local - simulation de la soumission");
       setTimeout(() => {
         setIsSubmitting(false);
         const mockId = Math.floor(Math.random() * 100) + 1;
+        console.log("Simulation - ID généré:", mockId);
         toast.success(`La demande portant l'ID ${mockId} est créée (simulation)`);
         form.reset();
       }, 1000);

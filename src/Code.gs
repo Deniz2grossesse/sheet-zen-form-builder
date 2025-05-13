@@ -19,12 +19,15 @@ const UPDATE_LINK = "https://votre-lien-application.com";
 
 // Fonction exécutée à l'ouverture de l'application web
 function doGet(e) {
+  Logger.log("doGet appelé avec les paramètres: " + JSON.stringify(e.parameters));
   const page = e.parameter.page;
   if (page === "phase2") {
+    Logger.log("Affichage de la page Phase2");
     return HtmlService.createHtmlOutputFromFile('Phase2')
       .setTitle('Liste de diffusion - Portfolio DIN')
       .setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL);
   }
+  Logger.log("Affichage de la page Index par défaut");
   return HtmlService.createHtmlOutputFromFile('Index')
     .setTitle('Portfolio Management Dashboard')
     .setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL);
@@ -65,6 +68,7 @@ function getDropdownOptions() {
  * @return {Object} - Objet détaillé avec les résultats de l'opération
  */
 function saveSimpleRequest(data) {
+  Logger.log("Début de saveSimpleRequest avec les données: " + JSON.stringify(data));
   var result = {
     success: false,
     fileWriteSuccess: false,
@@ -77,6 +81,7 @@ function saveSimpleRequest(data) {
     // Accès au fichier Google Sheets spécifié par l'ID
     var spreadsheet = SpreadsheetApp.openById(SPREADSHEET_ID);
     var sheet = spreadsheet.getSheets()[2]; // Changé de [1] à [2]
+    Logger.log("Accès à la feuille n°2 du spreadsheet: " + spreadsheet.getName());
     
     // Trouver toutes les valeurs de la colonne A à partir de la ligne 4
     var idValues = sheet.getRange("A4:A").getValues();
@@ -86,11 +91,14 @@ function saveSimpleRequest(data) {
       return row[0] !== "";
     });
     
+    Logger.log("Nombre d'IDs existants: " + nonEmptyIds.length);
+    
     // Calculer le nouvel ID
     var newId = 1;
     if (nonEmptyIds.length > 0) {
       // Prendre la dernière valeur d'ID et l'incrémenter
       var lastId = nonEmptyIds[nonEmptyIds.length - 1][0];
+      Logger.log("Dernier ID trouvé: " + lastId + " (type: " + typeof lastId + ")");
       
       // S'assurer que c'est un nombre
       if (typeof lastId === 'number') {
@@ -98,11 +106,14 @@ function saveSimpleRequest(data) {
       } else {
         // Si ce n'est pas un nombre, essayer de le convertir
         var parsedId = parseInt(lastId, 10);
+        Logger.log("ID converti en nombre: " + parsedId + " (résultat de parseInt)");
         if (!isNaN(parsedId)) {
           newId = parsedId + 1;
         }
       }
     }
+    
+    Logger.log("Nouvel ID calculé: " + newId + " (type: " + typeof newId + ")");
     
     // Préparation des données à insérer
     var rowData = [
@@ -115,6 +126,7 @@ function saveSimpleRequest(data) {
     
     // Trouver la prochaine ligne vide pour l'insertion
     var nextRow = nonEmptyIds.length + 4;
+    Logger.log("Insertion à la ligne: " + nextRow);
     
     // Écriture des données
     var range = sheet.getRange(nextRow, 1, 1, rowData.length);
@@ -132,6 +144,7 @@ function saveSimpleRequest(data) {
     // Déterminer le succès global de l'opération
     result.success = result.fileWriteSuccess && result.emailSentSuccess;
     
+    Logger.log("Résultat final de saveSimpleRequest: " + JSON.stringify(result));
     return result;
   } catch (error) {
     Logger.log("Erreur lors de la sauvegarde des données: " + error.toString());
@@ -147,6 +160,7 @@ function saveSimpleRequest(data) {
  * @return {Boolean} - True si envoi réussi, False sinon
  */
 function sendNotificationEmail(id, data) {
+  Logger.log("Début de sendNotificationEmail pour l'ID: " + id);
   try {
     // Construction de l'objet de l'email
     var subject = "NEW request " + id + " created for DIN Portfolio management";
@@ -154,6 +168,7 @@ function sendNotificationEmail(id, data) {
     // URL dynamique pour accéder à la phase 2
     var scriptUrl = ScriptApp.getService().getUrl();
     var updateLink = scriptUrl + "?page=phase2&id=" + id;
+    Logger.log("Lien de mise à jour généré: " + updateLink);
     
     // Construction du corps de l'email
     var body = "Dear users,\n\n" +
@@ -286,6 +301,7 @@ function updateRequest(id, data) {
     }
     
     Logger.log("Mise à jour des données pour l'ID " + stringId + " à la ligne " + rowIndex);
+    Logger.log("Données à mettre à jour: " + JSON.stringify(data));
     
     // Mise à jour des colonnes E à N (indices 4 à 13)
     sheet.getRange(rowIndex, 5, 1, 10).setValues([[
@@ -300,6 +316,8 @@ function updateRequest(id, data) {
       data.status || "",
       data.teamMember || ""
     ]]);
+    
+    Logger.log("Mise à jour effectuée avec succès pour l'ID " + stringId);
     
     // Envoi de l'email de confirmation
     var emailResult = sendUpdateEmail(id, data);
@@ -324,6 +342,7 @@ function updateRequest(id, data) {
  * @return {Boolean} - True si envoi réussi, False sinon
  */
 function sendUpdateEmail(id, data) {
+  Logger.log("Début de sendUpdateEmail pour l'ID: " + id);
   try {
     // Construction de l'objet de l'email
     var subject = "DIN portfolio update request " + id;
@@ -364,6 +383,7 @@ function sendUpdateEmail(id, data) {
  * @return {Boolean} - True si sauvegarde réussie, False sinon
  */
 function saveData(data) {
+  Logger.log("Début de saveData avec les données: " + JSON.stringify(data));
   try {
     // Accès au fichier Google Sheets spécifié par l'ID
     var spreadsheet = SpreadsheetApp.openById(SPREADSHEET_ID);
@@ -377,11 +397,14 @@ function saveData(data) {
       return row[0] !== "";
     });
     
+    Logger.log("Nombre d'IDs existants: " + nonEmptyIds.length);
+    
     // Calculer le nouvel ID
     var newId = 1;
     if (nonEmptyIds.length > 0) {
       // Prendre la dernière valeur d'ID et l'incrémenter
       var lastId = nonEmptyIds[nonEmptyIds.length - 1][0];
+      Logger.log("Dernier ID trouvé: " + lastId + " (type: " + typeof lastId + ")");
       
       // S'assurer que c'est un nombre
       if (typeof lastId === 'number') {
@@ -389,11 +412,14 @@ function saveData(data) {
       } else {
         // Si ce n'est pas un nombre, essayer de le convertir
         var parsedId = parseInt(lastId, 10);
+        Logger.log("ID converti en nombre: " + parsedId + " (résultat de parseInt)");
         if (!isNaN(parsedId)) {
           newId = parsedId + 1;
         }
       }
     }
+    
+    Logger.log("Nouvel ID calculé: " + newId + " (type: " + typeof newId + ")");
     
     // Préparation des données à insérer
     var rowData = [
@@ -426,6 +452,7 @@ function saveData(data) {
     
     // Trouver la prochaine ligne vide pour l'insertion
     var nextRow = nonEmptyIds.length + 4;
+    Logger.log("Insertion à la ligne: " + nextRow);
     
     // Écriture des données
     var range = sheet.getRange(nextRow, 1, 1, rowData.length);
@@ -446,11 +473,16 @@ function saveData(data) {
  * @return {String} Message indiquant si la connexion est réussie
  */
 function testConnection() {
+  Logger.log("Test de connexion au fichier Google Sheets");
   try {
     var spreadsheet = SpreadsheetApp.openById(SPREADSHEET_ID);
-    return "Connection successful to spreadsheet: " + spreadsheet.getName();
+    var message = "Connection successful to spreadsheet: " + spreadsheet.getName();
+    Logger.log(message);
+    return message;
   } catch (error) {
-    return "Connection error: " + error.toString();
+    var errorMessage = "Connection error: " + error.toString();
+    Logger.log(errorMessage);
+    return errorMessage;
   }
 }
 
@@ -459,6 +491,7 @@ function testConnection() {
  * @return {Array} Tableau de toutes les entrées
  */
 function getAllData() {
+  Logger.log("Récupération de toutes les données");
   try {
     var spreadsheet = SpreadsheetApp.openById(SPREADSHEET_ID);
     var sheet = spreadsheet.getSheets()[2]; // Changé de [1] à [2]
@@ -467,6 +500,7 @@ function getAllData() {
     // Supprimer l'en-tête
     data.shift();
     
+    Logger.log("Nombre total de lignes récupérées: " + data.length);
     return data;
   } catch (error) {
     Logger.log("Erreur lors de la récupération des données: " + error.toString());

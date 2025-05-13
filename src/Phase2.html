@@ -402,7 +402,7 @@
     // Récupérer l'ID depuis l'URL
     function getIdFromUrl() {
       const url = window.location.href;
-      console.log("URL complète:", url);
+      console.log("Phase2 - URL complète:", url);
       
       // Chercher "id=" dans l'URL
       const idIndex = url.indexOf("id=");
@@ -417,11 +417,10 @@
           id = id.substring(0, endIndex);
         }
         
-        console.log("ID récupéré depuis l'URL: ", id, " (type: " + typeof id + ")");
+        console.log("Phase2 - ID récupéré depuis l'URL: ", id, " (type: " + typeof id + ")");
         return id; // Retourne l'ID comme une chaîne
       } else {
-        console.error("Aucun ID de demande trouvé dans l'URL");
-        showErrorMessage("Aucun ID de demande trouvé dans l'URL.");
+        console.warn("Phase2 - Aucun ID de demande trouvé dans l'URL");
         return null;
       }
     }
@@ -431,37 +430,42 @@
       const searchId = document.getElementById('searchIdInput').value.trim();
       
       if (!searchId) {
+        console.error("Phase2 - ID de recherche vide");
         showErrorMessage("Veuillez entrer un ID valide.");
         return;
       }
       
-      console.log("Recherche pour l'ID:", searchId, " (type: " + typeof searchId + ")");
+      console.log("Phase2 - Recherche pour l'ID:", searchId, " (type: " + typeof searchId + ")");
       
       // Si Google Apps Script est disponible
       if (typeof google !== 'undefined' && google.script) {
+        console.log("Phase2 - Appel à getRequestById avec l'ID:", searchId);
         google.script.run
           .withSuccessHandler(function(result) {
+            console.log("Phase2 - Résultat de la recherche:", result);
             if (result.success) {
               // Mettre à jour l'URL avec le nouvel ID
               const url = new URL(window.location.href);
               url.searchParams.set('id', searchId);
               window.history.pushState({}, '', url);
+              console.log("Phase2 - URL mise à jour avec le nouvel ID:", url.toString());
               
               // Remplir le formulaire avec les données
               populateForm(result.data);
               showValidationMessage("Données trouvées pour l'ID: " + searchId);
             } else {
-              console.error("Erreur dans la réponse:", result.error);
+              console.error("Phase2 - Erreur dans la réponse:", result.error);
               showErrorMessage("ID non trouvé ou erreur: " + result.error);
             }
           })
           .withFailureHandler(function(error) {
-            console.error("Erreur lors de la recherche:", error);
+            console.error("Phase2 - Erreur lors de la recherche:", error);
             showErrorMessage("Erreur: " + error);
           })
           .getRequestById(searchId);
       } else {
         // Simulation pour le développement local
+        console.log("Phase2 - Mode développement local - simulation de recherche");
         setTimeout(() => {
           const mockData = {
             id: searchId,
@@ -479,6 +483,7 @@
             status: "in progress",
             teamMember: "John Doe"
           };
+          console.log("Phase2 - Données simulées générées:", mockData);
           
           // Mettre à jour l'URL avec le nouvel ID
           const url = new URL(window.location.href);
@@ -493,7 +498,7 @@
     
     // Fonction pour remplir le formulaire avec les données existantes
     function populateForm(data) {
-      console.log("Données reçues pour remplir le formulaire:", data);
+      console.log("Phase2 - Remplissage du formulaire avec les données:", data);
       
       // Remplir la section résumé
       document.getElementById('summaryId').textContent = data.id || '-';
@@ -513,11 +518,12 @@
       document.getElementById('status').value = data.status || '';
       document.getElementById('teamMember').value = data.teamMember || '';
       
-      console.log("Formulaire rempli avec succès avec les données de l'ID: " + data.id);
+      console.log("Phase2 - Formulaire rempli avec succès avec les données de l'ID: " + data.id);
     }
     
     // Chargement des données et options des menus déroulants
     document.addEventListener('DOMContentLoaded', function() {
+      console.log("Phase2 - DOM chargé, initialisation de la page");
       const requestId = getIdFromUrl();
       
       // Ajouter les gestionnaires pour la recherche
@@ -525,66 +531,70 @@
       const searchInput = document.getElementById('searchIdInput');
       
       if (searchButton) {
+        console.log("Phase2 - Ajout du gestionnaire d'événement pour le bouton de recherche");
         searchButton.addEventListener('click', searchById);
       }
       
       if (searchInput) {
+        console.log("Phase2 - Ajout du gestionnaire d'événement pour la touche Entrée dans le champ de recherche");
         searchInput.addEventListener('keypress', function(e) {
           if (e.key === 'Enter') {
+            console.log("Phase2 - Touche Entrée pressée dans le champ de recherche");
             searchById();
           }
         });
       }
       
       if (!requestId) {
-        console.log("Aucun ID trouvé dans l'URL - mode recherche uniquement");
+        console.log("Phase2 - Aucun ID trouvé dans l'URL - mode recherche uniquement");
         // Ne pas afficher d'erreur, permet d'utiliser seulement la recherche
         return;
       }
       
-      console.log("Démarrage du chargement des données pour l'ID:", requestId, " (type: " + typeof requestId + ")");
+      console.log("Phase2 - Démarrage du chargement des données pour l'ID:", requestId, " (type: " + typeof requestId + ")");
       
       // Si Google Apps Script est disponible
       if (typeof google !== 'undefined' && google.script) {
-        console.log("Mode Google Apps Script détecté");
+        console.log("Phase2 - Mode Google Apps Script détecté");
         
         // Charger les options des menus déroulants
+        console.log("Phase2 - Appel à getDropdownOptions");
         google.script.run
           .withSuccessHandler(function(options) {
-            console.log("Options des menus déroulants reçues:", options);
+            console.log("Phase2 - Options des menus déroulants reçues:", options);
             if (options) {
               populateDropdowns(options);
             } else {
-              console.error("Options des menus déroulants vides ou mal formatées");
+              console.error("Phase2 - Options des menus déroulants vides ou mal formatées");
               showErrorMessage("Erreur lors du chargement des options des menus déroulants.");
             }
           })
           .withFailureHandler(function(error) {
-            console.error("Erreur lors du chargement des options:", error);
+            console.error("Phase2 - Erreur lors du chargement des options:", error);
             showErrorMessage("Erreur lors du chargement des options: " + error);
           })
           .getDropdownOptions();
         
         // Charger les données de la demande
-        console.log("Demande de données pour l'ID:", requestId);
+        console.log("Phase2 - Appel à getRequestById avec l'ID:", requestId);
         google.script.run
           .withSuccessHandler(function(result) {
-            console.log("Réponse reçue pour l'ID " + requestId + ":", result);
+            console.log("Phase2 - Réponse reçue pour l'ID " + requestId + ":", result);
             if (result.success) {
               populateForm(result.data);
             } else {
-              console.error("Erreur dans la réponse:", result.error);
+              console.error("Phase2 - Erreur dans la réponse:", result.error);
               showErrorMessage("Erreur lors du chargement des données: " + result.error);
             }
           })
           .withFailureHandler(function(error) {
-            console.error("Erreur lors de l'appel à getRequestById:", error);
+            console.error("Phase2 - Erreur lors de l'appel à getRequestById:", error);
             showErrorMessage("Erreur: " + error);
           })
           .getRequestById(requestId);
       } else {
         // Simulation pour le développement local
-        console.log("Mode développement local détecté - simulation de données");
+        console.log("Phase2 - Mode développement local détecté - simulation de données");
         const mockOptions = {
           category: ["design", "expertise", "solution deployment", "site extension", 
                      "new solution", "cabling deployment", "evolution", "mobility deployment"],
@@ -611,13 +621,14 @@
           teamMember: "John Doe"
         };
         
+        console.log("Phase2 - Données mockées générées pour le développement local:", mockData);
         populateForm(mockData);
       }
     });
     
     // Remplissage des menus déroulants
     function populateDropdowns(options) {
-      console.log("Début du remplissage des menus déroulants avec options:", options);
+      console.log("Phase2 - Début du remplissage des menus déroulants avec options:", options);
       
       try {
         // Category
@@ -630,12 +641,12 @@
               opt.textContent = option;
               categorySelect.appendChild(opt);
             });
-            console.log("Menu déroulant category rempli avec succès");
+            console.log("Phase2 - Menu déroulant category rempli avec succès");
           } else {
-            console.error("Élément category non trouvé dans le DOM");
+            console.error("Phase2 - Élément category non trouvé dans le DOM");
           }
         } else {
-          console.error("Options category invalides ou manquantes");
+          console.error("Phase2 - Options category invalides ou manquantes");
         }
         
         // Transversal
@@ -648,12 +659,12 @@
               opt.textContent = option;
               transversalSelect.appendChild(opt);
             });
-            console.log("Menu déroulant transversal rempli avec succès");
+            console.log("Phase2 - Menu déroulant transversal rempli avec succès");
           } else {
-            console.error("Élément transversal non trouvé dans le DOM");
+            console.error("Phase2 - Élément transversal non trouvé dans le DOM");
           }
         } else {
-          console.error("Options transversal invalides ou manquantes");
+          console.error("Phase2 - Options transversal invalides ou manquantes");
         }
         
         // Status
@@ -666,15 +677,15 @@
               opt.textContent = option;
               statusSelect.appendChild(opt);
             });
-            console.log("Menu déroulant status rempli avec succès");
+            console.log("Phase2 - Menu déroulant status rempli avec succès");
           } else {
-            console.error("Élément status non trouvé dans le DOM");
+            console.error("Phase2 - Élément status non trouvé dans le DOM");
           }
         } else {
-          console.error("Options status invalides ou manquantes");
+          console.error("Phase2 - Options status invalides ou manquantes");
         }
       } catch (error) {
-        console.error("Erreur lors du remplissage des menus déroulants:", error);
+        console.error("Phase2 - Erreur lors du remplissage des menus déroulants:", error);
       }
     }
     
@@ -684,11 +695,12 @@
       
       const requestId = getIdFromUrl();
       if (!requestId) {
+        console.error("Phase2 - Tentative de mise à jour sans ID");
         showErrorMessage("Aucun ID de demande trouvé dans l'URL.");
         return;
       }
       
-      console.log("Soumission du formulaire pour l'ID:", requestId, " (type: " + typeof requestId + ")");
+      console.log("Phase2 - Soumission du formulaire pour l'ID:", requestId, " (type: " + typeof requestId + ")");
       
       const formData = {
         initiativeName: document.getElementById('initiativeName').value,
@@ -703,24 +715,29 @@
         teamMember: document.getElementById('teamMember').value
       };
       
+      console.log("Phase2 - Données de formulaire à envoyer:", formData);
+      
       // Si Google Apps Script est disponible
       if (typeof google !== 'undefined' && google.script) {
+        console.log("Phase2 - Appel à updateRequest avec l'ID:", requestId);
         google.script.run
           .withSuccessHandler(function(result) {
-            console.log("Réponse de la mise à jour:", result);
+            console.log("Phase2 - Réponse de la mise à jour:", result);
             if (result.success) {
               showValidationMessage("Mise à jour réussie !");
             } else {
+              console.error("Phase2 - Erreur lors de la mise à jour:", result.error);
               showErrorMessage("Erreur lors de la mise à jour: " + result.error);
             }
           })
           .withFailureHandler(function(error) {
-            console.error("Erreur lors de l'appel à updateRequest:", error);
+            console.error("Phase2 - Erreur lors de l'appel à updateRequest:", error);
             showErrorMessage("Erreur: " + error);
           })
           .updateRequest(requestId, formData);
       } else {
         // Simulation pour le développement local
+        console.log("Phase2 - Mode développement local - simulation de mise à jour");
         setTimeout(() => {
           showValidationMessage("Mise à jour réussie ! (simulation)");
         }, 1000);
@@ -729,6 +746,7 @@
     
     // Affichage du message de validation
     function showValidationMessage(message) {
+      console.log("Phase2 - Affichage du message de validation:", message);
       const validationMessage = document.getElementById('validationMessage');
       validationMessage.textContent = message;
       validationMessage.style.display = 'block';
@@ -740,6 +758,7 @@
     
     // Affichage du message d'erreur
     function showErrorMessage(message) {
+      console.error("Phase2 - Message d'erreur:", message);
       const errorMessage = document.getElementById('errorMessage');
       errorMessage.textContent = message;
       errorMessage.style.display = 'block';

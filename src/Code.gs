@@ -58,7 +58,7 @@ function saveSimpleRequest(data) {
   try {
     // Accès au fichier Google Sheets spécifié par l'ID
     var spreadsheet = SpreadsheetApp.openById(SPREADSHEET_ID);
-    var sheet = spreadsheet.getActiveSheet();
+    var sheet = spreadsheet.getSheets()[1];
     
     // Trouver toutes les valeurs de la colonne A à partir de la ligne 4
     var idValues = sheet.getRange("A4:A").getValues();
@@ -168,7 +168,7 @@ function saveData(data) {
   try {
     // Accès au fichier Google Sheets spécifié par l'ID
     var spreadsheet = SpreadsheetApp.openById(SPREADSHEET_ID);
-    var sheet = spreadsheet.getActiveSheet();
+    var sheet = spreadsheet.getSheets()[1];
     
     // Trouver toutes les valeurs de la colonne A à partir de la ligne 4
     var idValues = sheet.getRange("A4:A").getValues();
@@ -262,7 +262,7 @@ function testConnection() {
 function getAllData() {
   try {
     var spreadsheet = SpreadsheetApp.openById(SPREADSHEET_ID);
-    var sheet = spreadsheet.getActiveSheet();
+    var sheet = spreadsheet.getSheets()[1];
     var data = sheet.getDataRange().getValues();
     
     // Supprimer l'en-tête

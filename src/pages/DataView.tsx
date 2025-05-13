@@ -21,19 +21,19 @@ const DataView = () => {
   }, []);
 
   const fetchData = () => {
-    // Simulation de l'appel à getAllData() dans un environnement React
-    // Dans un vrai environnement Google Apps Script, cette fonction appellerait google.script.run.getAllData()
-    console.log("Récupération des données...");
+    // Simulation of calling getAllData() in a React environment
+    // In a real Google Apps Script environment, this function would call google.script.run.getAllData()
+    console.log("Retrieving data...");
     
-    // Simule un délai de chargement pour l'exemple
+    // Simulates a loading delay for the example
     setTimeout(() => {
-      // Données simulées pour le tableau
+      // Simulated data for the table
       const mockData = [
         {
           id: 1,
           requestor: "Client A",
           dinPortfolio: "Digital workspace",
-          initiativeName: "Projet A",
+          initiativeName: "Project A",
           status: "In progress",
           goNoGo: "GO",
           budgetEstimated: "50K€"
@@ -42,7 +42,7 @@ const DataView = () => {
           id: 2,
           requestor: "Client B",
           dinPortfolio: "Cyber security",
-          initiativeName: "Projet B",
+          initiativeName: "Project B",
           status: "Completed",
           goNoGo: "GO",
           budgetEstimated: "75K€"
@@ -51,7 +51,7 @@ const DataView = () => {
           id: 3,
           requestor: "Client C",
           dinPortfolio: "LAN",
-          initiativeName: "Projet C",
+          initiativeName: "Project C",
           status: "Not started",
           goNoGo: "Waiting",
           budgetEstimated: "30K€"
@@ -63,7 +63,7 @@ const DataView = () => {
     }, 1000);
   };
 
-  // Déterminer les colonnes du tableau à partir des données
+  // Determine table columns from data
   const getTableHeaders = () => {
     if (data.length === 0) return [];
     const firstItem = data[0];
@@ -95,14 +95,14 @@ const DataView = () => {
             onClick={() => navigate('/')}
           >
             <ArrowLeft className="mr-2 h-4 w-4" />
-            Retour
+            Back
           </Button>
           <div>
             <h1 className="text-4xl font-bold text-[#FF4B00] hover:text-[#FF8E00] transition-colors duration-300">
-              Visualisation des données
+              Data Visualization
             </h1>
             <p className="text-white hover:text-[#FF4B00]/80 transition-colors duration-200">
-              Initiatives et portefeuilles enregistrés
+              Registered initiatives and portfolios
             </p>
           </div>
         </div>
@@ -154,12 +154,12 @@ const DataView = () => {
               </div>
             ) : (
               <div className="flex flex-col justify-center items-center h-64 text-center">
-                <p className="text-lg text-gray-400 mb-4">Aucune donnée disponible</p>
+                <p className="text-lg text-gray-400 mb-4">No data available</p>
                 <Button 
                   className="bg-[#FF4B00] hover:bg-[#FF6B00] text-white rounded-xl transition-all duration-300"
                   onClick={() => fetchData()}
                 >
-                  Rafraîchir
+                  Refresh
                 </Button>
               </div>
             )}

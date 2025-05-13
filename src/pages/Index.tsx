@@ -14,10 +14,10 @@ const Index = () => {
   }, []);
 
   const handleSaveAll = () => {
-    // Ici, vous pouvez implémenter la logique pour récupérer toutes les données
-    // des sections de formulaire et les envoyer à l'API
-    console.log("Sauvegarde initiée");
-    toast.success("Données sauvegardées avec succès!");
+    // Here, you can implement the logic to retrieve all data
+    // from form sections and send them to the API
+    console.log("Save initiated");
+    toast.success("Data successfully saved!");
   };
 
   const sections = [
@@ -128,7 +128,7 @@ const Index = () => {
             onClick={() => navigate('/data-view')}
           >
             <Eye className="mr-2 h-5 w-5 text-white" />
-            Visualiser
+            Visualize
           </Button>
         </div>
 
@@ -147,7 +147,7 @@ const Index = () => {
             className="px-8 py-6 text-lg bg-gradient-to-r from-[#FF4B00] to-[#FF8E00] hover:from-[#FF6B00] hover:to-[#FFAA00] text-white rounded-xl transition-all duration-300 hover:shadow-lg hover:shadow-[#FF4B00]/30 hover:scale-[1.02]"
             onClick={handleSaveAll}
           >
-            Sauvegarder
+            Save
           </Button>
         </div>
       </div>

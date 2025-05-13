@@ -1,11 +1,12 @@
+
 <!DOCTYPE html>
 <html>
 <head>
   <base target="_top">
   <meta charset="UTF-8">
-  <title>Demande Portfolio DIN</title>
+  <title>DIN Portfolio Request</title>
   <style>
-    /* === RESET ET STYLES DE BASE === */
+    /* === RESET AND BASE STYLES === */
     * {
       box-sizing: border-box;
       margin: 0;
@@ -163,48 +164,48 @@
   </style>
 </head>
 <body>
-  <!-- En-tête -->
+  <!-- Header -->
   <div class="header">
     <div class="header-content">
-      <h1>Demande Portfolio DIN</h1>
-      <p>Formulaire de demande pour nouvelle initiative</p>
+      <h1>DIN Portfolio Request</h1>
+      <p>Request form for new initiative</p>
     </div>
   </div>
   
-  <!-- Formulaire de demande simplifié -->
+  <!-- Simplified request form -->
   <div class="form-section">
     <form id="requestForm">
       <div class="form-group">
         <label class="form-label" for="requestor">Requestor/Customer</label>
-        <input type="text" class="form-control" id="requestor" placeholder="Nom du demandeur">
+        <input type="text" class="form-control" id="requestor" placeholder="Requestor name">
       </div>
       
       <div class="form-group">
         <label class="form-label" for="dinPortfolio">DIN portfolio</label>
         <select class="form-control" id="dinPortfolio">
-          <option value="">-- Sélectionner --</option>
+          <option value="">-- Select --</option>
           <!-- Options will be loaded dynamically -->
         </select>
       </div>
       
       <div class="form-group">
         <label class="form-label" for="dinFocalPoint">DIN focal point</label>
-        <input type="text" class="form-control" id="dinFocalPoint" placeholder="Point focal DIN">
+        <input type="text" class="form-control" id="dinFocalPoint" placeholder="DIN focal point">
       </div>
       
-      <button type="submit" class="btn-save">Soumettre la demande</button>
+      <button type="submit" class="btn-save">Submit Request</button>
     </form>
   </div>
   
-  <!-- Message de validation -->
+  <!-- Validation message -->
   <div class="validation-message" id="validationMessage">
-    Demande enregistrée avec succès !
+    Request successfully saved!
   </div>
 
   <script>
-    // Chargement des options des menus déroulants
+    // Loading dropdown options
     document.addEventListener('DOMContentLoaded', function() {
-      // Si Google Apps Script est disponible
+      // If Google Apps Script is available
       if (typeof google !== 'undefined') {
         google.script.run
           .withSuccessHandler(function(options) {
@@ -212,7 +213,7 @@
           })
           .getDropdownOptions();
       } else {
-        // Options de secours pour le développement local
+        // Fallback options for local development
         const fallbackOptions = {
           dinPortfolio: [
             "Digital workspace", "Cyber security", "Roof", "Div", "Affiliate", 
@@ -224,7 +225,7 @@
       }
     });
     
-    // Remplissage des menus déroulants
+    // Fill the dropdowns
     function populateDropdowns(options) {
       if (options.dinPortfolio) {
         const select = document.getElementById('dinPortfolio');
@@ -239,7 +240,7 @@
       }
     }
     
-    // Gestion de la soumission du formulaire
+    // Form submission handling
     document.getElementById('requestForm').addEventListener('submit', function(event) {
       event.preventDefault();
       
@@ -249,37 +250,37 @@
         dinFocalPoint: document.getElementById('dinFocalPoint').value
       };
       
-      // Si Google Apps Script est disponible
+      // If Google Apps Script is available
       if (typeof google !== 'undefined') {
         google.script.run
           .withSuccessHandler(function(result) {
             if (result.success) {
-              showValidationMessage(`La demande portant l'ID ${result.id} est créée`, true);
+              showValidationMessage(`Request with ID ${result.id} has been created`, true);
               document.getElementById('requestForm').reset();
             } else if (result.fileWriteSuccess && !result.emailSentSuccess) {
-              showValidationMessage(`La demande portant l'ID ${result.id} est créée, mais une erreur s'est produite lors de l'envoi de l'email`, false);
+              showValidationMessage(`Request with ID ${result.id} has been created, but there was an error sending the email`, false);
               document.getElementById('requestForm').reset();
             } else if (!result.fileWriteSuccess) {
-              showValidationMessage(`Une erreur s'est produite lors de l'écriture sur le fichier: ${result.error || 'Raison inconnue'}`, false);
+              showValidationMessage(`An error occurred while writing to the file: ${result.error || 'Unknown reason'}`, false);
             } else {
-              showValidationMessage(`Une erreur s'est produite: ${result.error || 'Raison inconnue'}`, false);
+              showValidationMessage(`An error occurred: ${result.error || 'Unknown reason'}`, false);
             }
           })
           .withFailureHandler(function(error) {
-            showValidationMessage(`Une erreur s'est produite: ${error.message}`, false);
+            showValidationMessage(`An error occurred: ${error.message}`, false);
           })
           .saveSimpleRequest(formData);
       } else {
-        // Simulation pour le développement local
+        // Simulation for local development
         setTimeout(() => {
           const mockId = Math.floor(Math.random() * 100) + 1;
-          showValidationMessage(`La demande portant l'ID ${mockId} est créée (simulation)`, true);
+          showValidationMessage(`Request with ID ${mockId} has been created (simulation)`, true);
           document.getElementById('requestForm').reset();
         }, 1000);
       }
     });
     
-    // Affichage du message de validation
+    // Display validation message
     function showValidationMessage(message, success = true) {
       const validationMessage = document.getElementById('validationMessage');
       validationMessage.textContent = message;

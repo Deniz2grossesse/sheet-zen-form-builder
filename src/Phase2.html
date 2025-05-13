@@ -1,12 +1,13 @@
+
 <!DOCTYPE html>
 <html>
 <head>
   <base target="_top">
   <meta charset="UTF-8">
-  <title>Liste de diffusion - Portfolio DIN</title>
+  <title>Distribution List - DIN Portfolio</title>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap">
   <style>
-    /* === RESET ET STYLES DE BASE === */
+    /* === RESET AND BASE STYLES === */
     * {
       box-sizing: border-box;
       margin: 0;
@@ -280,23 +281,23 @@
   </style>
 </head>
 <body>
-  <!-- En-tête -->
+  <!-- Header -->
   <div class="header">
-    <h1>Liste de diffusion - Portfolio DIN</h1>
-    <p>Édition de la demande existante</p>
+    <h1>Distribution List - DIN Portfolio</h1>
+    <p>Edit existing request</p>
   </div>
   
-  <!-- Barre de recherche -->
+  <!-- Search bar -->
   <div class="search-section">
     <div class="search-container">
-      <input type="text" id="searchIdInput" class="search-input" placeholder="Rechercher par ID...">
-      <button id="searchButton" class="search-button">Rechercher</button>
+      <input type="text" id="searchIdInput" class="search-input" placeholder="Search by ID...">
+      <button id="searchButton" class="search-button">Search</button>
     </div>
   </div>
   
-  <!-- Section de résumé -->
+  <!-- Summary section -->
   <div class="summary-section">
-    <h2 class="summary-title">Informations de la demande initiale</h2>
+    <h2 class="summary-title">Initial Request Information</h2>
     <div class="summary-grid">
       <div class="summary-item">
         <span class="summary-label">ID:</span>
@@ -317,47 +318,47 @@
     </div>
   </div>
   
-  <!-- Formulaire d'édition -->
+  <!-- Edit form -->
   <div class="form-section">
     <form id="updateForm">
       <div class="form-grid">
         <div class="form-group">
           <label class="form-label" for="initiativeName">Initiative name</label>
-          <input type="text" class="form-control" id="initiativeName" placeholder="Nom de l'initiative">
+          <input type="text" class="form-control" id="initiativeName" placeholder="Initiative name">
         </div>
         
         <div class="form-group">
           <label class="form-label" for="year">Year</label>
-          <input type="text" class="form-control" id="year" placeholder="Année">
+          <input type="text" class="form-control" id="year" placeholder="Year">
         </div>
         
         <div class="form-group">
           <label class="form-label" for="sourceDemand">Source of demand</label>
-          <input type="text" class="form-control" id="sourceDemand" placeholder="Source de la demande">
+          <input type="text" class="form-control" id="sourceDemand" placeholder="Source of demand">
         </div>
         
         <div class="form-group">
           <label class="form-label" for="ppmId">PPM ID</label>
-          <input type="text" class="form-control" id="ppmId" placeholder="ID PPM">
+          <input type="text" class="form-control" id="ppmId" placeholder="PPM ID">
         </div>
         
         <div class="form-group">
           <label class="form-label" for="category">Category</label>
           <select class="form-control" id="category">
-            <option value="">-- Sélectionner --</option>
+            <option value="">-- Select --</option>
             <!-- Options will be loaded dynamically -->
           </select>
         </div>
         
         <div class="form-group">
           <label class="form-label" for="workloadPsl">Workload per PSL</label>
-          <input type="text" class="form-control" id="workloadPsl" placeholder="Charge de travail par PSL">
+          <input type="text" class="form-control" id="workloadPsl" placeholder="Workload per PSL">
         </div>
         
         <div class="form-group">
           <label class="form-label" for="transversal">Transversal</label>
           <select class="form-control" id="transversal">
-            <option value="">-- Sélectionner --</option>
+            <option value="">-- Select --</option>
             <!-- Options will be loaded dynamically -->
           </select>
         </div>
@@ -365,19 +366,19 @@
         <div class="form-group">
           <label class="form-label" for="status">Status</label>
           <select class="form-control" id="status">
-            <option value="">-- Sélectionner --</option>
+            <option value="">-- Select --</option>
             <!-- Options will be loaded dynamically -->
           </select>
         </div>
         
         <div class="form-group">
           <label class="form-label" for="teamMember">Team member</label>
-          <input type="text" class="form-control" id="teamMember" placeholder="Membre de l'équipe">
+          <input type="text" class="form-control" id="teamMember" placeholder="Team member">
         </div>
         
         <div class="form-group full-width">
           <label class="form-label" for="initiativeDeliverables">Initiative deliverables</label>
-          <textarea class="form-control" id="initiativeDeliverables" rows="3" placeholder="Livrables de l'initiative"></textarea>
+          <textarea class="form-control" id="initiativeDeliverables" rows="3" placeholder="Initiative deliverables"></textarea>
         </div>
         
         <div class="form-group full-width">
@@ -387,34 +388,34 @@
     </form>
   </div>
   
-  <!-- Message de validation -->
+  <!-- Validation message -->
   <div class="validation-message" id="validationMessage">
-    Demande mise à jour avec succès !
+    Request updated successfully!
   </div>
   
-  <!-- Message d'erreur -->
+  <!-- Error message -->
   <div class="error-message" id="errorMessage">
-    Une erreur s'est produite.
+    An error occurred.
   </div>
 
   <script>
-    // Récupérer l'ID depuis l'URL
+    // Get ID from URL
     function getIdFromUrl() {
       try {
         const url = new URL(window.location.href);
-        console.log("Phase2 - URL complète:", url.toString());
+        console.log("Phase2 - Full URL:", url.toString());
         
-        // Utiliser URLSearchParams pour récupérer l'ID de manière plus robuste
+        // Use URLSearchParams to retrieve ID more robustly
         const params = new URLSearchParams(url.search);
         const id = params.get('id');
         
-        console.log("Phase2 - ID récupéré depuis l'URL avec URLSearchParams: ", id, " (type: " + typeof id + ")");
+        console.log("Phase2 - ID retrieved from URL with URLSearchParams: ", id, " (type: " + typeof id + ")");
         
         if (id) {
           return id;
         } else {
-          // Méthode de secours: chercher manuellement dans l'URL
-          console.log("Phase2 - Tentative de récupération manuelle de l'ID");
+          // Fallback method: manually search the URL
+          console.log("Phase2 - Attempting manual ID retrieval");
           const urlString = url.toString();
           const idIndex = urlString.indexOf("id=");
           
@@ -424,70 +425,70 @@
             if (endIndex !== -1) {
               extractedId = extractedId.substring(0, endIndex);
             }
-            console.log("Phase2 - ID récupéré manuellement: ", extractedId);
+            console.log("Phase2 - ID retrieved manually: ", extractedId);
             return extractedId;
           }
         }
         
-        console.warn("Phase2 - Aucun ID de demande trouvé dans l'URL");
+        console.warn("Phase2 - No request ID found in URL");
         return null;
       } catch (error) {
-        console.error("Phase2 - Erreur lors de la récupération de l'ID:", error);
+        console.error("Phase2 - Error retrieving ID:", error);
         return null;
       }
     }
     
-    // Fonction pour rechercher par ID
+    // Function to search by ID
     function searchById() {
       const searchId = document.getElementById('searchIdInput').value.trim();
       
       if (!searchId) {
-        console.error("Phase2 - ID de recherche vide");
-        showErrorMessage("Veuillez entrer un ID valide.");
+        console.error("Phase2 - Empty search ID");
+        showErrorMessage("Please enter a valid ID.");
         return;
       }
       
-      console.log("Phase2 - Recherche pour l'ID:", searchId, " (type: " + typeof searchId + ")");
+      console.log("Phase2 - Searching for ID:", searchId, " (type: " + typeof searchId + ")");
       
-      // Si Google Apps Script est disponible
+      // If Google Apps Script is available
       if (typeof google !== 'undefined' && google.script) {
-        console.log("Phase2 - Appel à getRequestById avec l'ID:", searchId);
+        console.log("Phase2 - Calling getRequestById with ID:", searchId);
         google.script.run
           .withSuccessHandler(function(result) {
-            console.log("Phase2 - Résultat de la recherche:", result);
+            console.log("Phase2 - Search result:", result);
             if (result.success) {
-              // Mettre à jour l'URL avec le nouvel ID
+              // Update URL with new ID
               const url = new URL(window.location.href);
               url.searchParams.set('id', searchId);
               window.history.pushState({}, '', url);
-              console.log("Phase2 - URL mise à jour avec le nouvel ID:", url.toString());
+              console.log("Phase2 - URL updated with new ID:", url.toString());
               
-              // Remplir le formulaire avec les données
+              // Fill form with data
               populateForm(result.data);
-              showValidationMessage("Données trouvées pour l'ID: " + searchId);
+              showValidationMessage("Data found for ID: " + searchId);
             } else {
-              console.error("Phase2 - Erreur dans la réponse:", result.error);
-              showErrorMessage("ID non trouvé ou erreur: " + result.error);
+              console.error("Phase2 - Error in response:", result.error);
+              showErrorMessage("ID not found or error: " + result.error);
             }
           })
           .withFailureHandler(function(error) {
-            console.error("Phase2 - Erreur lors de la recherche:", error);
-            showErrorMessage("Erreur: " + error);
+            console.error("Phase2 - Error during search:", error);
+            showErrorMessage("Error: " + error);
           })
           .getRequestById(searchId);
       } else {
-        // Simulation pour le développement local
-        console.log("Phase2 - Mode développement local - simulation de recherche");
+        // Simulation for local development
+        console.log("Phase2 - Local development mode - search simulation");
         setTimeout(() => {
           const mockData = {
             id: searchId,
-            requestor: "John Doe (via recherche)",
+            requestor: "John Doe (via search)",
             dinPortfolio: "Digital workspace",
             dinFocalPoint: "Jane Smith",
-            initiativeName: "Initiative trouvée",
-            initiativeDeliverables: "Livrable trouvé",
+            initiativeName: "Found initiative",
+            initiativeDeliverables: "Found deliverable",
             year: "2025",
-            sourceDemand: "Source trouvée",
+            sourceDemand: "Found source",
             ppmId: "PPM" + searchId,
             category: "design",
             workloadPsl: "10",
@@ -495,30 +496,30 @@
             status: "in progress",
             teamMember: "John Doe"
           };
-          console.log("Phase2 - Données simulées générées:", mockData);
+          console.log("Phase2 - Generated mock data:", mockData);
           
-          // Mettre à jour l'URL avec le nouvel ID
+          // Update URL with new ID
           const url = new URL(window.location.href);
           url.searchParams.set('id', searchId);
           window.history.pushState({}, '', url);
           
           populateForm(mockData);
-          showValidationMessage("Données trouvées pour l'ID: " + searchId + " (simulation)");
+          showValidationMessage("Data found for ID: " + searchId + " (simulation)");
         }, 500);
       }
     }
     
-    // Fonction pour remplir le formulaire avec les données existantes
+    // Function to fill form with existing data
     function populateForm(data) {
-      console.log("Phase2 - Remplissage du formulaire avec les données:", data);
+      console.log("Phase2 - Filling form with data:", data);
       
-      // Remplir la section résumé
+      // Fill summary section
       document.getElementById('summaryId').textContent = data.id || '-';
       document.getElementById('summaryRequestor').textContent = data.requestor || '-';
       document.getElementById('summaryDinPortfolio').textContent = data.dinPortfolio || '-';
       document.getElementById('summaryDinFocalPoint').textContent = data.dinFocalPoint || '-';
       
-      // Remplir les champs du formulaire
+      // Fill form fields
       document.getElementById('initiativeName').value = data.initiativeName || '';
       document.getElementById('initiativeDeliverables').value = data.initiativeDeliverables || '';
       document.getElementById('year').value = data.year || '';
@@ -530,92 +531,92 @@
       document.getElementById('status').value = data.status || '';
       document.getElementById('teamMember').value = data.teamMember || '';
       
-      console.log("Phase2 - Formulaire rempli avec succès avec les données de l'ID: " + data.id);
+      console.log("Phase2 - Form successfully filled with data for ID: " + data.id);
     }
     
-    // Chargement des données et options des menus déroulants
+    // Load data and dropdown options
     document.addEventListener('DOMContentLoaded', function() {
-      console.log("Phase2 - DOM chargé, initialisation de la page");
-      console.log("URL avant tout traitement: " + window.location.href);
-      console.log("Paramètres de recherche: " + window.location.search);
+      console.log("Phase2 - DOM loaded, page initialization");
+      console.log("URL before any processing: " + window.location.href);
+      console.log("Search parameters: " + window.location.search);
       
       const requestId = getIdFromUrl();
       
-      // Ajouter les gestionnaires pour la recherche
+      // Add search handlers
       const searchButton = document.getElementById('searchButton');
       const searchInput = document.getElementById('searchIdInput');
       
       if (searchButton) {
-        console.log("Phase2 - Ajout du gestionnaire d'événement pour le bouton de recherche");
+        console.log("Phase2 - Adding event handler for search button");
         searchButton.addEventListener('click', searchById);
       }
       
       if (searchInput) {
-        console.log("Phase2 - Ajout du gestionnaire d'événement pour la touche Entrée dans le champ de recherche");
+        console.log("Phase2 - Adding event handler for Enter key in search field");
         searchInput.addEventListener('keypress', function(e) {
           if (e.key === 'Enter') {
-            console.log("Phase2 - Touche Entrée pressée dans le champ de recherche");
+            console.log("Phase2 - Enter key pressed in search field");
             searchById();
           }
         });
         
-        // Préremplir le champ de recherche avec l'ID de l'URL si disponible
+        // Pre-fill search field with URL ID if available
         if (requestId) {
-          console.log("Phase2 - Préremplissage du champ de recherche avec l'ID de l'URL:", requestId);
+          console.log("Phase2 - Pre-filling search field with URL ID:", requestId);
           searchInput.value = requestId;
         }
       }
       
       if (!requestId) {
-        console.log("Phase2 - Aucun ID trouvé dans l'URL - mode recherche uniquement");
-        // Ne pas afficher d'erreur, permet d'utiliser seulement la recherche
+        console.log("Phase2 - No ID found in URL - search-only mode");
+        // Don't show error, allows using search only
         return;
       }
       
-      console.log("Phase2 - Démarrage du chargement des données pour l'ID:", requestId, " (type: " + typeof requestId + ")");
+      console.log("Phase2 - Starting data loading for ID:", requestId, " (type: " + typeof requestId + ")");
       
-      // Si Google Apps Script est disponible
+      // If Google Apps Script is available
       if (typeof google !== 'undefined' && google.script) {
-        console.log("Phase2 - Mode Google Apps Script détecté");
+        console.log("Phase2 - Google Apps Script mode detected");
         
-        // Charger les options des menus déroulants
-        console.log("Phase2 - Appel à getDropdownOptions");
+        // Load dropdown options
+        console.log("Phase2 - Calling getDropdownOptions");
         google.script.run
           .withSuccessHandler(function(options) {
-            console.log("Phase2 - Options des menus déroulants reçues:", options);
+            console.log("Phase2 - Dropdown options received:", options);
             if (options) {
               populateDropdowns(options);
             } else {
-              console.error("Phase2 - Options des menus déroulants vides ou mal formatées");
-              showErrorMessage("Erreur lors du chargement des options des menus déroulants.");
+              console.error("Phase2 - Empty or malformed dropdown options");
+              showErrorMessage("Error loading dropdown options.");
             }
           })
           .withFailureHandler(function(error) {
-            console.error("Phase2 - Erreur lors du chargement des options:", error);
-            showErrorMessage("Erreur lors du chargement des options: " + error);
+            console.error("Phase2 - Error loading options:", error);
+            showErrorMessage("Error loading options: " + error);
           })
           .getDropdownOptions();
         
-        // Charger les données de la demande
-        console.log("Phase2 - Appel à getRequestById avec l'ID:", requestId);
+        // Load request data
+        console.log("Phase2 - Calling getRequestById with ID:", requestId);
         google.script.run
           .withSuccessHandler(function(result) {
-            console.log("Phase2 - Réponse reçue pour l'ID " + requestId + ":", result);
+            console.log("Phase2 - Response received for ID " + requestId + ":", result);
             if (result.success) {
               populateForm(result.data);
             } else {
-              console.error("Phase2 - Erreur dans la réponse:", result.error);
-              showErrorMessage("Erreur lors du chargement des données: " + result.error);
+              console.error("Phase2 - Error in response:", result.error);
+              showErrorMessage("Error loading data: " + result.error);
             }
           })
           .withFailureHandler(function(error) {
-            console.error("Phase2 - Erreur lors de l'appel à getRequestById:", error);
-            showErrorMessage("Erreur: " + error);
+            console.error("Phase2 - Error calling getRequestById:", error);
+            showErrorMessage("Error: " + error);
           })
           .getRequestById(requestId);
       } else {
-        // Simulation pour le développement local
-        console.log("Phase2 - Mode développement local détecté - simulation de données");
+        // Simulation for local development
+        console.log("Phase2 - Local development mode detected - data simulation");
         const mockOptions = {
           category: ["design", "expertise", "solution deployment", "site extension", 
                      "new solution", "cabling deployment", "evolution", "mobility deployment"],
@@ -630,10 +631,10 @@
           requestor: "John Doe",
           dinPortfolio: "Digital workspace",
           dinFocalPoint: "Jane Smith",
-          initiativeName: "Initiative test",
-          initiativeDeliverables: "Livrable test",
+          initiativeName: "Test initiative",
+          initiativeDeliverables: "Test deliverable",
           year: "2025",
-          sourceDemand: "Source test",
+          sourceDemand: "Test source",
           ppmId: "PPM123",
           category: "design",
           workloadPsl: "10",
@@ -642,14 +643,14 @@
           teamMember: "John Doe"
         };
         
-        console.log("Phase2 - Données mockées générées pour le développement local:", mockData);
+        console.log("Phase2 - Mock data generated for local development:", mockData);
         populateForm(mockData);
       }
     });
     
-    // Remplissage des menus déroulants
+    // Fill dropdowns
     function populateDropdowns(options) {
-      console.log("Phase2 - Début du remplissage des menus déroulants avec options:", options);
+      console.log("Phase2 - Starting dropdown population with options:", options);
       
       try {
         // Category
@@ -662,12 +663,12 @@
               opt.textContent = option;
               categorySelect.appendChild(opt);
             });
-            console.log("Phase2 - Menu déroulant category rempli avec succès");
+            console.log("Phase2 - Category dropdown successfully filled");
           } else {
-            console.error("Phase2 - Élément category non trouvé dans le DOM");
+            console.error("Phase2 - Category element not found in DOM");
           }
         } else {
-          console.error("Phase2 - Options category invalides ou manquantes");
+          console.error("Phase2 - Invalid or missing category options");
         }
         
         // Transversal
@@ -680,12 +681,12 @@
               opt.textContent = option;
               transversalSelect.appendChild(opt);
             });
-            console.log("Phase2 - Menu déroulant transversal rempli avec succès");
+            console.log("Phase2 - Transversal dropdown successfully filled");
           } else {
-            console.error("Phase2 - Élément transversal non trouvé dans le DOM");
+            console.error("Phase2 - Transversal element not found in DOM");
           }
         } else {
-          console.error("Phase2 - Options transversal invalides ou manquantes");
+          console.error("Phase2 - Invalid or missing transversal options");
         }
         
         // Status
@@ -698,30 +699,30 @@
               opt.textContent = option;
               statusSelect.appendChild(opt);
             });
-            console.log("Phase2 - Menu déroulant status rempli avec succès");
+            console.log("Phase2 - Status dropdown successfully filled");
           } else {
-            console.error("Phase2 - Élément status non trouvé dans le DOM");
+            console.error("Phase2 - Status element not found in DOM");
           }
         } else {
-          console.error("Phase2 - Options status invalides ou manquantes");
+          console.error("Phase2 - Invalid or missing status options");
         }
       } catch (error) {
-        console.error("Phase2 - Erreur lors du remplissage des menus déroulants:", error);
+        console.error("Phase2 - Error filling dropdowns:", error);
       }
     }
     
-    // Gestion de la soumission du formulaire
+    // Form submission handling
     document.getElementById('updateForm').addEventListener('submit', function(event) {
       event.preventDefault();
       
       const requestId = getIdFromUrl();
       if (!requestId) {
-        console.error("Phase2 - Tentative de mise à jour sans ID");
-        showErrorMessage("Aucun ID de demande trouvé dans l'URL.");
+        console.error("Phase2 - Update attempt without ID");
+        showErrorMessage("No request ID found in URL.");
         return;
       }
       
-      console.log("Phase2 - Soumission du formulaire pour l'ID:", requestId, " (type: " + typeof requestId + ")");
+      console.log("Phase2 - Form submission for ID:", requestId, " (type: " + typeof requestId + ")");
       
       const formData = {
         initiativeName: document.getElementById('initiativeName').value,
@@ -736,38 +737,38 @@
         teamMember: document.getElementById('teamMember').value
       };
       
-      console.log("Phase2 - Données de formulaire à envoyer:", formData);
+      console.log("Phase2 - Form data to send:", formData);
       
-      // Si Google Apps Script est disponible
+      // If Google Apps Script is available
       if (typeof google !== 'undefined' && google.script) {
-        console.log("Phase2 - Appel à updateRequest avec l'ID:", requestId);
+        console.log("Phase2 - Calling updateRequest with ID:", requestId);
         google.script.run
           .withSuccessHandler(function(result) {
-            console.log("Phase2 - Réponse de la mise à jour:", result);
+            console.log("Phase2 - Update response:", result);
             if (result.success) {
-              showValidationMessage("Mise à jour réussie !");
+              showValidationMessage("Update successful!");
             } else {
-              console.error("Phase2 - Erreur lors de la mise à jour:", result.error);
-              showErrorMessage("Erreur lors de la mise à jour: " + result.error);
+              console.error("Phase2 - Error during update:", result.error);
+              showErrorMessage("Error during update: " + result.error);
             }
           })
           .withFailureHandler(function(error) {
-            console.error("Phase2 - Erreur lors de l'appel à updateRequest:", error);
-            showErrorMessage("Erreur: " + error);
+            console.error("Phase2 - Error calling updateRequest:", error);
+            showErrorMessage("Error: " + error);
           })
           .updateRequest(requestId, formData);
       } else {
-        // Simulation pour le développement local
-        console.log("Phase2 - Mode développement local - simulation de mise à jour");
+        // Simulation for local development
+        console.log("Phase2 - Local development mode - update simulation");
         setTimeout(() => {
-          showValidationMessage("Mise à jour réussie ! (simulation)");
+          showValidationMessage("Update successful! (simulation)");
         }, 1000);
       }
     });
     
-    // Affichage du message de validation
+    // Show validation message
     function showValidationMessage(message) {
-      console.log("Phase2 - Affichage du message de validation:", message);
+      console.log("Phase2 - Showing validation message:", message);
       const validationMessage = document.getElementById('validationMessage');
       validationMessage.textContent = message;
       validationMessage.style.display = 'block';
@@ -777,9 +778,9 @@
       }, 5000);
     }
     
-    // Affichage du message d'erreur
+    // Show error message
     function showErrorMessage(message) {
-      console.error("Phase2 - Message d'erreur:", message);
+      console.error("Phase2 - Error message:", message);
       const errorMessage = document.getElementById('errorMessage');
       errorMessage.textContent = message;
       errorMessage.style.display = 'block';

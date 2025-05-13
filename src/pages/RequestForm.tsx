@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
@@ -17,9 +18,9 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 
 const formSchema = z.object({
-  requestor: z.string().min(2, "Le nom du demandeur est requis"),
-  dinPortfolio: z.string().min(1, "Le portfolio DIN est requis"),
-  dinFocalPoint: z.string().min(2, "Le point focal DIN est requis"),
+  requestor: z.string().min(2, "Requestor name is required"),
+  dinPortfolio: z.string().min(1, "DIN portfolio is required"),
+  dinFocalPoint: z.string().min(2, "DIN focal point is required"),
 });
 
 type FormValues = z.infer<typeof formSchema>;
@@ -40,24 +41,24 @@ const RequestForm = () => {
   
   // Fixed: Changed useState to useEffect for loading options
   useEffect(() => {
-    console.log("RequestForm - Chargement des options du portfolio");
-    // @ts-ignore - La fonction window.google n'est pas reconnue par TypeScript
+    console.log("RequestForm - Loading portfolio options");
+    // @ts-ignore - The window.google function is not recognized by TypeScript
     if (typeof window.google !== 'undefined') {
-      console.log("Mode Google Apps Script détecté - appel à getDropdownOptions");
+      console.log("Google Apps Script mode detected - calling getDropdownOptions");
       // @ts-ignore
       google.script.run
         .withSuccessHandler(function(options: { dinPortfolio: string[] }) {
-          console.log("Options reçues du serveur:", options);
+          console.log("Options received from server:", options);
           setPortfolioOptions(options.dinPortfolio || []);
         })
         .withFailureHandler(function(error: Error) {
-          console.error("Erreur lors de la récupération des options:", error);
-          toast.error("Erreur de chargement des options");
+          console.error("Error retrieving options:", error);
+          toast.error("Error loading options");
         })
         .getDropdownOptions();
     } else {
-      console.log("Mode développement local - utilisation des options de secours");
-      // Options de secours pour le développement local
+      console.log("Local development mode - using fallback options");
+      // Fallback options for local development
       setPortfolioOptions([
         "Digital workspace", "Cyber security", "Roof", "Div", "Affiliate", 
         "DI-infrastructure", "LAN", "SECURITY", "Wireless & industry"
@@ -66,12 +67,12 @@ const RequestForm = () => {
   }, []);
   
   const onSubmit = (values: FormValues) => {
-    console.log("Soumission du formulaire avec les valeurs:", values);
+    console.log("Form submission with values:", values);
     setIsSubmitting(true);
     
-    // @ts-ignore - La fonction window.google n'est pas reconnue par TypeScript
+    // @ts-ignore - The window.google function is not recognized by TypeScript
     if (typeof window.google !== 'undefined') {
-      console.log("Appel à saveSimpleRequest avec les données:", values);
+      console.log("Calling saveSimpleRequest with data:", values);
       // @ts-ignore
       google.script.run
         .withSuccessHandler(function(result: { 
@@ -81,38 +82,38 @@ const RequestForm = () => {
           emailSentSuccess: boolean,
           error?: string 
         }) {
-          console.log("Réponse du serveur:", result);
+          console.log("Server response:", result);
           setIsSubmitting(false);
           if (result.success) {
-            toast.success(`La demande portant l'ID ${result.id} est créée`);
-            console.log("Demande créée avec succès - ID:", result.id);
+            toast.success(`Request with ID ${result.id} has been created`);
+            console.log("Request created successfully - ID:", result.id);
             form.reset();
           } else if (result.fileWriteSuccess && !result.emailSentSuccess) {
-            toast.warning(`La demande portant l'ID ${result.id} est créée, mais une erreur s'est produite lors de l'envoi de l'email`);
-            console.warn("Demande créée mais email non envoyé - ID:", result.id);
+            toast.warning(`Request with ID ${result.id} has been created, but there was an error sending the email`);
+            console.warn("Request created but email not sent - ID:", result.id);
             form.reset();
           } else if (!result.fileWriteSuccess) {
-            console.error("Erreur d'écriture sur le fichier:", result.error);
-            toast.error(`Une erreur s'est produite lors de l'écriture sur le fichier: ${result.error || 'Raison inconnue'}`);
+            console.error("File write error:", result.error);
+            toast.error(`An error occurred while writing to the file: ${result.error || 'Unknown reason'}`);
           } else {
-            console.error("Erreur générale:", result.error);
-            toast.error(`Une erreur s'est produite: ${result.error || 'Raison inconnue'}`);
+            console.error("General error:", result.error);
+            toast.error(`An error occurred: ${result.error || 'Unknown reason'}`);
           }
         })
         .withFailureHandler(function(error: Error) {
-          console.error("Erreur lors de l'appel à saveSimpleRequest:", error);
+          console.error("Error calling saveSimpleRequest:", error);
           setIsSubmitting(false);
-          toast.error(`Une erreur s'est produite: ${error.message}`);
+          toast.error(`An error occurred: ${error.message}`);
         })
         .saveSimpleRequest(values);
     } else {
-      // Simulation pour le développement local
-      console.log("Mode développement local - simulation de la soumission");
+      // Simulation for local development
+      console.log("Local development mode - simulating submission");
       setTimeout(() => {
         setIsSubmitting(false);
         const mockId = Math.floor(Math.random() * 100) + 1;
-        console.log("Simulation - ID généré:", mockId);
-        toast.success(`La demande portant l'ID ${mockId} est créée (simulation)`);
+        console.log("Simulation - Generated ID:", mockId);
+        toast.success(`Request with ID ${mockId} has been created (simulation)`);
         form.reset();
       }, 1000);
     }
@@ -139,10 +140,10 @@ const RequestForm = () => {
       <div className="relative z-10 max-w-3xl mx-auto p-6">
         <div className="mb-8 pt-8">
           <h1 className="text-4xl font-bold text-center mb-2 text-[#FF4B00] hover:text-[#FF8E00] transition-colors duration-300">
-            Nouvelle Demande DIN
+            New DIN Request
           </h1>
           <p className="text-center text-gray-300 mb-6">
-            Remplissez le formulaire ci-dessous pour soumettre une nouvelle demande
+            Fill out the form below to submit a new request
           </p>
         </div>
         
@@ -157,7 +158,7 @@ const RequestForm = () => {
                     <FormLabel>Requestor / Customer</FormLabel>
                     <FormControl>
                       <Input 
-                        placeholder="Nom du demandeur" 
+                        placeholder="Requestor name" 
                         {...field} 
                         className="bg-[#2A2A2A] border-[#444] focus:border-[#FF4B00]"
                       />
@@ -179,7 +180,7 @@ const RequestForm = () => {
                     >
                       <FormControl>
                         <SelectTrigger className="bg-[#2A2A2A] border-[#444] focus:border-[#FF4B00]">
-                          <SelectValue placeholder="Sélectionnez un portfolio" />
+                          <SelectValue placeholder="Select a portfolio" />
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent className="bg-[#2A2A2A] border-[#444]">
@@ -203,7 +204,7 @@ const RequestForm = () => {
                     <FormLabel>DIN Focal Point</FormLabel>
                     <FormControl>
                       <Input 
-                        placeholder="Point focal DIN" 
+                        placeholder="DIN focal point" 
                         {...field} 
                         className="bg-[#2A2A2A] border-[#444] focus:border-[#FF4B00]"
                       />
@@ -219,7 +220,7 @@ const RequestForm = () => {
                   disabled={isSubmitting}
                   className="bg-gradient-to-r from-[#FF4B00] to-[#FF8E00] hover:from-[#FF6B00] hover:to-[#FFAA00]"
                 >
-                  {isSubmitting ? "Soumission en cours..." : "Soumettre la demande"}
+                  {isSubmitting ? "Submitting..." : "Submit Request"}
                 </Button>
               </div>
             </form>

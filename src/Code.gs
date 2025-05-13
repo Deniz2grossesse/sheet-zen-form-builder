@@ -1,3 +1,4 @@
+
 /**
  * Portfolio Management Dashboard
  * Application backend pour Google Apps Script
@@ -182,12 +183,12 @@ function sendNotificationEmail(id, data) {
 
 /**
  * Récupère les données d'une demande spécifique par son ID
- * @param {Number} id - ID de la demande à récupérer
+ * @param {Number|String} id - ID de la demande à récupérer
  * @return {Object} - Objet contenant les données ou une erreur
  */
 function getRequestById(id) {
   try {
-    Logger.log("Début de la fonction getRequestById() avec ID: " + id);
+    Logger.log("Début de la fonction getRequestById() avec ID: " + id + " (type: " + typeof id + ")");
     var spreadsheet = SpreadsheetApp.openById(SPREADSHEET_ID);
     var sheet = spreadsheet.getSheets()[2]; // Feuille n°2
     var data = sheet.getDataRange().getValues();
@@ -195,10 +196,16 @@ function getRequestById(id) {
     Logger.log("Données récupérées depuis la feuille: lignes = " + data.length);
     var rowIndex = -1;
 
+    // Convertir l'ID en chaîne pour la comparaison
+    var stringId = String(id);
+    Logger.log("ID converti en chaîne pour comparaison: " + stringId);
+
     // Recherche de l'ID dans la colonne A (index 0)
     for (var i = 3; i < data.length; i++) { // Démarrer à la ligne 4 (index 3)
-      Logger.log("Comparaison - ID URL: " + String(id) + ", ID ligne " + (i+1) + ": " + String(data[i][0]));
-      if (String(data[i][0]) === String(id)) {
+      var sheetId = String(data[i][0]); // Convertir l'ID de la feuille en chaîne
+      Logger.log("Comparaison - ID URL: " + stringId + " (type: " + typeof stringId + "), ID ligne " + (i+1) + ": " + sheetId + " (type: " + typeof sheetId + ")");
+      
+      if (sheetId === stringId) {
         rowIndex = i;
         Logger.log("ID trouvé à la ligne " + (rowIndex + 1));
         break;
@@ -206,7 +213,7 @@ function getRequestById(id) {
     }
 
     if (rowIndex === -1) {
-      Logger.log("ID " + id + " non trouvé dans la feuille");
+      Logger.log("ID " + stringId + " non trouvé dans la feuille");
       return { success: false, error: "ID non trouvé" };
     }
 
@@ -244,12 +251,13 @@ function getRequestById(id) {
 
 /**
  * Met à jour les données d'une demande existante
- * @param {Number} id - ID de la demande à mettre à jour
+ * @param {Number|String} id - ID de la demande à mettre à jour
  * @param {Object} data - Nouvelles données pour la demande
  * @return {Object} - Résultat de la mise à jour
  */
 function updateRequest(id, data) {
   try {
+    Logger.log("Début de la fonction updateRequest() avec ID: " + id + " (type: " + typeof id + ")");
     var spreadsheet = SpreadsheetApp.openById(SPREADSHEET_ID);
     var sheet = spreadsheet.getSheets()[2]; // Changé de [1] à [2]
     
@@ -257,16 +265,27 @@ function updateRequest(id, data) {
     var idValues = sheet.getRange("A4:A").getValues();
     var rowIndex = -1;
     
+    // Convertir l'ID en chaîne pour la comparaison
+    var stringId = String(id);
+    Logger.log("ID converti en chaîne pour comparaison: " + stringId);
+    
     for (var i = 0; i < idValues.length; i++) {
-      if (idValues[i][0] == id) {
+      var sheetId = String(idValues[i][0]); // Convertir l'ID de la feuille en chaîne
+      Logger.log("Comparaison - ID URL: " + stringId + " (type: " + typeof stringId + "), ID ligne " + (i+4) + ": " + sheetId + " (type: " + typeof sheetId + ")");
+      
+      if (sheetId === stringId) {
         rowIndex = i + 4; // +4 car on commence à la ligne 4
+        Logger.log("ID trouvé à la ligne " + rowIndex);
         break;
       }
     }
     
     if (rowIndex === -1) {
+      Logger.log("ID " + stringId + " non trouvé dans la feuille");
       return { success: false, error: "ID non trouvé" };
     }
+    
+    Logger.log("Mise à jour des données pour l'ID " + stringId + " à la ligne " + rowIndex);
     
     // Mise à jour des colonnes E à N (indices 4 à 13)
     sheet.getRange(rowIndex, 5, 1, 10).setValues([[

@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -416,8 +417,8 @@
           id = id.substring(0, endIndex);
         }
         
-        console.log("ID récupéré depuis l'URL: ", id);
-        return id;
+        console.log("ID récupéré depuis l'URL: ", id, " (type: " + typeof id + ")");
+        return id; // Retourne l'ID comme une chaîne
       } else {
         console.error("Aucun ID de demande trouvé dans l'URL");
         showErrorMessage("Aucun ID de demande trouvé dans l'URL.");
@@ -434,7 +435,7 @@
         return;
       }
       
-      console.log("Recherche pour l'ID:", searchId);
+      console.log("Recherche pour l'ID:", searchId, " (type: " + typeof searchId + ")");
       
       // Si Google Apps Script est disponible
       if (typeof google !== 'undefined' && google.script) {
@@ -536,11 +537,12 @@
       }
       
       if (!requestId) {
-        showErrorMessage("Aucun ID de demande trouvé dans l'URL.");
+        console.log("Aucun ID trouvé dans l'URL - mode recherche uniquement");
+        // Ne pas afficher d'erreur, permet d'utiliser seulement la recherche
         return;
       }
       
-      console.log("Démarrage du chargement des données pour l'ID:", requestId);
+      console.log("Démarrage du chargement des données pour l'ID:", requestId, " (type: " + typeof requestId + ")");
       
       // Si Google Apps Script est disponible
       if (typeof google !== 'undefined' && google.script) {
@@ -686,6 +688,8 @@
         return;
       }
       
+      console.log("Soumission du formulaire pour l'ID:", requestId, " (type: " + typeof requestId + ")");
+      
       const formData = {
         initiativeName: document.getElementById('initiativeName').value,
         initiativeDeliverables: document.getElementById('initiativeDeliverables').value,
@@ -703,6 +707,7 @@
       if (typeof google !== 'undefined' && google.script) {
         google.script.run
           .withSuccessHandler(function(result) {
+            console.log("Réponse de la mise à jour:", result);
             if (result.success) {
               showValidationMessage("Mise à jour réussie !");
             } else {
@@ -710,6 +715,7 @@
             }
           })
           .withFailureHandler(function(error) {
+            console.error("Erreur lors de l'appel à updateRequest:", error);
             showErrorMessage("Erreur: " + error);
           })
           .updateRequest(requestId, formData);
